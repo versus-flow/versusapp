@@ -1,16 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap");
+
+@font-face {
+  font-family: "WhyteInktrap";
+  src: url("/fonts/WhyteInktrap-Black.otf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: "WhyteInktrap";
+  src: url("/fonts/WhyteInktrap-Bold.otf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "WhyteInktrap";
+  src: url("/fonts/WhyteInktrap-Regular.otf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "WhyteInktrap";
+  src: url("/fonts/WhyteInktrap-Light.otf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  @apply font-roboto;
+  -webkit-font-smoothing: antialiased;
+  background-color: #f9f7f0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.standard-button {
+  @apply bg-black-500 cursor-pointer font-roboto font-semibold py-3 rounded-lg text-center text-sm text-white w-36 border-black-500 border-2 duration-300 hover:bg-transparent hover:text-black-500 transform transition-colors;
 }
 
-* {
-  box-sizing: border-box;
+.arrow-button {
+  @apply flex group items-center justify-center;
+}
+
+.arrow-button svg {
+  @apply block duration-300 group-hover:ml-2 group-hover:w-6 ml-0 overflow-hidden transform transition-all w-0;
+}
+
+.small-button {
+  @apply w-24;
+}
+
+.transparent-button {
+  @apply bg-transparent text-black-500 hover:text-white hover:bg-black-500;
+}
+
+.transparent-button path {
+  fill: white !important;
+}
+
+.lg-button {
+  @apply w-48;
+}
+
+.vs-gradient {
+  background: linear-gradient(270deg, #ff7bca 0%, #ffc56f 100%);
+}
+
+.thin-button {
+  @apply py-2;
+}
+
+.full-button {
+  @apply w-full;
+}
+
+.no-show-drop {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: "";
+}
+
+.no-show-drop::-ms-expand {
+  display: none;
+}
+
+.modal-scroll {
+  overflow-y: scroll;
+  max-height: calc(100vh - 20px);
+}
+
+.standard-input {
+  @apply bg-white border border-regGrey outline-none placeholder-black-200 px-4 py-2 rounded text-black-500 w-full;
+}
+
+.form-group {
+  @apply my-6 w-full;
+}
+
+.standard-label {
+  @apply block font-bold mb-1;
+}
+
+.no-border-input {
+  @apply border-l-0 rounded-l-none;
 }
