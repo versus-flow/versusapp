@@ -25,7 +25,7 @@ const Footer = () => {
             <h2 className="font-inktrap tracking-tighter font-semibold mt-1 text-2xl">
               Ready to get started?
             </h2>
-            <p className="mt-2 w-10/12 mx-auto">
+            <p className="mt-2 w-10/12 mx-auto sm:mx-0">
               Versus is a novel art marketplace that works to empower the artist
               and the collector.
             </p>

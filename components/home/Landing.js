@@ -37,7 +37,7 @@ const Landing = () => {
                 </div>
               </div>
             </div>
-            <ArrowButton text="View Drop" className="mx-auto" />
+            <ArrowButton text="View Drop" className="mx-auto sm:mx-0" />
           </div>
           <div className="mt-6 sm:h-5/6 sm:mt-0 w-full">
             <img
