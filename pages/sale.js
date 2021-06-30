@@ -9,17 +9,19 @@ import JoinCommunity from "../components/general/JoinCommunity";
 export default function Sale() {
   return (
     <Main>
-      <>
-        <SaleMain />
-        <DropProperties />
-        <AboutCreator />
-        <PurchaseHistory />
-        <div className="py-12">
-          <div className="container">
-            <JoinCommunity />
+      {() => (
+        <>
+          <SaleMain />
+          <DropProperties />
+          <AboutCreator />
+          <PurchaseHistory />
+          <div className="py-12">
+            <div className="container">
+              <JoinCommunity />
+            </div>
           </div>
-        </div>
-      </>
+        </>
+      )}
     </Main>
   );
 }
