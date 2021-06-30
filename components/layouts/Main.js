@@ -22,6 +22,7 @@ fcl
     "0xNonFungibleToken",
     process.env.NONFUNGIBLE_TOKEN || "0x631e88ae7f1d7c20"
   )
+  .put("0xFlowToken", process.env.FLOW_TOKEN || "0x7e60df042a9c0868")
   .put("0xCONTRACT", process.env.CONTRACT || "0xdb47998bf96c9ef1")
   .put("env", process.env.FLOW_ENV || "testnet");
 
@@ -48,7 +49,9 @@ const Main = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Nav user={user} balance={balance} />
-      {React.cloneElement(children, { user })}
+      {typeof children === String
+        ? React.cloneElement(children, { user })
+        : children(user)}
       <Footer />
     </>
   );

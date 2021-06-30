@@ -5,10 +5,12 @@ import Main from "../components/layouts/Main";
 export default function Profile() {
   return (
     <Main>
-      <>
-        <DropArtist />
-        <DropTabs />
-      </>
+      {() => (
+        <>
+          <DropArtist />
+          <DropTabs />
+        </>
+      )}
     </Main>
   );
 }

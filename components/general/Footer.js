@@ -4,14 +4,14 @@ import Link from "next/link";
 import Logo from "../../assets/vsgrey.svg";
 import Twitter from "../../assets/twitterwhite.svg";
 import Instagram from "../../assets/instagramwhite.svg";
-import Discord from "../../assets/discord.svg";
+import Discord from "../../assets/discordwhite.svg";
 import Medium from "../../assets/medium.svg";
 import FlowLogo from "../../assets/flowlogo.svg";
 
 const Footer = () => {
   return (
     <footer className="bg-black-500 py-16 text-white">
-      <div className="container block sm:grid grid-cols-12 gap-4">
+      <div className="container flex flex-col items-center text-center md:text-left md:items-start md:grid grid-cols-12 gap-4">
         <div className="flex items-start col-span-2 md:col-span-1">
           <Link href="/">
             <a className="flex items-start">
@@ -25,7 +25,7 @@ const Footer = () => {
             <h2 className="font-inktrap tracking-tighter font-semibold mt-1 text-2xl">
               Ready to get started?
             </h2>
-            <p className="mt-2 w-10/12">
+            <p className="mt-2 w-10/12 mx-auto">
               Versus is a novel art marketplace that works to empower the artist
               and the collector.
             </p>
@@ -35,7 +35,7 @@ const Footer = () => {
             <a
               href="https://www.onflow.org/"
               target="_blank"
-              className="cursor-pointer mt-2"
+              className="cursor-pointer mt-2 flex justify-center md:static"
             >
               <FlowLogo className="h-12 mt-1" />
             </a>
@@ -70,9 +70,9 @@ const Footer = () => {
               </Link>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row md:items-center mt-16">
+          <div className="flex flex-col md:flex-row md:items-center mt-4 md:mt-16">
             <span>&copy;2021 Versus</span>
-            <div className="mt-2 md:mt-0 md:ml-16 flex items-center">
+            <div className="mt-3 md:mt-0 md:ml-8 lg:ml-16 flex items-center">
               <a
                 href="https://twitter.com/FlowVersus"
                 target="_blank"
@@ -92,14 +92,14 @@ const Footer = () => {
                 target="_blank"
                 className="cursor-pointer"
               >
-                <Discord className="h-6 fill-current mr-6" />
+                <Discord className="h-6 fill-current mr-6 text-white" />
               </a>
               <a
                 href="https://flowversus.medium.com/"
                 target="_blank"
                 className="cursor-pointer"
               >
-                <Medium className="h-6 fill-current mr-6" />
+                <Medium className="h-6 fill-current md:mr-6" />
               </a>
             </div>
           </div>

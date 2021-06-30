@@ -87,6 +87,13 @@ body {
   display: none;
 }
 
+.no-show-drop::-webkit-outer-spin-button,
+.no-show-drop::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
 .modal-scroll {
   overflow-y: scroll;
   max-height: calc(100vh - 20px);

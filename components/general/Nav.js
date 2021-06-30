@@ -25,7 +25,7 @@ const Nav = ({ user, balance }) => {
           </a>
         </Link>
       </div>
-      <div className="col-span-1 flex justify-center items-center order-1 sm:order-none mt-4 sm:mt-0">
+      <div className="col-span-1 flex justify-center items-center order-1 sm:order-none mt-4 sm:mt-0 hidden">
         <SearchBox />
         <Link href={`/marketplace`}>
           <a className="ml-4 font-semibold text-sm">Marketplace</a>
@@ -49,7 +49,7 @@ const Nav = ({ user, balance }) => {
                 <span className="font-bold">{Math.round(balance)}F</span>
               </span>
             )}
-            <div className="relative flex items-center" ref={addrMenu}>
+            <div className="relative flex items-center hidden" ref={addrMenu}>
               <Bell className="mr-4 h-6 w-6 cursor-pointer" />
               <div
                 className="flex items-center cursor-pointer font-semibold text-sm"
@@ -71,20 +71,20 @@ const Nav = ({ user, balance }) => {
                 )}
               </div>
               {addrOpen && (
-                <div class="absolute bg-white flex flex-col mt-2 right-0 rounded-lg top-full w-92">
+                <div className="absolute bg-white flex flex-col mt-2 right-0 rounded-lg top-full w-92">
                   {user.addr && (
                     <>
-                      <div class="bg-black-900 flex font-bold items-center justify-between px-6 py-3 rounded-t-xl text-sm text-white">
+                      <div className="bg-black-900 flex font-bold items-center justify-between px-6 py-3 rounded-t-xl text-sm text-white">
                         <span>{user.addr}</span>
-                        <Copy class="h-5 ml-4" />
+                        <Copy className="h-5 ml-4" />
                       </div>
-                      <div class="border-b border-regGrey">
-                        <div class="flex items-center px-6 py-3">
-                          <FlowLogo class="h-8 w-8" />
-                          <div class="flex-1 font-bold pl-3 text-black-100 text-sm">
+                      <div className="border-b border-regGrey">
+                        <div className="flex items-center px-6 py-3">
+                          <FlowLogo className="h-8 w-8" />
+                          <div className="flex-1 font-bold pl-3 text-black-100 text-sm">
                             <div>Flow balance</div>
-                            <div class="flex justify-between">
-                              <span class="text-black-500">F340</span>
+                            <div className="flex justify-between">
+                              <span className="text-black-500">F340</span>
                               <span>$5,100</span>
                             </div>
                           </div>
@@ -93,16 +93,16 @@ const Nav = ({ user, balance }) => {
                     </>
                   )}
                   <div>
-                    <a href="#" class="block cursor-pointer px-6 py-3">
+                    <a href="#" className="block cursor-pointer px-6 py-3">
                       Bids
                     </a>
-                    <a href="#" class="block cursor-pointer px-6 py-3">
+                    <a href="#" className="block cursor-pointer px-6 py-3">
                       Collection
                     </a>
-                    <a href="#" class="block cursor-pointer px-6 py-3">
+                    <a href="#" className="block cursor-pointer px-6 py-3">
                       Marketplace
                     </a>
-                    <a href="#" class="block cursor-pointer px-6 py-3">
+                    <a href="#" className="block cursor-pointer px-6 py-3">
                       Settings
                     </a>
                     <a
@@ -110,7 +110,7 @@ const Nav = ({ user, balance }) => {
                       onClick={(e) => {
                         if (!user.addr) fcl.authenticate();
                       }}
-                      class="block cursor-pointer px-6 py-3"
+                      className="block cursor-pointer px-6 py-3"
                     >
                       Log {user.addr ? "out" : "in"}
                     </a>

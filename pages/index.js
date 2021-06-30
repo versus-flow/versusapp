@@ -7,12 +7,14 @@ import BetterForArt from "../components/home/BetterForArt";
 export default function Home() {
   return (
     <Main>
-      <>
-        <Landing />
-        <MarketplacePreview />
-        <Rewarded />
-        <BetterForArt />
-      </>
+      {() => (
+        <>
+          <Landing />
+          <MarketplacePreview />
+          <Rewarded />
+          <BetterForArt />
+        </>
+      )}
     </Main>
   );
 }

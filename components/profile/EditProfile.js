@@ -13,6 +13,7 @@ import Discord from "../../assets/discord.svg";
 import Arrow from "../../assets/arrow.svg";
 import { profileEdit } from "./transactions";
 import { tx } from "../drop/transactions";
+import { map } from "lodash";
 
 const EditProfile = ({ close }) => {
   const modal = useRef(null);
@@ -20,8 +21,15 @@ const EditProfile = ({ close }) => {
   useOnClickOutside(modal, close);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, username, description } = form.current;
-    console.log("effe");
+    const { name, description, instagram, twitter, youtube, discord } =
+      form.current;
+    const dict = [];
+    if (instagram.value)
+      dict.push({ key: "instagram", value: instagram.value });
+    if (twitter.value) dict.push({ key: "twitter", value: twitter.value });
+    if (youtube.value) dict.push({ key: "youtube", value: youtube.value });
+    if (discord.value) dict.push({ key: "discord", value: discord.value });
+    console.log(dict);
     try {
       await tx(
         [
@@ -29,6 +37,7 @@ const EditProfile = ({ close }) => {
           fcl.args([
             fcl.arg(name.value, t.String),
             fcl.arg(description.value, t.String),
+            fcl.arg(dict, t.Dictionary({ key: t.String, value: t.String })),
           ]),
           fcl.proposer(fcl.currentUser().authorization),
           fcl.payer(fcl.currentUser().authorization),
@@ -55,24 +64,24 @@ const EditProfile = ({ close }) => {
     }
   };
   return (
-    <div class="fixed flex h-screen items-center justify-center left-0 top-0 w-screen z-50 py-12">
-      <div class="absolute bg-black-600 bg-opacity-90 h-full left-0 top-0 w-full" />
+    <div className="fixed flex h-screen items-center justify-center left-0 top-0 w-screen z-50 py-12">
+      <div className="absolute bg-black-600 bg-opacity-90 h-full left-0 top-0 w-full" />
       <div
         ref={modal}
-        class="bg-cream-500 flex flex-col items-center px-20 py-8 rounded-2xl w-full max-w-md z-10 modal-scroll"
+        className="bg-cream-500 flex flex-col items-center px-20 py-8 rounded-2xl w-full max-w-md z-10 modal-scroll"
       >
-        <div class="relative w-16">
+        <div className="relative w-16">
           <Person />
           <div
             style={{ backgroundColor: "#2F80ED" }}
-            class="absolute bottom-0 cursor-pointer flex h-4 items-center justify-center right-0 rounded-full w-4"
+            className="absolute bottom-0 cursor-pointer flex h-4 items-center justify-center right-0 rounded-full w-4"
           >
-            <Pencil class="h-3 w-3" />
+            <Pencil className="h-3 w-3" />
           </div>
         </div>
-        <h2 class="font-black font-inktrap mt-4 text-2xl">Edit profile</h2>
-        <form class="w-full" ref={form} onSubmit={handleSubmit}>
-          <div class="form-group">
+        <h2 className="font-black font-inktrap mt-4 text-2xl">Edit profile</h2>
+        <form className="w-full" ref={form} onSubmit={handleSubmit}>
+          <div className="form-group">
             <label className="standard-label">Name</label>
             <input
               type="text"
@@ -80,11 +89,12 @@ const EditProfile = ({ close }) => {
               className="standard-input"
               placeholder="Enter your name"
             />
+            <span className="block font-bold text-right text-xs">0/16</span>
           </div>
-          <div class="form-group">
+          {/* <div className="form-group">
             <label className="standard-label">Username</label>
-            <div class="flex items-stretch">
-              <div class="bg-cream-600 flex font-bold items-center justify-center rounded-l text-lg w-10">
+            <div className="flex items-stretch">
+              <div className="bg-cream-600 flex font-bold items-center justify-center rounded-l text-lg w-10">
                 @
               </div>
               <input
@@ -94,11 +104,11 @@ const EditProfile = ({ close }) => {
                 placeholder="Enter a username"
               />
             </div>
-            <span class="block mt-1 text-xs">
+            <span className="block mt-1 text-xs">
               Choose a username that publicly links to your profile.
             </span>
-          </div>
-          <div class="form-group">
+          </div> */}
+          <div className="form-group">
             <label className="standard-label">Biography</label>
             <input
               type="text"
@@ -106,16 +116,16 @@ const EditProfile = ({ close }) => {
               className="standard-input"
               placeholder="Enter your short biography"
             />
-            <span class="block font-bold text-right text-xs">0/250</span>
+            <span className="block font-bold text-right text-xs">0/255</span>
           </div>
 
-          <div class="form-group">
+          <div className="form-group">
             <label className="standard-label">
               Add links to your social media profiles
             </label>
-            <div class="flex items-stretch mb-2">
-              <div class="bg-cream-600 flex font-bold items-center px-2 rounded-l text-sm w-48">
-                <Instagram class="w-5 mr-2" /> Instagram
+            <div className="flex items-stretch mb-2">
+              <div className="bg-cream-600 flex font-bold items-center px-2 rounded-l text-sm w-48">
+                <Instagram className="w-5 mr-2" /> Instagram
               </div>
               <input
                 type="link"
@@ -124,9 +134,9 @@ const EditProfile = ({ close }) => {
                 placeholder="Profile URL"
               />
             </div>
-            <div class="flex items-stretch mb-2">
-              <div class="bg-cream-600 flex font-bold items-center px-2 rounded-l text-sm w-48">
-                <Twitter class="w-5 mr-2" /> Twitter
+            <div className="flex items-stretch mb-2">
+              <div className="bg-cream-600 flex font-bold items-center px-2 rounded-l text-sm w-48">
+                <Twitter className="w-5 mr-2" /> Twitter
               </div>
               <input
                 type="link"
@@ -135,9 +145,9 @@ const EditProfile = ({ close }) => {
                 placeholder="Profile URL"
               />
             </div>
-            <div class="flex items-stretch mb-2">
-              <div class="bg-cream-600 flex font-bold items-center px-2 rounded-l text-sm w-48">
-                <Youtube class="w-5 mr-2" /> Youtube
+            <div className="flex items-stretch mb-2">
+              <div className="bg-cream-600 flex font-bold items-center px-2 rounded-l text-sm w-48">
+                <Youtube className="w-5 mr-2" /> Youtube
               </div>
               <input
                 type="link"
@@ -146,9 +156,9 @@ const EditProfile = ({ close }) => {
                 placeholder="Channel URL"
               />
             </div>
-            <div class="flex items-stretch">
-              <div class="bg-cream-600 flex font-bold items-center px-2 rounded-l text-sm w-48">
-                <Discord class="w-5 mr-2" /> Discord
+            <div className="flex items-stretch">
+              <div className="bg-cream-600 flex font-bold items-center px-2 rounded-l text-sm w-48">
+                <Discord className="w-5 mr-2" /> Discord
               </div>
               <input
                 type="link"
@@ -159,7 +169,7 @@ const EditProfile = ({ close }) => {
             </div>
           </div>
 
-          <div class="flex justify-between mt-6 w-full">
+          <div className="flex justify-between mt-6 w-full">
             <ArrowButton text="Save Changes" onClick={handleSubmit} />
             <span
               className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer"

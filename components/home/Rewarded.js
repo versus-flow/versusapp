@@ -5,7 +5,7 @@ import Arrow from "../../assets/arrow.svg";
 
 const Rewarded = () => {
   return (
-    <div className="pt-24 pb-12 text-center vs-gradient">
+    <div className="px-6 sm:px-0 pt-12 sm:pt-24 pb-12 text-center vs-gradient">
       <h2 className="font-bold font-inktrap mx-auto text-4xl">
         Artists should be properly
         <br /> rewarded for their work

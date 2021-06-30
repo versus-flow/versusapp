@@ -79,13 +79,14 @@ pub fun main(address: Address): Bool {
 
 export const profileEdit = `
 import FungibleToken from 0xFungibleToken
-import FlowToken from 0x0ae53cb6e3f42a79
-import Profile, Art, NonFungibleToken, Marketplace, FUSD from 0xf8d6e0586b0a20c7
+import FlowToken from 0xFlowToken
+import Profile, Art, Marketplace from 0xCONTRACT
+import NonFungibleToken from 0xNonFungibleToken
 
-transaction(name: String, description: String, tags:[String], allowStoringFollowers: Bool) {
+transaction(name: String, description: String, socials: {String: String}) {
   prepare(acct: AuthAccount) {
 
-    let profile <-Profile.createUser(name:name, description: description, allowStoringFollowers:allowStoringFollowers, tags:tags)
+    let profile <-Profile.createUser(name:name, description: description, allowStoringFollowers:true, tags:["versus"])
 
     let flowReceiver= acct.getCapability<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
     let flowBalance= acct.getCapability<&{FungibleToken.Balance}>(/public/flowTokenBalance)
@@ -94,50 +95,26 @@ transaction(name: String, description: String, tags:[String], allowStoringFollow
     let flowWallet= Profile.Wallet(name:"Flow", receiver: flowReceiver, balance: flowBalance, accept:flow.getType(), tags: ["flow"])
     profile.addWallet(flowWallet)
 
-    let fusd <- FUSD.createEmptyVault()
-    let fusdType=fusd.getType()
-    acct.save(<- fusd, to: /storage/fusdVault)
-    acct.link<&FUSD.Vault{FungibleToken.Receiver}>( /public/fusdReceiver, target: /storage/fusdVault)
-    acct.link<&FUSD.Vault{FungibleToken.Balance}>( /public/fusdBalance, target: /storage/fusdVault)
-
-    let fusdWallet=Profile.Wallet(
-        name:"FUSD", 
-        receiver:acct.getCapability<&{FungibleToken.Receiver}>(/public/fusdReceiver),
-        balance:acct.getCapability<&{FungibleToken.Balance}>(/public/fusdBalance),
-        accept: fusdType,
-        tags: ["fusd", "stablecoin"]
-    )
-
-    profile.addWallet(fusdWallet)
-
-    acct.save<@NonFungibleToken.Collection>(<- Art.createEmptyCollection(), to: Art.CollectionStoragePath)
-    acct.link<&{Art.CollectionPublic}>(Art.CollectionPublicPath, target: Art.CollectionStoragePath)
-    let artCollectionCap=acct.getCapability<&{Art.CollectionPublic}>(Art.CollectionPublicPath)
-    let artCollection=artCollectionCap.borrow()!
-    artCollection.deposit(token: <- Art.createArtWithContent(name: "TestArt1", artist:"Tester", artistAddress:acct.address, description: "This is a test art", url: "Testing", type: "String", royalty:{}))
-    artCollection.deposit(token: <- Art.createArtWithContent(name: "TestArt2", artist:"Tester", artistAddress:acct.address, description: "This is a test art", url: "Testing", type: "String", royalty:{}))
+    var collectionCap = acct.getCapability<&{Art.CollectionPublic}>(Art.CollectionPublicPath)
+    // if collection is not created yet we make it.
+    if !collectionCap.check() {
+        // store an empty NFT Collection in account storage
+        acct.save<@NonFungibleToken.Collection>(<- Art.createEmptyCollection(), to: Art.CollectionStoragePath)
+        // publish a capability to the Collection in storage
+        acct.link<&{Art.CollectionPublic}>(Art.CollectionPublicPath, target: Art.CollectionStoragePath)
+    }
+    
     profile.addCollection(Profile.ResourceCollection( 
-        name: "VersusArt", 
-        collection:artCollectionCap, 
-        type: Type<&{Art.CollectionPublic}>(),
-        tags: ["versus", "nft"]))
+      name: "VersusArt", 
+      collection:collectionCap, 
+      type: Type<&{Art.CollectionPublic}>(),
+      tags: ["versus", "nft"]))
 
-    let marketplaceCap = acct.getCapability<&{Marketplace.SalePublic}>(Marketplace.CollectionPublicPath)
+    for key in socials.keys {
+      let value = socials[key]
+      profile.addLink(Profile.Link(key, key, value!))
+    }
 
-    let sale <- Marketplace.createSaleCollection(ownerVault: flowReceiver)
-    acct.save<@Marketplace.SaleCollection>(<- sale, to:Marketplace.CollectionStoragePath)
-    acct.link<&{Marketplace.SalePublic}>(Marketplace.CollectionPublicPath, target: Marketplace.CollectionStoragePath)
-    let marketplace=acct.borrow<&Marketplace.SaleCollection>(from: Marketplace.CollectionStoragePath)!
-    let art <- Art.createArtWithContent(name: "TestArt3", artist:"Tester", artistAddress:acct.address, description: "This is a test art", url: "Testing", type: "String", royalty:{})
-    marketplace.listForSale(token: <- art, price: 10.0)
-    profile.addCollection(Profile.ResourceCollection(
-        "VersusMarketplace", 
-        marketplaceCap, 
-        Type<&{Marketplace.SalePublic}>(),
-        ["versus", "marketplace"]))
-
-
-    profile.addLink(Profile.Link("Foo", "Image", "http://foo.bar"))
     acct.save(<-profile, to: Profile.storagePath)
     acct.link<&Profile.User{Profile.Public}>(Profile.publicPath, target: Profile.storagePath)
   }

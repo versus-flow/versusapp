@@ -10,9 +10,11 @@ const MarketplacePreview = () => {
   return (
     <div className="py-12">
       <div className="container">
-        <h2 className="font-bold font-inktrap text-5xl">Marketplace</h2>
-        <div className="flex font-inktrap items-center justify-between mt-3">
-          <h3 className="text-lg">Featured Artists</h3>
+        <h2 className="font-bold font-inktrap text-3xl sm:text-5xl">
+          Marketplace
+        </h2>
+        <div className="flex flex-col sm:flex-row font-inktrap sm:items-center justify-between mt-3">
+          <h3 className="text-lg text-left">Featured Artists</h3>
           <Link href="#">
             <a className="flex font-bold font-roboto items-center text-sm tracking-wide">
               Visit marketplace
@@ -20,7 +22,7 @@ const MarketplacePreview = () => {
             </a>
           </Link>
         </div>
-        <div className="grid grid-cols-3 mt-6 gap-x-16 gap-y-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-x-8 gap-y-4 lg:gap-x-16 lg:gap-y-8">
           {times(6, () => (
             <DropPreview />
           ))}

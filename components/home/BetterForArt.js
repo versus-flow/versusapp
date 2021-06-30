@@ -57,7 +57,7 @@ const BetterForArt = () => {
     <div className="pt-24 pb-12">
       <div className="container">
         <h2 className="font-bold font-inktrap text-5xl">Better for art</h2>
-        <div className="gap-16 grid grid-cols-4 mt-12">
+        <div className="gap-8 sm:gap-16 grid sm:grid-cols-2 md:grid-cols-4 mt-12">
           {map(features, (f) => (
             <Feature key={f.image} feature={f} />
           ))}
