@@ -8,7 +8,7 @@ const JoinCommunity = () => {
       </h2>
       <ArrowButton
         text="Join our Discord"
-        href="#"
+        href="https://discord.gg/aRjPpU9A8t"
         className="standard-button arrow-button lg-button"
       />
     </div>

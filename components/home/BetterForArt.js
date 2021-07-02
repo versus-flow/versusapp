@@ -42,12 +42,12 @@ const Feature = ({ feature }) => {
         </h3>
         <p>{desc}</p>
       </div>
-      <Link href={link}>
+      {/* <Link href={link}>
         <a className="flex font-bold font-roboto items-center tracking-wide">
           Know more
           <Arrow className="ml-2" />
         </a>
-      </Link>
+      </Link> */}
     </div>
   );
 };
