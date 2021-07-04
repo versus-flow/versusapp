@@ -9,7 +9,7 @@ const ProfileSummary = ({ drop }) => {
   const [openEdit, setOpenEdit] = useState(false);
   return (
     <>
-      {/* {true && <EditProfile close={() => setOpenEdit(false)} />} */}
+      {openEdit && <EditProfile close={() => setOpenEdit(false)} />}
       <div className="container my-12">
         <div className="w-1/2">
           <div className="flex items-center">
@@ -61,8 +61,9 @@ const ProfileSummary = ({ drop }) => {
             </div>
           </div>
           <ArrowButton
-            text="Follow"
+            text="Edit"
             className="standard-button arrow-button transparent-button"
+            onClick={() => setOpenEdit(true)}
           />
         </div>
       </div>

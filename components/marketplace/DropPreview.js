@@ -1,9 +1,7 @@
 import classNames from "classnames";
 import React from "react";
 
-import ArrowButton from "../general/ArrowButton";
-
-const DropPreview = ({ shadow }) => {
+const DropPreview = ({ shadow, title, artist, edition, button }) => {
   return (
     <div
       className={classNames("bg-white p-3 rounded", {
@@ -17,11 +15,11 @@ const DropPreview = ({ shadow }) => {
         />
       </div>
       <div className="py-3 px-2">
-        <h3 className="font-bold font-inktrap">Title of the Art</h3>
+        <h3 className="font-bold font-inktrap">{title}</h3>
         <div className="flex justify-between mb-2 mt-2">
           <div className="flex flex-col text-black-100 text-sm">
-            <span className="">Artist Name</span>
-            <span>#000/000</span>
+            <span className="">{artist}</span>
+            <span>{edition}</span>
           </div>
           <div className="flex flex-col text-right">
             <span className="font-bold text-xl">F150</span>
@@ -30,7 +28,7 @@ const DropPreview = ({ shadow }) => {
             </span>
           </div>
         </div>
-        <ArrowButton className="small-button" text="Buy" />
+        {button}
       </div>
     </div>
   );

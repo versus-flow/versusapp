@@ -18,10 +18,19 @@ import {
 } from "../../components/profile/transactions";
 import Head from "next/head";
 
-export default function Drop({ drop, art }) {
+export default function Drop({ drop, art, id }) {
   const [updatedDrop, setUpdatedDrop] = useState(drop);
   const [timeUntil, setTimeUntil] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState(null);
+  useEffect(() => {
+    window.fetches = setInterval(async () => {
+      const drop = await fetchDrop(id);
+      setUpdatedDrop(drop);
+    }, 30000);
+    document.addEventListener("bid", () => fetchDrop(id), false);
+    return () =>
+      document.removeEventListener("bid", () => fetchDrop(id), false);
+  }, []);
   useEffect(() => {
     if (parseFloat(drop.timeRemaining) - timeRemaining > 15 && timeRemaining) {
       setTimeRemaining(parseFloat(drop.timeRemaining));
@@ -89,18 +98,7 @@ export async function getServerSideProps(context) {
   // if (drop == null) {
   const drop = await fetchDrop(id);
   const art = await fetchArt(id);
-  // window.fetches = setInterval(() => {
-  //   fetchDrop();
-  // }, 30000);
-  // }
-  // document.addEventListener(
-  //   "bid",
-  //   () => {
-  //     fetchDrop();
-  //   },
-  //   false
-  // );
 
   // Pass data to the page via props
-  return { props: { drop, art } };
+  return { props: { drop, art, id } };
 }

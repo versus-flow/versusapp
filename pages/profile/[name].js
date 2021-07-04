@@ -16,7 +16,11 @@ export async function fetchProfile(addr) {
 }
 
 export default function Profile({ self }) {
-  return <Main>{(user) => <ProfileWrapper user={user} self={self} />}</Main>;
+  return (
+    <Main>
+      {(user) => user.addr && <ProfileWrapper user={user} self={self} />}
+    </Main>
+  );
 }
 
 export async function getServerSideProps(context) {

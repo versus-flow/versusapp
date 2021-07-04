@@ -22,7 +22,6 @@ const SearchBox = () => {
   useOnClickOutside(bar, () => setShow(false));
   useEffect(async () => {
     const dropSetTime = localStorage.getItem("dropSetTime");
-    console.log(localStorage.getItem("drops"));
     setDrops(JSON.parse(localStorage.getItem("drops") || "{}"));
     if (
       !dropSetTime ||

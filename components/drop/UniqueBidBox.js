@@ -26,14 +26,16 @@ const UniqueBidBox = ({
   if (timeRemaining > 0) {
     const timer = getWrittenTimer(timeRemaining);
     Counter = (
-      <div className="border-regGrey border-t mt-16 pt-6 w-full">
+      <div className="border-regGrey border-t mt-8 sm:mt-16 pt-6 w-full">
         <h4 className="font-inktrap font-semibold tracking-wide">
           Auction ends in
         </h4>
-        <div className="gap-6 grid grid-cols-4 mb-6 mt-2 mx-auto w-64">
+        <div className="gap-2 lg:gap-6 grid grid-cols-4 mb-6 mt-2 mx-auto w-64 max-w-full">
           {timer.days ? (
             <div className="flex flex-col">
-              <span className="block font-black text-3xl">{timer.days}</span>
+              <span className="block font-black text-xl lg:text-2xl xl:text-3xl">
+                {timer.days}
+              </span>
               <span className="mt-1 text-xs">Days</span>
             </div>
           ) : (
@@ -41,7 +43,9 @@ const UniqueBidBox = ({
           )}
           {timer.hours || timer.days ? (
             <div className="flex flex-col">
-              <span className="block font-black text-3xl">{timer.hours}</span>
+              <span className="block font-black text-xl lg:text-2xl xl:text-3xl">
+                {timer.hours}
+              </span>
               <span className="mt-1 text-xs">hours</span>
             </div>
           ) : (
@@ -49,20 +53,22 @@ const UniqueBidBox = ({
           )}
           {timer.minutes || timer.hours || timer.days ? (
             <div className="flex flex-col">
-              <span className="block font-black text-3xl">{timer.minutes}</span>
-              <span className="mt-1 text-xs">Minutes</span>
+              <span className="block font-black text-xl lg:text-2xl xl:text-3xl">
+                {timer.minutes}
+              </span>
+              <span className="mt-1 text-xs">Mins</span>
             </div>
           ) : (
             ""
           )}
           <div className="flex flex-col">
-            <span className="block font-black text-3xl">
+            <span className="block font-black text-xl lg:text-2xl xl:text-3xl">
               {timer.seconds.toLocaleString("en-US", {
                 minimumIntegerDigits: 2,
                 useGrouping: false,
               }) || "00"}
             </span>
-            <span className="mt-1 text-xs">Seconds</span>
+            <span className="mt-1 text-xs">Secs</span>
           </div>
         </div>
       </div>
@@ -79,7 +85,7 @@ const UniqueBidBox = ({
           ended={ended}
         />
       )}
-      <div className="bg-cream-500 text-center relative w-full rounded-lg flex flex-col transform">
+      <div className="bg-cream-500 text-center relative w-full max-w-xs mx-auto rounded-lg flex flex-col transform">
         {winning || drop.winning === "TIE" ? (
           <div class="vs-gradient win-border rounded-lg">
             <div class="-translate-x-1/2 -translate-y-full absolute font-bold left-1/2 px-4 py-1 rounded-t-lg text-sm text-white transform uppercase vs-gradient">
@@ -89,7 +95,7 @@ const UniqueBidBox = ({
         ) : (
           ""
         )}
-        <div className="bg-cream-500 relative z-10 p-8 rounded-lg">
+        <div className="bg-cream-500 relative z-10 p-4 lg:p-8 rounded-lg">
           <div className="mb-6">
             <span className="font-bold font-inktrap text-sm">1/1</span>
             <h3 className="font-black font-inktrap text-2xl">Own the unique</h3>

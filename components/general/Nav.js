@@ -26,10 +26,12 @@ const Nav = ({ user, balance }) => {
           </a>
         </Link>
       </div>
-      <div className="col-span-1 flex justify-center items-center order-1 sm:order-none mt-4 sm:mt-0">
+      <div className="col-span-1 hidden sm:flex justify-center items-center">
         <SearchBox />
         <Link href={`/marketplace`}>
-          <a className="ml-4 font-semibold text-sm">Marketplace</a>
+          <a className="ml-4 font-semibold text-sm hidden sm:inline-block">
+            Marketplace
+          </a>
         </Link>
       </div>
       <div className="flex flex-1 justify-end">
@@ -45,13 +47,13 @@ const Nav = ({ user, balance }) => {
         ) : (
           <div className="flex flex-col-reverse items-center sm:flex-row">
             {user.addr && (
-              <span className="mr-4 sm:text-lg sm:inline-block order-1 sm:order-none border px-6 py-2 border-black-500 rounded-full">
+              <span className="mr-4 sm:text-lg order-1 sm:order-none border px-6 py-2 border-black-500 rounded-full hidden lg:inline-block">
                 Balance:{" "}
                 <span className="font-bold">{Math.round(balance)}F</span>
               </span>
             )}
             <div className="relative flex items-center" ref={addrMenu}>
-              <Bell className="mr-4 h-6 w-6 cursor-pointer" />
+              {/* <Bell className="mr-4 h-6 w-6 cursor-pointer hidden lg:block" /> */}
               <div
                 className="flex items-center cursor-pointer font-semibold text-sm"
                 onClick={() => setAddrOpen(!addrOpen)}
@@ -63,7 +65,7 @@ const Nav = ({ user, balance }) => {
                   })}
                 />
                 {user.addr && (
-                  <div className="ml-4 w-10 h-10 rounded-full">
+                  <div className="ml-4 w-10 h-10 rounded-full hidden lg:block">
                     <img
                       src="https://lh3.googleusercontent.com/ogw/ADea4I4TggB1GCdvgQaIkX0S9zbSZH-evkipl6fX5p6i=s64-c-mo"
                       className="w-full h-full object-cover rounded-full"
@@ -108,16 +110,20 @@ const Nav = ({ user, balance }) => {
                     <a href="#" className="block cursor-pointer px-6 py-3">
                       Collection
                     </a>
-                    <a href="#" className="block cursor-pointer px-6 py-3">
-                      Marketplace
-                    </a>
-                    <a href="#" className="block cursor-pointer px-6 py-3">
-                      Settings
-                    </a>
+                    <Link href="/marketplace">
+                      <a href="#" className="block cursor-pointer px-6 py-3">
+                        Marketplace
+                      </a>
+                    </Link>
+                    <Link href="/profile/me">
+                      <a className="block cursor-pointer px-6 py-3">Profile</a>
+                    </Link>
                     <a
                       href="#"
                       onClick={(e) => {
                         if (!user.addr) fcl.authenticate();
+                        else fcl.unauthenticate();
+                        setAddrOpen(false);
                       }}
                       className="block cursor-pointer px-6 py-3"
                     >

@@ -6,7 +6,7 @@ import Arrow from "../../assets/arrow.svg";
 import ArrowButton from "../general/ArrowButton";
 import DropPreview from "./DropPreview";
 
-const ListItem = ({ close }) => {
+const ListItem = ({ close, piece }) => {
   const modal = useRef(null);
   useOnClickOutside(modal, close);
   return (
@@ -21,7 +21,13 @@ const ListItem = ({ close }) => {
           List item for sale
         </h4>
         <div className="mt-6">
-          <DropPreview />
+          <DropPreview
+            key={piece.id}
+            title={piece.metadata.name}
+            artist={piece.metadata.artist}
+            edition={`#${piece.metadata.edition}/${piece.metadata.maxEdition}`}
+            shadow
+          />
         </div>
         <p className="text-center mt-4">
           You bought this for <span className="font-bold">F150.00</span>, please

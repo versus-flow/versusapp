@@ -7,7 +7,7 @@ const DropFollow = () => {
   return (
     <div className="bg-white py-16">
       <div className="container">
-        <div className="py-16 px-12 vs-gradient rounded-lg">
+        <div className="py-8 sm:py-16 px-6 sm:px-12 vs-gradient rounded-lg">
           <h2 className="font-black font-inktrap mb-6 text-4xl">
             Follow artist
           </h2>

@@ -25,7 +25,7 @@ const DropContent = ({ drop, art, timeUntil, timeRemaining }) => {
   if (timeUntil > 0 || timeRemaining > 0) {
     const timer = getWrittenTimer(timeUntil > 0 ? timeUntil : timeRemaining);
     Counter = (
-      <div className="border-regGrey border-t mt-16 pt-6 w-full">
+      <div className="border-regGrey border-t mt-4 md:mt-16 pt-6 w-full">
         <h4 className="font-inktrap font-semibold tracking-wide">
           {timeUntil > 0 ? "Auction starts in" : "Auction ends in"}
         </h4>
@@ -88,16 +88,20 @@ const DropContent = ({ drop, art, timeUntil, timeRemaining }) => {
   return (
     <div className="bg-white">
       <div className="container">
-        <div className="pt-16 pb-8 container grid grid-cols-2 gap-16">
-          <div className="w-full">
+        <div className="pt-16 pb-8 sm:container md:grid grid-cols-2 gap-16">
+          <div className="w-3/4 mx-auto mb-3 md:mb-0 md:w-full">
             <Zoom>
               <img className="h-auto w-full" src={art} />
             </Zoom>
           </div>
           <div className="flex flex-col items-center justify-center text-center">
-            <div className="w-108">
-              <h5 className="font-bold font-inktrap text-xl">{artist}</h5>
-              <h2 className="font-black font-inktrap text-5xl">{name}</h2>
+            <div className="w-108 max-w-full">
+              <h5 className="font-bold font-inktrap text-lg sm:text-xl">
+                {artist}
+              </h5>
+              <h2 className="font-black font-inktrap text-3xl sm:text-5xl">
+                {name}
+              </h2>
               <p className="mt-8 mx-auto text-lg w-9/12">{description}</p>
             </div>
             {Counter}

@@ -11,7 +11,7 @@ const DropArtist = ({ drop }) => {
     <>
       {/* {true && <EditProfile close={() => setOpenEdit(false)} />} */}
       <div className="container my-12">
-        <div className="w-1/2">
+        <div className="sm:w-1/2">
           <div className="flex items-center">
             <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20">
               <img
