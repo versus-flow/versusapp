@@ -10,6 +10,24 @@ import { fetchMyArt, fetchOneArt } from "./transactions";
 import Collection from "./Collection";
 import Loading from "../general/Loading";
 
+export const getArt = async (addr) => {
+  const response = await fcl.send([
+    fcl.script(fetchMyArt),
+    fcl.args([fcl.arg(addr, t.Address)]),
+  ]);
+  const artResponse = await fcl.decode(response);
+  const allPieces = await Promise.all(
+    map(artResponse, async (r) => {
+      const oneArtResponse = await fcl.send([
+        fcl.script(fetchOneArt),
+        fcl.args([fcl.arg(addr, t.Address), fcl.arg(r.id, t.UInt64)]),
+      ]);
+      return { ...r, img: await fcl.decode(oneArtResponse) };
+    })
+  );
+  return allPieces;
+};
+
 const ProfileWrapper = ({ self, user }) => {
   useEffect(async () => {
     if (self && user && user.addr) {
@@ -19,26 +37,10 @@ const ProfileWrapper = ({ self, user }) => {
   }, [self, user]);
   const [pieces, setPieces] = useState([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    async function getArt() {
-      const response = await fcl.send([
-        fcl.script(fetchMyArt),
-        fcl.args([fcl.arg(user.addr, t.Address)]),
-      ]);
-      const artResponse = await fcl.decode(response);
-      const allPieces = await Promise.all(
-        map(artResponse, async (r) => {
-          const oneArtResponse = await fcl.send([
-            fcl.script(fetchOneArt),
-            fcl.args([fcl.arg(user.addr, t.Address), fcl.arg(r.id, t.UInt64)]),
-          ]);
-          return { ...r, img: await fcl.decode(oneArtResponse) };
-        })
-      );
-      setPieces(allPieces);
-      setLoading(false);
-    }
-    getArt();
+  useEffect(async () => {
+    const allPieces = await getArt(user.addr);
+    setPieces(allPieces);
+    setLoading(false);
   }, []);
   return (
     <>

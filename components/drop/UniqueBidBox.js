@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import classnames from "classnames";
 import { includes, get } from "lodash";
+import Link from "next/link";
 
 import BidOnUnique from "./BidOnUnique";
 import Lock from "../../assets/lock.svg";
@@ -105,7 +106,7 @@ const UniqueBidBox = ({
             <p className="font-black font-inktrap mt-1 text-4xl">
               F{parseFloat(get(drop, "uniqueStatus.price")).toFixed(2)}
             </p>
-            <p className="font-bold mt-1 opacity-50">$0</p>
+            <p className="font-bold mt-1 opacity-50"></p>
             {get(user, "addr") === get(drop, "uniqueStatus.leader") &&
             get(drop, "uniqueStatus.leader") ? (
               <p className="mt-2 text-lg font-bold absolute w-full text-center left-0">
@@ -116,28 +117,41 @@ const UniqueBidBox = ({
             )}
           </div>
           <div className="mt-12 mb-2">
-            <form
-              className="relative w-full uppercase flex flex-col sm:block"
-              onSubmit={openBidBox}
-              ref={form}
-            >
-              <div className="relative">
+            {ended ? (
+              <p>
+                Highest bid by{" "}
+                <Link
+                  href="#"
+                  // href={`/profile/${get(drop, "uniqueStatus.leader")}`}
+                  className="underline"
+                >
+                  {get(drop, "uniqueStatus.leader")}
+                </Link>
+              </p>
+            ) : (
+              <form
+                className="relative w-full uppercase flex flex-col sm:block"
+                onSubmit={openBidBox}
+                ref={form}
+              >
+                <div className="relative">
+                  <input
+                    type="number"
+                    placeholder="Enter Bid"
+                    name="bid"
+                    className="placeholder-black-200 w-full bg-white text-black-500 rounded border-none px-4 py-3 outline-none no-show-drop"
+                    step="0.1"
+                  />
+                  <Lock className="absolute h-4 right-4 top-1/2 transform -translate-y-1/2" />
+                </div>
                 <input
-                  type="number"
-                  placeholder="Enter Bid"
-                  name="bid"
-                  className="placeholder-black-200 w-full bg-white text-black-500 rounded border-none px-4 py-3 outline-none no-show-drop"
-                  step="0.1"
+                  type="submit"
+                  className="standard-button full-button mt-6 h-full px-6 w-full"
+                  value="Place Bid"
                 />
-                <Lock className="absolute h-4 right-4 top-1/2 transform -translate-y-1/2" />
-              </div>
-              <input
-                type="submit"
-                className="standard-button full-button mt-6 h-full px-6 w-full"
-                value="Place Bid"
-              />
-              {Counter}
-            </form>
+                {Counter}
+              </form>
+            )}
           </div>
         </div>
       </div>

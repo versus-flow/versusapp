@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { get, map } from "lodash";
+import { filter, get, includes, map } from "lodash";
 import useOnClickOutside from "use-onclickoutside";
 import * as fcl from "@onflow/fcl";
 import Fuse from "fuse.js";
@@ -18,6 +18,7 @@ const SearchBox = () => {
   const [show, setShow] = useState(true);
   const [query, setQuery] = useState(null);
   const [drops, setDrops] = useState(null);
+  console.log(drops);
   const bar = useRef(null);
   useOnClickOutside(bar, () => setShow(false));
   useEffect(async () => {
@@ -28,12 +29,15 @@ const SearchBox = () => {
       moment().subtract(1, "h").isAfter(moment.unix(dropSetTime))
     ) {
       const drops = await fetchAllDrops();
-      const mappedDrops = map(drops, (d) => ({
+      const realdrops =
+        process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
+          ? filter(drops, (d) => !includes([1, 6, 9], d.dropId))
+          : drops;
+      const mappedDrops = map(realdrops, (d) => ({
         id: d.dropId,
         name: get(d, "metadata.name"),
         artist: get(d, "metadata.artist"),
       }));
-      setDrops(mappedDrops);
       localStorage.setItem("drops", JSON.stringify(mappedDrops));
       localStorage.setItem("dropSetTime", moment().unix());
     }
@@ -43,6 +47,7 @@ const SearchBox = () => {
     const options = {
       keys: ["name", "artist"],
     };
+
     const fuse = new Fuse(drops, options);
     const result = fuse.search(query);
     return map(result, (r) => r.item);
@@ -67,12 +72,8 @@ const SearchBox = () => {
           ref={bar}
           className="absolute left-0 w-full top-full shadow-sm rounded-sm bg-white mt-2 z-50 max-w-full"
         >
-          {map(filteredDrops(drops, query), (r, index) => (
-            <SearchResult
-              key={r.id}
-              result={r}
-              isLast={index === r.length - 1}
-            />
+          {map(filteredDrops(drops, query), (r) => (
+            <SearchResult key={r.id} result={r} />
           ))}
         </div>
       ) : (

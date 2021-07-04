@@ -5,7 +5,7 @@ import ArrowButton from "../general/ArrowButton";
 import DropPreview from "../marketplace/DropPreview";
 import ListItem from "../marketplace/ListItem";
 
-const Collection = ({ pieces }) => {
+const Collection = ({ pieces, other }) => {
   const [listItem, setListItem] = useState(false);
   return (
     <>
@@ -25,25 +25,40 @@ const Collection = ({ pieces }) => {
                   shadow
                   zoom
                   img={p.img}
-                  button={
-                    <ArrowButton
-                      text="List your item"
-                      className="transparent-button"
-                      onClick={() => setListItem(p)}
-                    />
-                  }
+                  // button={
+                  //   <ArrowButton
+                  //     text="List your item"
+                  //     className="transparent-button"
+                  //     onClick={() => setListItem(p)}
+                  //   />
+                  // }
                 />
               ))}
             </div>
           ) : (
             <div className="flex flex-col items-center mx-auto pb-36 pt-24 text-center w-60">
-              <h2 className="font-black font-inktrap leading-6 text-2xl">
-                Your collection will be shown here
-              </h2>
-              <p className="mb-3 mt-3">
-                When you have bought or won a bid your item will show up here
-              </p>
-              <ArrowButton text="Visit marketplace" className="lg-button" />
+              {other ? (
+                <>
+                  <h2 className="font-black font-inktrap leading-6 text-2xl">
+                    This user does not own any art
+                  </h2>
+                  <p className="mb-3 mt-3">
+                    When they have bought or won a bid their item will show up
+                    here
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h2 className="font-black font-inktrap leading-6 text-2xl">
+                    Your collection will be shown here
+                  </h2>
+                  <p className="mb-3 mt-3">
+                    When you have bought or won a bid your item will show up
+                    here
+                  </p>
+                </>
+              )}
+              {/* <ArrowButton text="Visit marketplace" className="lg-button" /> */}
             </div>
           )}
         </div>
