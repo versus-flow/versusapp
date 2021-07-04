@@ -96,7 +96,7 @@ const Nav = ({ user, balance }) => {
                             <div>Flow balance</div>
                             <div className="flex justify-between">
                               <span className="text-black-500">F{balance}</span>
-                              <span>$5,100</span>
+                              <span></span>
                             </div>
                           </div>
                         </div>
@@ -104,22 +104,26 @@ const Nav = ({ user, balance }) => {
                     </>
                   )}
                   <div>
-                    <a href="#" className="block cursor-pointer px-6 py-3">
+                    {/* <a href="#" className="block cursor-pointer px-6 py-3">
                       Bids
-                    </a>
+                    </a> */}
                     <Link href="/profile/me">
                       <a className="block cursor-pointer px-6 py-3">
                         Collection
                       </a>
                     </Link>
-                    <Link href="/marketplace">
+                    {/* <Link href="/marketplace">
                       <a href="#" className="block cursor-pointer px-6 py-3">
                         Marketplace
                       </a>
-                    </Link>
-                    <Link href="/profile/me">
-                      <a className="block cursor-pointer px-6 py-3">Profile</a>
-                    </Link>
+                    </Link> */}
+                    {user.addr && (
+                      <Link href="/profile/me">
+                        <a className="block cursor-pointer px-6 py-3">
+                          Profile
+                        </a>
+                      </Link>
+                    )}
                     <a
                       href="#"
                       onClick={(e) => {

@@ -11,20 +11,27 @@ fcl
   .config()
   .put(
     "accessNode.api",
-    process.env.ACCESS_NODE || "https://access-testnet.onflow.org"
+    process.env.NEXT_PUBLIC_ACCESS_NODE || "https://access-testnet.onflow.org"
   )
   .put(
     "challenge.handshake",
-    process.env.WALLET || "https://flow-wallet-testnet.blocto.app/authn"
+    process.env.NEXT_PUBLIC_WALLET ||
+      "https://flow-wallet-testnet.blocto.app/authn"
   )
-  .put("0xFungibleToken", process.env.FUNGIBLE_TOKEN || "0x9a0766d93b6608b7")
+  .put(
+    "0xFungibleToken",
+    process.env.NEXT_PUBLIC_FUNGIBLE_TOKEN || "0x9a0766d93b6608b7"
+  )
   .put(
     "0xNonFungibleToken",
-    process.env.NONFUNGIBLE_TOKEN || "0x631e88ae7f1d7c20"
+    process.env.NEXT_PUBLIC_NONFUNGIBLE_TOKEN || "0x631e88ae7f1d7c20"
   )
-  .put("0xFlowToken", process.env.FLOW_TOKEN || "0x7e60df042a9c0868")
-  .put("0xCONTRACT", process.env.CONTRACT || "0xdb47998bf96c9ef1")
-  .put("env", process.env.FLOW_ENV || "testnet");
+  .put(
+    "0xFlowToken",
+    process.env.NEXT_PUBLIC_FLOW_TOKEN || "0x7e60df042a9c0868"
+  )
+  .put("0xCONTRACT", process.env.NEXT_PUBLIC_CONTRACT || "0xdb47998bf96c9ef1")
+  .put("env", process.env.NEXT_PUBLIC_FLOW_ENV || "testnet");
 
 const Main = ({ children }) => {
   const [user, setUser] = useState({ loggedIn: null });
