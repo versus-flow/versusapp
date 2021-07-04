@@ -28,11 +28,11 @@ const Nav = ({ user, balance }) => {
       </div>
       <div className="col-span-1 hidden sm:flex justify-center items-center">
         <SearchBox />
-        <Link href={`/marketplace`}>
+        {/* <Link href={`/marketplace`}>
           <a className="ml-4 font-semibold text-sm hidden sm:inline-block">
             Marketplace
           </a>
-        </Link>
+        </Link> */}
       </div>
       <div className="flex flex-1 justify-end">
         {false ? (
