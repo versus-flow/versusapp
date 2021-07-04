@@ -1,7 +1,9 @@
 import classNames from "classnames";
 import React from "react";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 
-const DropPreview = ({ shadow, title, artist, edition, button }) => {
+const DropPreview = ({ shadow, zoom, img, title, artist, edition, button }) => {
   return (
     <div
       className={classNames("bg-white p-3 rounded", {
@@ -9,10 +11,13 @@ const DropPreview = ({ shadow, title, artist, edition, button }) => {
       })}
     >
       <div className="h-80 w-full">
-        <img
-          className="h-full object-cover w-full rounded"
-          src="https://images.unsplash.com/flagged/photo-1572392640988-ba48d1a74457?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXJ0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60"
-        />
+        {zoom ? (
+          <Zoom>
+            <img className="h-full object-cover w-full rounded" src={img} />
+          </Zoom>
+        ) : (
+          <img className="h-full object-cover w-full rounded" src={img} />
+        )}
       </div>
       <div className="py-3 px-2">
         <h3 className="font-bold font-inktrap">{title}</h3>

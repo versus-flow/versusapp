@@ -23,6 +23,8 @@ const Collection = ({ pieces }) => {
                   artist={p.metadata.artist}
                   edition={`#${p.metadata.edition}/${p.metadata.maxEdition}`}
                   shadow
+                  zoom
+                  img={p.img}
                   button={
                     <ArrowButton
                       text="List your item"

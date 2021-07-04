@@ -64,7 +64,7 @@ const Nav = ({ user, balance }) => {
                     "rotate-180": addrOpen,
                   })}
                 />
-                {user.addr && (
+                {user.avatar && (
                   <div className="ml-4 w-10 h-10 rounded-full hidden lg:block">
                     <img
                       src="https://lh3.googleusercontent.com/ogw/ADea4I4TggB1GCdvgQaIkX0S9zbSZH-evkipl6fX5p6i=s64-c-mo"
@@ -107,9 +107,11 @@ const Nav = ({ user, balance }) => {
                     <a href="#" className="block cursor-pointer px-6 py-3">
                       Bids
                     </a>
-                    <a href="#" className="block cursor-pointer px-6 py-3">
-                      Collection
-                    </a>
+                    <Link href="/profile/me">
+                      <a className="block cursor-pointer px-6 py-3">
+                        Collection
+                      </a>
+                    </Link>
                     <Link href="/marketplace">
                       <a href="#" className="block cursor-pointer px-6 py-3">
                         Marketplace

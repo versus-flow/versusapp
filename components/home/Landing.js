@@ -5,7 +5,7 @@ const Landing = () => {
   return (
     <>
       {/* <TopTri /> */}
-      <div className="fd-section bg-cream-500 z-10 relative">
+      <div className="fd-section bg-cream-500 z-10 relative sm:py-6">
         <div className="container flex flex-col-reverse gap-16 grid-cols-2 hero-height items-center relative sm:grid z-10">
           <div className="h-full flex flex-col justify-center sm:items-start sm:py-0 text-center sm:text-left">
             <h3 className="-backdrop-hue-rotate-15 font-inktrap text-lg">
@@ -39,7 +39,7 @@ const Landing = () => {
             </div>
             <ArrowButton text="Coming soon" className="mx-auto sm:mx-0 mt-2" />
           </div>
-          <div className="mt-6 sm:h-5/6 sm:mt-0 w-full">
+          <div className="mt-6 sm:h-full sm:mt-0 w-full">
             <img
               src="/images/mauro.jpg"
               className="w-full sm:h-full sm:object-contain"
