@@ -65,7 +65,7 @@ const Main = ({ children }) => {
         />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="http://versus-flow.art/" />
+        <meta property="og:url" content="https://www.versus-flow.art/" />
         <meta property="og:title" content="Versus - Better for Art" />
         <meta
           property="og:description"
@@ -73,7 +73,7 @@ const Main = ({ children }) => {
         />
         <meta
           property="og:image"
-          content={`https://www.versus-flow.art/images/versussocial.png`}
+          content={`${process.env.VERCEL_URL}/images/versussocial.png`}
         />
 
         <meta property="twitter:card" content="summary_large_image" />
@@ -85,7 +85,7 @@ const Main = ({ children }) => {
         />
         <meta
           property="twitter:image"
-          content={`https://www.versus-flow.art/images/versussocial.png`}
+          content={`${process.env.VERCEL_URL}/images/versussocial.png`}
         />
       </Head>
       <Nav user={user} balance={balance} />
