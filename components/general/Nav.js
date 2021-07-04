@@ -2,13 +2,13 @@ import React, { useState, useRef } from "react";
 import * as fcl from "@onflow/fcl";
 import useOnClickOutside from "use-onclickoutside";
 import Link from "next/link";
+import useCopy from "@react-hook/copy";
 
 import Logo from "../../assets/vslogo.svg";
 import Chevron from "../../assets/chevron.svg";
 import Bell from "../../assets/bell.svg";
 import Copy from "../../assets/copy.svg";
 import FlowLogo from "../../assets/flowlogo.svg";
-// import SearchBox from "../search/SearchBox";
 import classNames from "classnames";
 import SearchBox from "../search/SearchBox";
 
@@ -16,6 +16,7 @@ const Nav = ({ user, balance }) => {
   const [addrOpen, setAddrOpen] = useState(false);
   const addrMenu = useRef(null);
   useOnClickOutside(addrMenu, () => setAddrOpen(false));
+  const { copied, copy, reset } = useCopy(user.addr);
   return (
     <div className="flex grid-cols-2 sm:grid-cols-4 items-center justify-between py-4 bg-transparent px-6 mx-auto relative z-30 font-roboto">
       <div className="flex items-start">
@@ -25,7 +26,7 @@ const Nav = ({ user, balance }) => {
           </a>
         </Link>
       </div>
-      <div className="col-span-1 flex justify-center items-center order-1 sm:order-none mt-4 sm:mt-0 hidden">
+      <div className="col-span-1 flex justify-center items-center order-1 sm:order-none mt-4 sm:mt-0">
         <SearchBox />
         <Link href={`/marketplace`}>
           <a className="ml-4 font-semibold text-sm">Marketplace</a>
@@ -49,7 +50,7 @@ const Nav = ({ user, balance }) => {
                 <span className="font-bold">{Math.round(balance)}F</span>
               </span>
             )}
-            <div className="relative flex items-center hidden" ref={addrMenu}>
+            <div className="relative flex items-center" ref={addrMenu}>
               <Bell className="mr-4 h-6 w-6 cursor-pointer" />
               <div
                 className="flex items-center cursor-pointer font-semibold text-sm"
@@ -76,7 +77,15 @@ const Nav = ({ user, balance }) => {
                     <>
                       <div className="bg-black-900 flex font-bold items-center justify-between px-6 py-3 rounded-t-xl text-sm text-white">
                         <span>{user.addr}</span>
-                        <Copy className="h-5 ml-4" />
+                        <Copy
+                          onClick={copy}
+                          className={classNames(
+                            "h-5 ml-4 cursor-pointer stroke-current",
+                            {
+                              "text-green-500": copied,
+                            }
+                          )}
+                        />
                       </div>
                       <div className="border-b border-regGrey">
                         <div className="flex items-center px-6 py-3">
@@ -84,7 +93,7 @@ const Nav = ({ user, balance }) => {
                           <div className="flex-1 font-bold pl-3 text-black-100 text-sm">
                             <div>Flow balance</div>
                             <div className="flex justify-between">
-                              <span className="text-black-500">F340</span>
+                              <span className="text-black-500">F{balance}</span>
                               <span>$5,100</span>
                             </div>
                           </div>

@@ -1,52 +1,54 @@
-import React, { useState, useRef } from "react";
-import { map } from "lodash";
+import React, { useState, useRef, useEffect } from "react";
+import { get, map } from "lodash";
 import useOnClickOutside from "use-onclickoutside";
+import * as fcl from "@onflow/fcl";
+import Fuse from "fuse.js";
 
 import Search from "../../assets/search.svg";
 import SearchResult from "./SearchResult";
+import { getAllDrops } from "../drop/transactions";
+import moment from "moment";
+
+async function fetchAllDrops() {
+  const response = await fcl.send([fcl.script(getAllDrops)]);
+  return await fcl.decode(response);
+}
 
 const SearchBox = () => {
   const [show, setShow] = useState(true);
   const [query, setQuery] = useState(null);
+  const [drops, setDrops] = useState(null);
   const bar = useRef(null);
   useOnClickOutside(bar, () => setShow(false));
-  const results = [
-    {
-      id: 1,
-      image:
-        "https://lh3.googleusercontent.com/ogw/ADea4I4TggB1GCdvgQaIkX0S9zbSZH-evkipl6fX5p6i=s64-c-mo",
-      name: "Vince Kamp",
-      handle: "@vincekamp",
-    },
-    {
-      id: 2,
-      image:
-        "https://lh3.googleusercontent.com/ogw/ADea4I4TggB1GCdvgQaIkX0S9zbSZH-evkipl6fX5p6i=s64-c-mo",
-      name: "Vince Kamp",
-      handle: "@vincekamp",
-    },
-    {
-      id: 3,
-      image:
-        "https://lh3.googleusercontent.com/ogw/ADea4I4TggB1GCdvgQaIkX0S9zbSZH-evkipl6fX5p6i=s64-c-mo",
-      name: "Vince Kamp",
-      handle: "@vincekamp",
-    },
-    {
-      id: 4,
-      image:
-        "https://lh3.googleusercontent.com/ogw/ADea4I4TggB1GCdvgQaIkX0S9zbSZH-evkipl6fX5p6i=s64-c-mo",
-      name: "Vince Kamp",
-      handle: "@vincekamp",
-    },
-    {
-      id: 5,
-      image:
-        "https://lh3.googleusercontent.com/ogw/ADea4I4TggB1GCdvgQaIkX0S9zbSZH-evkipl6fX5p6i=s64-c-mo",
-      name: "Vince Kamp",
-      handle: "@vincekamp",
-    },
-  ];
+  useEffect(async () => {
+    const dropSetTime = localStorage.getItem("dropSetTime");
+    console.log(localStorage.getItem("drops"));
+    setDrops(JSON.parse(localStorage.getItem("drops") || "{}"));
+    if (
+      !dropSetTime ||
+      moment().subtract(1, "h").isAfter(moment.unix(dropSetTime))
+    ) {
+      const drops = await fetchAllDrops();
+      const mappedDrops = map(drops, (d) => ({
+        id: d.dropId,
+        name: get(d, "metadata.name"),
+        artist: get(d, "metadata.artist"),
+      }));
+      setDrops(mappedDrops);
+      localStorage.setItem("drops", JSON.stringify(mappedDrops));
+      localStorage.setItem("dropSetTime", moment().unix());
+    }
+  }, []);
+
+  const filteredDrops = (drops, query) => {
+    const options = {
+      keys: ["name", "artist"],
+    };
+    const fuse = new Fuse(drops, options);
+    const result = fuse.search(query);
+    return map(result, (r) => r.item);
+  };
+
   return (
     <div className="relative pl-12">
       <form className="relative" onSubmit={(e) => e.preventDefault()}>
@@ -66,11 +68,11 @@ const SearchBox = () => {
           ref={bar}
           className="absolute left-0 w-full top-full shadow-sm rounded-sm bg-white mt-2 z-50 max-w-full"
         >
-          {map(results, (r, index) => (
+          {map(filteredDrops(drops, query), (r, index) => (
             <SearchResult
               key={r.id}
               result={r}
-              isLast={index === results.length - 1}
+              isLast={index === r.length - 1}
             />
           ))}
         </div>

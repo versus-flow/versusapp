@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const SearchResult = ({ result, isLast }) => {
   return (
-    <Link href="/artist/">
+    <Link href={`/drop/${result.id}`}>
       <a>
         <div className="flex items-center cursor-pointer p-4 transition duration-300 hover:bg-black-50 hover:bg-opacity-30">
           <div className="h-10 w-10 rounded-full">
@@ -12,7 +12,7 @@ const SearchResult = ({ result, isLast }) => {
           <div className="flex items-center ml-4 text-xs text-black-500">
             <span className="font-bold">{result.name}</span>
             <span className="h-3 bg-black-500 w-px mx-2"></span>
-            <span>{result.handle}</span>
+            <span>{result.artist}</span>
           </div>
         </div>
         {!isLast && (

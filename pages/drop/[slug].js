@@ -44,7 +44,7 @@ export default function Drop({ drop, art }) {
               {drop.metadata.name} by {drop.metadata.artist}
             </title>
           </Head>
-          <DropArtist />
+          <DropArtist drop={drop} />
           <DropTabs />
           <DropContent
             drop={drop}
@@ -60,7 +60,7 @@ export default function Drop({ drop, art }) {
               user={user}
             />
           )}
-          <DropProperties />
+          <DropProperties drop={drop} art={art} />
           <DropFollow />
         </>
       )}

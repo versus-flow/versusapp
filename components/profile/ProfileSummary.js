@@ -5,7 +5,7 @@ import Twitter from "../../assets/twitter.svg";
 import Instagram from "../../assets/instagram.svg";
 import EditProfile from "../profile/EditProfile";
 
-const DropArtist = ({ drop }) => {
+const ProfileSummary = ({ drop }) => {
   const [openEdit, setOpenEdit] = useState(false);
   return (
     <>
@@ -70,4 +70,4 @@ const DropArtist = ({ drop }) => {
   );
 };
 
-export default DropArtist;
+export default ProfileSummary;

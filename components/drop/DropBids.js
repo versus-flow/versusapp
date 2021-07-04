@@ -5,7 +5,7 @@ import UniqueBidBox from "./UniqueBidBox";
 import Logo from "../../assets/vslogo.svg";
 import EditionBidBox from "./EditionBidBox";
 
-const DropBids = ({ drop, user, timeRemaining }) => {
+const DropBids = ({ drop, art, user, timeRemaining }) => {
   const uniqueTotal = parseFloat(get(drop, "uniqueStatus.price"));
   const editionTotal = reduce(
     drop.editionsStatuses,
@@ -21,6 +21,7 @@ const DropBids = ({ drop, user, timeRemaining }) => {
           <div className="col-span-4">
             <UniqueBidBox
               drop={drop}
+              art={art}
               winning={uniqueTotal > editionTotal}
               ended={ended}
               hasntStarted={hasntStarted}
@@ -34,7 +35,8 @@ const DropBids = ({ drop, user, timeRemaining }) => {
           <div className="col-span-4 mt-6 sm:mt-0">
             <EditionBidBox
               drop={drop}
-              winning={uniqueTotal > editionTotal}
+              art={art}
+              winning={editionTotal > uniqueTotal}
               ended={ended}
               hasntStarted={hasntStarted}
               user={user}

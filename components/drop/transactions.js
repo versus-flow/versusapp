@@ -9,6 +9,14 @@ import * as fcl from "@onflow/fcl";
 // import FungibleToken from 0xee82856bf20e2aa6
 // import Art, Auction, Versus, NonFungibleToken from 0xf8d6e0586b0a20c7
 
+export const getAllDrops = `
+import Versus from 0xCONTRACT
+
+pub fun main() : [Versus.DropStatus] {
+  return Versus.getDrops()
+}
+`;
+
 export const bidTransaction = `
 import FungibleToken from 0xFungibleToken
 import NonFungibleToken from 0xNonFungibleToken
