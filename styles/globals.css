@@ -114,3 +114,11 @@ body {
 .no-border-input {
   @apply border-l-0 rounded-l-none;
 }
+
+.win-border {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+}

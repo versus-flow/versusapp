@@ -1,0 +1,265 @@
+[
+  {
+    "id": "2",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "Transcendence",
+    "artist": "ekaitza",
+    "handle": "ekaitza",
+    "smallImage": "/images/drops/ekaitza/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/ekaitza_",
+    "instagram": "https://www.instagram.com/ekait_za",
+    "aboutArtist": "Ekaitza creates detailed cryptoart that draws inspiration from his past as well as a vision for a digital future. He collects and advises on some of the most monumental projects in NFTs. We could not be more excited to have the ability to work with such an influence in the space.",
+    "increment": "10",
+    "recentWork": [
+      {
+        "image": "/images/drops/ekaitza/piece1.png",
+        "title": "Ares - Mane Lumen",
+        "description": "",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/ekaitza/piece2.png",
+        "title": "Heracles - Vires in Posterum",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/ekaitza/piece3.png",
+        "title": "A sudden change in the tide",
+        "link": "/"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "Zebra Forest",
+    "slug": "mankind",
+    "artist": "Mankind",
+    "handle": "Mankind",
+    "smallImage": "/images/drops/mankind/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/rhett",
+    "instagram": "https://www.instagram.com/mankind",
+    "aboutArtist": "Mankind is an award winning digital artist with an eminent background in branding, digital art and advertising. He has been educating others of Crypto Art for several years. After a near death experience, a mental existential struggle began that he found echoed the pages of 'Confession' by Leo Tolstoy: “Since death is inevitable, what is the meaning of life?” He found the answer of hope through exploring, creating and sharing.",
+    "increment": "7.5",
+    "recentWork": [
+      {
+        "image": "/images/drops/mankind/piece1.jpg",
+        "title": "A New Mayday",
+        "description": "",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/mankind/piece2.jpg",
+        "title": "Opportunities Unknown",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/mankind/piece3.jpg",
+        "title": "Connected Forest",
+        "link": "/"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "Fall",
+    "slug": "han",
+    "artist": "Han",
+    "handle": "hanrgb",
+    "smallImage": "/images/drops/han/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/hanrgb",
+    "instagram": "https://www.instagram.com/hanrgb",
+    "aboutArtist": "Years of thought on how to express the inexpressible has led Han down the path of Crypto and Digital Art. When asked about the inspiration behind his simplistic designs, he responds that he does it to show “All that I can't say”",
+    "increment": "5",
+    "recentWork": [
+      {
+        "image": "/images/drops/han/piece1.jpg",
+        "title": "Aspect",
+        "description": "",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/han/piece2.jpg",
+        "title": "Crescent",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/han/piece3.jpg",
+        "title": "Where",
+        "link": "/"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "Pulvis et umbra sumus",
+    "slug": "vincekamp",
+    "artist": "Vincent Kamp",
+    "handle": "vincekamp",
+    "smallImage": "/images/drops/vincekamp/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/vincekamp",
+    "instagram": "http://instagram.com/vincekamp",
+    "aboutArtist": "Vince has made a name for himself in the traditional art world through painting tattoed underworld figures and gangsters. He has never before launched an artwork on a NFT platform, and we look forward to seeing what he brings to his genesis drop! If the unique side wins Vincent’s auction the winnner will have the option to receive Vince’s physical painting",
+    "increment": "5",
+    "recentWork": [
+      {
+        "image": "/images/drops/vincekamp/piece1.jpg",
+        "title": "Diamond Roulette",
+        "description": "",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/vincekamp/piece2.jpg",
+        "title": "Queen of Diamonds",
+        "description": "",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/vincekamp/piece3.jpg",
+        "title": "The Long Game",
+        "link": "/"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "Destroying David",
+    "slug": "kaneda99",
+    "artist": "Alessandro Pautasso",
+    "handle": "kaneda99",
+    "smallImage": "/images/drops/kaneda99/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/kaneda99",
+    "instagram": "https://www.instagram.com/kaneda99",
+    "aboutArtist": "Alessandro Pautasso was born in 1982. Art director and Illustrator, his specialty lies in digital art and mixed media. In childhood, after falling in love with a Beatles's illustration book by Alan Aldridge,  he began drawing almost daily. Attracted by visual arts, he decided to start a career as a commercial artist and simultaneously focusing on digital art.  His works were featured in several international newspapers, magazines, key-arts, cd-covers and books.",
+    "increment": "5",
+    "recentWork": [
+      {
+        "image": "/images/drops/kaneda99/piece1.jpg",
+        "title": "Cersei Lannister",
+        "description": "",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/kaneda99/piece2.jpg",
+        "title": "The Embrace",
+        "description": "",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/kaneda99/piece3.jpg",
+        "title": "Star Wars",
+        "link": "/"
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "Jaime el hortaliza",
+    "slug": "zigor",
+    "artist": "Zigor",
+    "handle": "zigor",
+    "smallImage": "/images/drops/zigor/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/zigor",
+    "instagram": "https://www.instagram.com/zigor",
+    "aboutArtist": "Veteran 3D art director who has worked for Nickelodeon, Wired and Prada.",
+    "increment": "5",
+    "recentWork": [
+      {
+        "image": "/images/drops/zigor/piece1.jpg",
+        "title": "Tardigrad Cosplay",
+        "description": "",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/zigor/piece2.jpg",
+        "title": "Angelina y Lagarto Gallina",
+        "description": "",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/zigor/piece3.jpg",
+        "title": "Trap Robot",
+        "link": "/"
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "The Conductor",
+    "slug": "skan",
+    "artist": "SKAN",
+    "handle": "SKAN",
+    "smallImage": "/images/drops/skan/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/skansrisuwan",
+    "instagram": "https://www.instagram.com/skansrisuwan/",
+    "aboutArtist": "",
+    "increment": "5",
+    "recentWork": [
+      {
+        "image": "/images/drops/skan/piece1.jpg",
+        "title": "Sword Master",
+        "description": "",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/skan/piece2.jpg",
+        "title": "The Guardian",
+        "description": "",
+        "link": "/"
+      },
+      {
+        "image": "/images/drops/skan/piece3.jpg",
+        "title": "Pain",
+        "link": "/"
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "",
+    "slug": "benmauro",
+    "handle": "benmauro",
+    "smallImage": "/images/drops/benmauro/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/benmauroart",
+    "instagram": "https://www.instagram.com/ben_mauro",
+    "aboutArtist": "Ben Mauro has been a leading concept designer and art director in the game and film industries for over a decade. He is the creator of the HUXLEY™ graphic novel series, EVOLUTION nft collectible series and has worked on projects such as Halo, Call of Duty, Elysium, Metal Gear Solid (film), The Hobbit trilogy and many more!"
+  },
+  {
+    "id": "12",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "",
+    "slug": "benmauro",
+    "handle": "benmauro",
+    "smallImage": "/images/drops/benmauro/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/benmauroart",
+    "instagram": "https://www.instagram.com/ben_mauro",
+    "aboutArtist": "Ben Mauro has been a leading concept designer and art director in the game and film industries for over a decade. He is the creator of the HUXLEY™ graphic novel series, EVOLUTION nft collectible series and has worked on projects such as Halo, Call of Duty, Elysium, Metal Gear Solid (film), The Hobbit trilogy and many more!"
+  },
+  {
+    "id": "13",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "",
+    "slug": "benmauro",
+    "handle": "benmauro",
+    "smallImage": "/images/drops/benmauro/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/benmauroart",
+    "instagram": "https://www.instagram.com/ben_mauro",
+    "aboutArtist": "Ben Mauro has been a leading concept designer and art director in the game and film industries for over a decade. He is the creator of the HUXLEY™ graphic novel series, EVOLUTION nft collectible series and has worked on projects such as Halo, Call of Duty, Elysium, Metal Gear Solid (film), The Hobbit trilogy and many more!"
+  }
+]

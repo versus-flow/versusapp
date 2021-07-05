@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { get } from "lodash";
+import { get, find } from "lodash";
 import moment from "moment";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
@@ -17,51 +17,83 @@ import {
   fetchVersusDrop,
 } from "../../components/profile/transactions";
 import Head from "next/head";
+import dropsData from "../../components/general/drops.json";
+import Loading from "../../components/general/Loading";
 
-export default function Drop({ drop, art }) {
-  const [updatedDrop, setUpdatedDrop] = useState(drop);
+export default function Drop({ id }) {
+  const [updatedDrop, setUpdatedDrop] = useState({});
+  const [updatedArt, setUpdatedArt] = useState(null);
   const [timeUntil, setTimeUntil] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState(null);
+  const [loading, setloading] = useState(true);
+  const dropInfo = find(dropsData, (d) => d.id == id);
+  useEffect(async () => {
+    const drop = await fetchDrop(id);
+    const art = await fetchArt(id);
+    setUpdatedDrop(drop);
+    setUpdatedArt(art);
+    setloading(false);
+    window.fetches = setInterval(async () => {
+      const drop = await fetchDrop(id);
+      setUpdatedDrop(drop);
+    }, 30000);
+    document.addEventListener("bid", () => fetchDrop(id), false);
+    return () =>
+      document.removeEventListener("bid", () => fetchDrop(id), false);
+  }, []);
   useEffect(() => {
-    if (parseFloat(drop.timeRemaining) - timeRemaining > 15 && timeRemaining) {
-      setTimeRemaining(parseFloat(drop.timeRemaining));
+    if (loading) return;
+    if (
+      parseFloat(updatedDrop.timeRemaining) - timeRemaining > 15 &&
+      timeRemaining
+    ) {
+      setTimeRemaining(parseFloat(updatedDrop.timeRemaining));
     } else {
-      setTimeUntil(parseFloat(drop.startTime) - moment().unix());
-      setTimeRemaining(parseFloat(drop.timeRemaining));
+      setTimeUntil(parseFloat(updatedDrop.startTime) - moment().unix());
+      setTimeRemaining(parseFloat(updatedDrop.timeRemaining));
       const timer = setInterval(() => {
         setTimeUntil((t) => t - 1);
         setTimeRemaining((t) => t - 1);
       }, 1000);
       return () => clearInterval(timer);
     }
-  }, [drop.timeRemaining]);
+  }, [loading, updatedDrop.timeRemaining]);
   return (
     <Main>
       {(user) => (
         <>
           <Head>
             <title>
-              {drop.metadata.name} by {drop.metadata.artist}
+              {get(updatedDrop, "metadata.name")} by{" "}
+              {get(updatedDrop, "metadata.artist")}
             </title>
           </Head>
-          <DropArtist />
-          <DropTabs />
-          <DropContent
-            drop={drop}
-            art={art}
-            timeUntil={timeUntil}
-            timeRemaining={timeRemaining}
-          />{" "}
-          {timeUntil <= 0 && (
-            <DropBids
-              drop={drop}
-              art={art}
-              timeRemaining={timeRemaining}
-              user={user}
-            />
+          {loading ? (
+            <div className="h-96 flex justify-center items-center">
+              <Loading />
+            </div>
+          ) : (
+            <>
+              <DropArtist drop={updatedDrop} dropInfo={dropInfo} />
+              <DropTabs id={id} />
+              <DropContent
+                drop={updatedDrop}
+                art={updatedArt}
+                timeUntil={timeUntil}
+                timeRemaining={timeRemaining}
+              />{" "}
+              {timeUntil <= 0 && (
+                <DropBids
+                  drop={updatedDrop}
+                  art={updatedArt}
+                  timeRemaining={timeRemaining}
+                  user={user}
+                />
+              )}
+              <DropProperties drop={updatedDrop} art={updatedArt} />
+              <DropFollow dropInfo={dropInfo} />
+            </>
           )}
-          <DropProperties />
-          <DropFollow />
         </>
       )}
     </Main>
@@ -86,21 +118,8 @@ async function fetchArt(id) {
 
 export async function getServerSideProps(context) {
   const id = get(context, "params.slug");
-  // if (drop == null) {
-  const drop = await fetchDrop(id);
-  const art = await fetchArt(id);
-  // window.fetches = setInterval(() => {
-  //   fetchDrop();
-  // }, 30000);
-  // }
-  // document.addEventListener(
-  //   "bid",
-  //   () => {
-  //     fetchDrop();
-  //   },
-  //   false
-  // );
+  // const drop = await fetchDrop(id);
+  // const art = await fetchArt(id);
 
-  // Pass data to the page via props
-  return { props: { drop, art } };
+  return { props: { id } };
 }

@@ -35,7 +35,7 @@ const Footer = () => {
             <a
               href="https://www.onflow.org/"
               target="_blank"
-              className="cursor-pointer mt-2 flex justify-center md:static"
+              className="cursor-pointer mt-2 flex justify-center md:block md:static"
             >
               <FlowLogo className="h-12 mt-1" />
             </a>

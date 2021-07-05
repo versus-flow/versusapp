@@ -77,6 +77,16 @@ pub fun main(address: Address): Bool {
 }
 `;
 
+export const profileGet = `
+import Profile from 0xCONTRACT
+
+pub fun main(address:Address) : &AnyResource{Profile.Public}? {
+  return getAccount(address)
+        .getCapability<&{Profile.Public}>(Profile.publicPath)!
+        .borrow()!
+}
+`;
+
 export const profileEdit = `
 import FungibleToken from 0xFungibleToken
 import FlowToken from 0xFlowToken

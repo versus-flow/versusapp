@@ -9,8 +9,16 @@ import FlowLogo from "../../assets/flowlogo.svg";
 import Arrow from "../../assets/arrow.svg";
 import ArrowButton from "../general/ArrowButton";
 import { bidTransaction, tx } from "./transactions";
+import Loading from "../general/Loading";
 
-const BidOnEdition = ({ close, editionNum, drop, ended, totalEditions }) => {
+const BidOnEdition = ({
+  close,
+  editionNum,
+  drop,
+  art,
+  ended,
+  totalEditions,
+}) => {
   const modal = useRef(null);
   const form = useRef(null);
   useOnClickOutside(modal, close);
@@ -41,7 +49,7 @@ const BidOnEdition = ({ close, editionNum, drop, ended, totalEditions }) => {
         [
           fcl.transaction(bidTransaction),
           fcl.args([
-            fcl.arg("0xd796ff17107bbff6", t.Address),
+            fcl.arg("0xdb47998bf96c9ef1", t.Address),
             fcl.arg(drop.dropId, t.UInt64),
             fcl.arg(currentEdition.id, t.UInt64),
             fcl.arg(newBid.toFixed(1).toString(), t.UFix64),
@@ -126,48 +134,61 @@ const BidOnEdition = ({ close, editionNum, drop, ended, totalEditions }) => {
         className="bg-cream-500 flex flex-col items-center max-w-full px-20 py-8 rounded-2xl w-128 z-10 modal-scroll"
       >
         <Logo className="h-10" />
-        <h4 className="font-black font-inktrap mt-8 text-xl">
-          Own edition {editionNum}/{totalEditions}
-        </h4>
-        <img
-          className="h-auto mt-6 w-64"
-          src="https://www.versus-flow.art/images/skan.jpeg"
-        />
-        <div className="mt-6">
-          <span>
-            The current bid is{" "}
-            <span className="font-bold">
-              F{parseFloat(currentEdition.price).toFixed(2)}
-            </span>
-          </span>
-          <div className="border border-regGrey flex items-center justify-between mt-2 mx-auto px-3 py-1 rounded-full text-xs">
-            <div className="flex items-center">
-              <FlowLogo className="h-6" />{" "}
-              <span className="ml-2">Your balance:</span>
+        {status && status.msg ? (
+          <>
+            <h4 className="font-black font-inktrap mt-8 text-xl">
+              {status.msg}
+            </h4>
+            <p className="mt-4 w-3/4 text-center mx-auto">{status.subtext}</p>
+            {status.allowClose ? (
+              <ArrowButton text="Close" className="mt-8" onClick={close} />
+            ) : (
+              <Loading className="mt-8" />
+            )}
+          </>
+        ) : (
+          <>
+            <h4 className="font-black font-inktrap mt-8 text-xl">
+              Own edition {editionNum}/{totalEditions}
+            </h4>
+            <img className="h-auto mt-6 w-64" src={art} />
+            <div className="mt-6">
+              <span>
+                The current bid is{" "}
+                <span className="font-bold">
+                  F{parseFloat(currentEdition.price).toFixed(2)}
+                </span>
+              </span>
+              <div className="border border-regGrey flex items-center justify-between mt-2 mx-auto px-3 py-1 rounded-full text-xs">
+                <div className="flex items-center">
+                  <FlowLogo className="h-6" />{" "}
+                  <span className="ml-2">Your balance:</span>
+                </div>
+                <span className="font-bold">F123</span>
+              </div>
             </div>
-            <span className="font-bold">F123</span>
-          </div>
-        </div>
-        <form ref={form} onSubmit={handleSubmit} className="mt-3 w-full">
-          <input
-            type="number"
-            placeholder="Enter Bid"
-            name="bid"
-            className="bg-white border border-regGrey outline-none placeholder-black-200 px-4 py-3 rounded text-black-500 w-full"
-            step="0.1"
-          />
-          <p className="mt-2 text-xs">
-            You must place a bid higher than F
-            {parseFloat(currentEdition.minNextBid).toFixed(2)}
-          </p>
-        </form>
-        <div className="flex justify-between mt-12 w-full">
-          <ArrowButton text="Confirm" onClick={handleSubmit} />
-          <span className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer">
-            Cancel
-            <Arrow className="ml-2" />
-          </span>
-        </div>
+            <form ref={form} onSubmit={handleSubmit} className="mt-3 w-full">
+              <input
+                type="number"
+                placeholder="Enter Bid"
+                name="bid"
+                className="bg-white border border-regGrey outline-none placeholder-black-200 px-4 py-3 rounded text-black-500 w-full"
+                step="0.1"
+              />
+              <p className="mt-2 text-xs">
+                You must place a bid higher than F
+                {parseFloat(currentEdition.minNextBid).toFixed(2)}
+              </p>
+            </form>
+            <div className="flex justify-between mt-12 w-full">
+              <ArrowButton text="Confirm" onClick={handleSubmit} />
+              <span className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer">
+                Cancel
+                <Arrow className="ml-2" />
+              </span>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
