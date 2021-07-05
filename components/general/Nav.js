@@ -115,15 +115,14 @@ const Nav = ({ user, balance }) => {
                         Marketplace
                       </a>
                     </Link> */}
-                    {user.addr && (
+                    {/* {user.addr && (
                       <Link href="/profile/me">
                         <a className="block cursor-pointer px-6 py-3">
                           Profile
                         </a>
                       </Link>
-                    )}
-                    <a
-                      href="#"
+                    )} */}
+                    <span
                       onClick={(e) => {
                         if (!user.addr) fcl.authenticate();
                         else fcl.unauthenticate();
@@ -132,7 +131,7 @@ const Nav = ({ user, balance }) => {
                       className="block cursor-pointer px-6 py-3"
                     >
                       Log {user.addr ? "out" : "in"}
-                    </a>
+                    </span>
                   </div>
                 </div>
               )}

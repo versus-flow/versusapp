@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import classNames from "classnames";
 
 export const getWrittenTimer = (seconds) => {
   var days = Math.floor(seconds / (3600 * 24));
@@ -18,6 +19,7 @@ export const getWrittenTimer = (seconds) => {
 };
 
 const DropContent = ({ drop, art, timeUntil, timeRemaining }) => {
+  console.log(drop);
   const {
     metadata: { artist, name, description },
   } = drop;
@@ -29,7 +31,14 @@ const DropContent = ({ drop, art, timeUntil, timeRemaining }) => {
         <h4 className="font-inktrap font-semibold tracking-wide">
           {timeUntil > 0 ? "Auction starts in" : "Auction ends in"}
         </h4>
-        <div className="gap-6 grid grid-cols-4 mb-6 mt-2 mx-auto w-64">
+        <div
+          className={classNames("gap-6 grid mb-6 mt-2 mx-auto w-64", {
+            "grid-cols-4": timer.days,
+            "grid-cols-3": !timer.days && timer.hours,
+            "grid-cols-2": !timer.days && !timer.hours && timer.minutes,
+            "grid-cols-1": !timer.days && !timer.hours && !timer.minutes,
+          })}
+        >
           {timer.days ? (
             <div className="flex flex-col">
               <span className="block font-black text-3xl">{timer.days}</span>

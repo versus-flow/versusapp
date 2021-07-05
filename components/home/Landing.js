@@ -4,10 +4,11 @@ import ArrowButton from "../general/ArrowButton";
 import TopTri from "../../assets/toptri.svg";
 import moment from "moment";
 import { getWrittenTimer } from "../drop/DropContent";
+import classNames from "classnames";
 
 const Landing = () => {
   const [timeRemaining, settimeRemaining] = useState(
-    1625594400 - moment().unix()
+    1625572800 - moment().unix()
   );
   useEffect(() => {
     if (timeRemaining > 0) {
@@ -18,7 +19,6 @@ const Landing = () => {
     }
   }, []);
   const timer = timeRemaining > 0 ? getWrittenTimer(timeRemaining) : false;
-  console.log(timer);
   return (
     <>
       {/* <TopTri /> */}
@@ -36,7 +36,15 @@ const Landing = () => {
                 First auction starting July 6 at 10AM EST
               </h4>
               {timer && (
-                <div className="grid grid-cols-4 mb-6 mt-2 w-64 max-w-full">
+                <div
+                  className={classNames("grid mb-6 mt-2 w-64 max-w-full", {
+                    "grid-cols-4": timer.days,
+                    "grid-cols-3": !timer.days && timer.hours,
+                    "grid-cols-2": !timer.days && !timer.hours && timer.minutes,
+                    "grid-cols-1":
+                      !timer.days && !timer.hours && !timer.minutes,
+                  })}
+                >
                   {timer.days ? (
                     <div className="flex flex-col">
                       <span className="block font-black text-3xl">
