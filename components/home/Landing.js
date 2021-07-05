@@ -1,7 +1,24 @@
+import { useEffect, useState } from "react";
+
 import ArrowButton from "../general/ArrowButton";
 import TopTri from "../../assets/toptri.svg";
+import moment from "moment";
+import { getWrittenTimer } from "../drop/DropContent";
 
 const Landing = () => {
+  const [timeRemaining, settimeRemaining] = useState(
+    1625594400 - moment().unix()
+  );
+  useEffect(() => {
+    if (timeRemaining > 0) {
+      const timer = setInterval(() => {
+        settimeRemaining((t) => t - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, []);
+  const timer = timeRemaining > 0 ? getWrittenTimer(timeRemaining) : false;
+  console.log(timer);
   return (
     <>
       {/* <TopTri /> */}
@@ -16,28 +33,57 @@ const Landing = () => {
             </h2>
             <div className="mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
-                Auctions July 6th-8th
+                First auction starting July 6 at 10AM EST
               </h4>
-              {/* <div className="grid grid-cols-4 mb-6 mt-2 w-64">
-                <div className="flex flex-col">
-                  <span className="block font-bold text-3xl">1</span>
-                  <span className="mt-1 text-xs">Days</span>
+              {timer && (
+                <div className="grid grid-cols-4 mb-6 mt-2 w-64 max-w-full">
+                  {timer.days ? (
+                    <div className="flex flex-col">
+                      <span className="block font-black text-3xl">
+                        {timer.days}
+                      </span>
+                      <span className="mt-1 text-xs">Days</span>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {timer.hours || timer.days ? (
+                    <div className="flex flex-col">
+                      <span className="block font-black text-3xl">
+                        {timer.hours}
+                      </span>
+                      <span className="mt-1 text-xs">Hours</span>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {timer.minutes || timer.hours || timer.days ? (
+                    <div className="flex flex-col">
+                      <span className="block font-black text-3xl">
+                        {timer.minutes}
+                      </span>
+                      <span className="mt-1 text-xs">Minutes</span>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <div className="flex flex-col">
+                    <span className="block font-black text-3xl">
+                      {timer.seconds.toLocaleString("en-US", {
+                        minimumIntegerDigits: 2,
+                        useGrouping: false,
+                      }) || "00"}
+                    </span>
+                    <span className="mt-1 text-xs">Seconds</span>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <span className="block font-bold text-3xl">22</span>
-                  <span className="mt-1 text-xs">Hours</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="block font-bold text-3xl">11</span>
-                  <span className="mt-1 text-xs">Minutes</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="block font-bold text-3xl">08</span>
-                  <span className="mt-1 text-xs">Seconds</span>
-                </div>
-              </div> */}
+              )}
             </div>
-            <ArrowButton text="Coming soon" className="mx-auto sm:mx-0 mt-2" />
+            <ArrowButton
+              href="/drop/11"
+              text="View Drop"
+              className="mx-auto sm:mx-0 mt-2"
+            />
           </div>
           <div className="mt-6 sm:h-full sm:mt-0 w-full">
             <img

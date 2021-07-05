@@ -3,7 +3,7 @@ import Twitter from "../../assets/twitter.svg";
 import Instagram from "../../assets/instagram.svg";
 import Youtube from "../../assets/youtube.svg";
 
-const DropFollow = () => {
+const DropFollow = ({ dropInfo }) => {
   return (
     <div className="bg-white py-16">
       <div className="container">
@@ -12,18 +12,18 @@ const DropFollow = () => {
             Follow artist
           </h2>
           <div className="flex items-center">
-            <a target="_blank" href="#">
+            {/* <a target="_blank" href="#">
               <Facebook className="mr-6 h-6" />
-            </a>
-            <a target="_blank" href="#">
+            </a> */}
+            <a target="_blank" href={dropInfo.twitter}>
               <Twitter className="mr-6 h-5" />
             </a>
-            <a target="_blank" href="#">
+            <a target="_blank" href={dropInfo.instagram}>
               <Instagram className="mr-6 h-6" />
             </a>
-            <a target="_blank" href="#">
+            {/* <a target="_blank" href="#">
               <Youtube className="mr-6 h-6" />
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

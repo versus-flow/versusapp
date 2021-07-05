@@ -28,13 +28,11 @@ export default function Drop({ id }) {
   const [loading, setloading] = useState(true);
   const dropInfo = find(dropsData, (d) => d.id == id);
   useEffect(async () => {
-    console.log("ewafef");
     const drop = await fetchDrop(id);
     const art = await fetchArt(id);
     setUpdatedDrop(drop);
     setUpdatedArt(art);
     setloading(false);
-    console.log(drop);
     window.fetches = setInterval(async () => {
       const drop = await fetchDrop(id);
       setUpdatedDrop(drop);
@@ -71,7 +69,7 @@ export default function Drop({ id }) {
             </title>
           </Head>
           {loading ? (
-            <div className="h-64 flex justify-center items-center">
+            <div className="h-96 flex justify-center items-center">
               <Loading />
             </div>
           ) : (
@@ -93,7 +91,7 @@ export default function Drop({ id }) {
                 />
               )}
               <DropProperties drop={updatedDrop} art={updatedArt} />
-              <DropFollow />
+              <DropFollow dropInfo={dropInfo} />
             </>
           )}
         </>

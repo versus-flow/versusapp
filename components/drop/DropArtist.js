@@ -32,7 +32,7 @@ const DropArtist = ({ drop, dropInfo }) => {
             <h2 className="font-bold font-inktrap text-3xl">
               {drop.metadata.artist}
             </h2>
-            <p className="">{dropInfo.handle}</p>
+            <p className="">@{dropInfo.handle}</p>
             <p className="mt-4">{dropInfo.aboutArtist}</p>
           </div>
         </div>
