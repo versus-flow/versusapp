@@ -31,7 +31,17 @@ const UniqueBidBox = ({
         <h4 className="font-inktrap font-semibold tracking-wide">
           Auction ends in
         </h4>
-        <div className="gap-2 lg:gap-6 grid grid-cols-4 mb-6 mt-2 mx-auto w-64 max-w-full">
+        <div
+          className={classNames(
+            "gap-2 lg:gap-6 grid mb-6 mt-2 mx-auto w-64 max-w-full",
+            {
+              "grid-cols-4": timer.days,
+              "grid-cols-3": !timer.days && timer.hours,
+              "grid-cols-2": !timer.days && !timer.hours && timer.minutes,
+              "grid-cols-1": !timer.days && !timer.hours && !timer.minutes,
+            }
+          )}
+        >
           {timer.days ? (
             <div className="flex flex-col">
               <span className="block font-black text-xl lg:text-2xl xl:text-3xl">

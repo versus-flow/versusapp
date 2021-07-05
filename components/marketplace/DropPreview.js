@@ -10,7 +10,7 @@ const DropPreview = ({ shadow, zoom, img, title, artist, edition, button }) => {
         "shadow-2xl": shadow,
       })}
     >
-      <div className="h-80 w-full">
+      <div className="h-80 w-full zoom-holder">
         {zoom ? (
           <Zoom>
             <img className="h-full object-cover w-full rounded" src={img} />
@@ -27,10 +27,10 @@ const DropPreview = ({ shadow, zoom, img, title, artist, edition, button }) => {
             <span>{edition}</span>
           </div>
           <div className="flex flex-col text-right">
-            <span className="font-bold text-xl">F150</span>
+            {/* <span className="font-bold text-xl">F150</span>
             <span className="text-sm">
               Last sold <span className="font-bold">F150</span>
-            </span>
+            </span> */}
           </div>
         </div>
         {button}

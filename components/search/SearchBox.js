@@ -18,7 +18,6 @@ const SearchBox = () => {
   const [show, setShow] = useState(true);
   const [query, setQuery] = useState(null);
   const [drops, setDrops] = useState(null);
-  console.log(drops);
   const bar = useRef(null);
   useOnClickOutside(bar, () => setShow(false));
   useEffect(async () => {
