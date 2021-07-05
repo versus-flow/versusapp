@@ -33,17 +33,21 @@ const Landing = () => {
             </h2>
             <div className="mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
-                First auction starting July 6 at 10AM EST
+                First auction starting July 6 at 8AM EST
               </h4>
               {timer && (
                 <div
-                  className={classNames("grid mb-6 mt-2 w-64 max-w-full", {
-                    "grid-cols-4": timer.days,
-                    "grid-cols-3": !timer.days && timer.hours,
-                    "grid-cols-2": !timer.days && !timer.hours && timer.minutes,
-                    "grid-cols-1":
-                      !timer.days && !timer.hours && !timer.minutes,
-                  })}
+                  className={classNames(
+                    "grid mb-6 mt-2 w-64 max-w-full mx-auto sm:mx-0",
+                    {
+                      "grid-cols-4": timer.days,
+                      "grid-cols-3": !timer.days && timer.hours,
+                      "grid-cols-2":
+                        !timer.days && !timer.hours && timer.minutes,
+                      "grid-cols-1":
+                        !timer.days && !timer.hours && !timer.minutes,
+                    }
+                  )}
                 >
                   {timer.days ? (
                     <div className="flex flex-col">
