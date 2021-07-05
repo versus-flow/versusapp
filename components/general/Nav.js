@@ -11,6 +11,7 @@ import Copy from "../../assets/copy.svg";
 import FlowLogo from "../../assets/flowlogo.svg";
 import classNames from "classnames";
 import SearchBox from "../search/SearchBox";
+import ArrowButton from "./ArrowButton";
 
 const Nav = ({ user, balance }) => {
   const [addrOpen, setAddrOpen] = useState(false);
@@ -35,15 +36,12 @@ const Nav = ({ user, balance }) => {
         </Link> */}
       </div>
       <div className="flex flex-1 justify-end">
-        {false ? (
-          <button
-            className="standard-button small-button"
-            role="button"
-            aria-label="Connect Wallet"
+        {!user.addr ? (
+          <ArrowButton
+            className="standard-button"
             onClick={fcl.authenticate}
-          >
-            Connect Wallet
-          </button>
+            text="Connect Wallet"
+          />
         ) : (
           <div className="flex flex-col-reverse items-center sm:flex-row">
             {user.addr && (

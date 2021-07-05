@@ -11,12 +11,14 @@ const Rewarded = () => {
         <br /> rewarded for their work
       </h2>
       <div className="flex justify-center mt-6 text-center">
-        <Link href="#">
-          <a className="flex font-bold font-roboto items-center text-sm tracking-wide">
-            Become a Versus artist
-            <Arrow className="ml-2" />
-          </a>
-        </Link>
+        <a
+          className="flex font-bold font-roboto items-center text-sm tracking-wide"
+          href="https://capturinginsights.typeform.com/to/kf9JZtdY"
+          target="_blank"
+        >
+          Become a Versus artist
+          <Arrow className="ml-2" />
+        </a>
       </div>
     </div>
   );

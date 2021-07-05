@@ -14,12 +14,17 @@ import { getArt } from "../../../components/profile/ProfileWrapper";
 import Loading from "../../../components/general/Loading";
 import Collection from "../../../components/profile/Collection";
 
-export default function Drop({ drop, id }) {
+export default function DropCollection({ id }) {
+  console.log("awef");
   const dropInfo = find(dropsData, (d) => d.id == id);
   const [pieces, setPieces] = useState([]);
+  const [drop, setDrop] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(async () => {
-    const allPieces = await getArt(drop.metadata.artistAddress);
+    const d = await fetchDrop(id);
+    setDrop(d);
+    const allPieces = await getArt(d.metadata.artistAddress);
+    console.log(allPieces);
     setPieces(allPieces);
     setLoading(false);
   }, [id]);
@@ -27,21 +32,26 @@ export default function Drop({ drop, id }) {
     <Main>
       {(user) => (
         <>
-          <Head>
-            <title>
-              {drop.metadata.name} by {drop.metadata.artist}
-            </title>
-          </Head>
-          <DropArtist drop={drop} dropInfo={dropInfo} />
-          <DropTabs id={id} collection />
           {loading ? (
-            <div className="bg-white">
-              <div className="flex flex-col items-center mx-auto pb-36 pt-24 text-center w-60">
-                <Loading />{" "}
+            <>
+              <div className="bg-white">
+                <div className="flex flex-col items-center mx-auto pb-36 pt-24 text-center w-60">
+                  <Loading />{" "}
+                </div>
               </div>
-            </div>
+            </>
           ) : (
-            <Collection pieces={pieces} other />
+            <>
+              {" "}
+              <Head>
+                <title>
+                  {drop.metadata.name} by {drop.metadata.artist}
+                </title>
+              </Head>
+              <DropArtist drop={drop} dropInfo={dropInfo} />
+              <DropTabs id={id} collection />
+              <Collection pieces={pieces} other />
+            </>
           )}
         </>
       )}
@@ -59,7 +69,6 @@ async function fetchDrop(id) {
 
 export async function getServerSideProps(context) {
   const id = get(context, "params.slug");
-  const drop = await fetchDrop(id);
 
-  return { props: { drop, id } };
+  return { props: { id } };
 }
