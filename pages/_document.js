@@ -2,7 +2,7 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitial${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}Props(ctx);
+    const initialProps = await Document.getInitialProps(ctx);
     return { ...initialProps };
   }
 
@@ -10,20 +10,20 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-        <script
-              async
+          <script
+            async
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
           />
           <script
             dangerouslySetInnerHTML={{
               __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
-              page_path: window.location.pathname,
-            });
-          `,
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+                  page_path: window.location.pathname,
+                });
+              `,
             }}
           />
         </Head>
