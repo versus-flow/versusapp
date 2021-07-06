@@ -18,6 +18,7 @@ import {
 } from "../../components/profile/transactions";
 import Head from "next/head";
 import dropsData from "../../components/general/drops.json";
+import testDropsData from "../../components/general/testdrops.json";
 import Loading from "../../components/general/Loading";
 
 export default function Drop({ id }) {
@@ -26,7 +27,10 @@ export default function Drop({ id }) {
   const [timeUntil, setTimeUntil] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState(null);
   const [loading, setloading] = useState(true);
-  const dropInfo = find(dropsData, (d) => d.id == id);
+  const dropInfo = find(
+    process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
+    (d) => d.id == id
+  );
   useEffect(async () => {
     if (includes(["11", "12", "13", "15"], id)) return null;
     if (id === 11 || id === 12 || id === 13 || id === 15) return null;
