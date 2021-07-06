@@ -10,13 +10,16 @@ import Main from "../../../components/layouts/Main";
 import { fetchVersusDrop } from "../../../components/profile/transactions";
 import Head from "next/head";
 import dropsData from "../../../components/general/drops.json";
+import testDropsData from "../../../components/general/testdrops.json";
 import { getArt } from "../../../components/profile/ProfileWrapper";
 import Loading from "../../../components/general/Loading";
 import Collection from "../../../components/profile/Collection";
 
 export default function DropCollection({ id }) {
-  console.log("awef");
-  const dropInfo = find(dropsData, (d) => d.id == id);
+  const dropInfo = find(
+    process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
+    (d) => d.id == id
+  );
   const [pieces, setPieces] = useState([]);
   const [drop, setDrop] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,7 +27,6 @@ export default function DropCollection({ id }) {
     const d = await fetchDrop(id);
     setDrop(d);
     const allPieces = await getArt(d.metadata.artistAddress);
-    console.log(allPieces);
     setPieces(allPieces);
     setLoading(false);
   }, [id]);
