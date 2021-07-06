@@ -48,6 +48,7 @@ const Main = ({ children }) => {
     }
     if (user.addr) getBalance();
   }, [user.addr]);
+  user.balance = balance;
   return (
     <>
       <Head>

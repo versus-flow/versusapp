@@ -107,6 +107,7 @@ const EditionBidBox = ({
           drop={drop}
           art={art}
           ended={ended}
+          user={user}
         />
       )}
       <div className="bg-cream-500 text-center relative w-full max-w-xs mx-auto rounded-lg flex flex-col transform">

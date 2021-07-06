@@ -18,6 +18,7 @@ const BidOnEdition = ({
   art,
   ended,
   totalEditions,
+  user,
 }) => {
   const modal = useRef(null);
   const form = useRef(null);
@@ -159,13 +160,17 @@ const BidOnEdition = ({
                   F{parseFloat(currentEdition.price).toFixed(2)}
                 </span>
               </span>
-              <div className="border border-regGrey flex items-center justify-between mt-2 mx-auto px-3 py-1 rounded-full text-xs">
-                <div className="flex items-center">
-                  <FlowLogo className="h-6" />{" "}
-                  <span className="ml-2">Your balance:</span>
+              {user && user.addr ? (
+                <div className="border border-regGrey flex items-center justify-between mt-2 mx-auto px-3 py-1 rounded-full text-xs">
+                  <div className="flex items-center">
+                    <FlowLogo className="h-6" />{" "}
+                    <span className="ml-2">Your balance:</span>
+                  </div>
+                  <span className="font-bold ml-1">{user.balance}</span>
                 </div>
-                <span className="font-bold">F123</span>
-              </div>
+              ) : (
+                ""
+              )}
             </div>
             <form ref={form} onSubmit={handleSubmit} className="mt-3 w-full">
               <input
