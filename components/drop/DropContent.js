@@ -19,7 +19,6 @@ export const getWrittenTimer = (seconds) => {
 };
 
 const DropContent = ({ drop, art, timeUntil, timeRemaining }) => {
-  console.log(drop);
   const {
     metadata: { artist, name, description },
   } = drop;

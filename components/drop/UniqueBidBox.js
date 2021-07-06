@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import classnames from "classnames";
+import classNames from "classnames";
 import { includes, get } from "lodash";
 import Link from "next/link";
 
