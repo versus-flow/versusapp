@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { get, find } from "lodash";
+import { get, find, includes } from "lodash";
 import moment from "moment";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
@@ -28,6 +28,8 @@ export default function Drop({ id }) {
   const [loading, setloading] = useState(true);
   const dropInfo = find(dropsData, (d) => d.id == id);
   useEffect(async () => {
+    if (includes(["11", "12", "13"], id)) return null;
+    if (id === 11 || id === 12 || id === 13) return null;
     const drop = await fetchDrop(id);
     const art = await fetchArt(id);
     setUpdatedDrop(drop);

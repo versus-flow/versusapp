@@ -33,7 +33,7 @@ const Landing = () => {
             </h2>
             <div className="mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
-                First auction starting July 6 at 8AM EST
+                First auction starting July 7 at 8AM EST
               </h4>
               {timer && (
                 <div
@@ -91,11 +91,11 @@ const Landing = () => {
                 </div>
               )}
             </div>
-            <ArrowButton
+            {/* <ArrowButton
               href="/drop/11"
               text="View Drop"
               className="mx-auto sm:mx-0 mt-2"
-            />
+            /> */}
           </div>
           <div className="mt-6 sm:h-full sm:mt-0 w-full">
             <img
