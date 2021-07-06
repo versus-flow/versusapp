@@ -18,7 +18,7 @@ import {
 } from "../../components/profile/transactions";
 import Head from "next/head";
 import dropsData from "../../components/general/drops.json";
-import testDropsData from "../../components/general/drops.json";
+import testDropsData from "../../components/general/testdrops.json";
 import Loading from "../../components/general/Loading";
 
 export default function Drop({ id }) {
