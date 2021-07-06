@@ -28,8 +28,8 @@ export default function Drop({ id }) {
   const [loading, setloading] = useState(true);
   const dropInfo = find(dropsData, (d) => d.id == id);
   useEffect(async () => {
-    if (includes(["11", "12", "13"], id)) return null;
-    if (id === 11 || id === 12 || id === 13) return null;
+    if (includes(["11", "12", "13", "15"], id)) return null;
+    if (id === 11 || id === 12 || id === 13 || id === 15) return null;
     const drop = await fetchDrop(id);
     const art = await fetchArt(id);
     setUpdatedDrop(drop);

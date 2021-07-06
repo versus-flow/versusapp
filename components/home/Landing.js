@@ -8,7 +8,7 @@ import classNames from "classnames";
 
 const Landing = () => {
   const [timeRemaining, settimeRemaining] = useState(
-    1625572800 - moment().unix()
+    1625659200 - moment().unix()
   );
   useEffect(() => {
     if (timeRemaining > 0) {
@@ -91,11 +91,11 @@ const Landing = () => {
                 </div>
               )}
             </div>
-            {/* <ArrowButton
-              href="/drop/11"
+            <ArrowButton
+              href="/drop/14"
               text="View Drop"
               className="mx-auto sm:mx-0 mt-2"
-            /> */}
+            />
           </div>
           <div className="mt-6 sm:h-full sm:mt-0 w-full">
             <img
