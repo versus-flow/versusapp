@@ -65,12 +65,12 @@ const BidOnEdition = ({
             form.current.reset();
             setStatus({
               msg: "Bid processing",
-              subtext: "Please wait while we submit the bid to the server.",
+              subtext: "Waiting for Flow to accept our transaction.",
             });
           },
           async onSuccess(status) {
             setStatus({
-              msg: "Bid Succesfully Submitted",
+              msg: "Bid Successfully Submitted",
               subtext: "Your bid was successfully submitted.",
               allowClose: true,
             });
@@ -80,8 +80,8 @@ const BidOnEdition = ({
           },
           onSubmission() {
             setStatus({
-              msg: "Submitting to Server",
-              subtext: "Please wait while we submit the bid to the server.",
+              msg: "Bid accepted",
+              subtext: "Waiting for Flow to finish our transaction.",
             });
           },
           async onError(error) {
@@ -132,7 +132,7 @@ const BidOnEdition = ({
       <div className="absolute bg-black-600 bg-opacity-90 h-full left-0 top-0 w-full" />
       <div
         ref={modal}
-        className="bg-cream-500 flex flex-col items-center max-w-full px-20 py-8 rounded-2xl w-128 z-10 modal-scroll"
+        className="bg-cream-500 flex flex-col items-center max-w-full px-10 sm:px-20 py-8 rounded-2xl w-128 z-10 modal-scroll"
       >
         <Logo className="h-10" />
         {status && status.msg ? (
@@ -187,7 +187,10 @@ const BidOnEdition = ({
             </form>
             <div className="flex justify-between mt-12 w-full">
               <ArrowButton text="Confirm" onClick={handleSubmit} />
-              <span className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer">
+              <span
+                className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer"
+                onClick={close}
+              >
                 Cancel
                 <Arrow className="ml-2" />
               </span>

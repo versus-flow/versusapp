@@ -122,7 +122,7 @@ const BidOnUnique = ({ close, defaultBid, drop, art, ended, user }) => {
       <div className="absolute bg-black-600 bg-opacity-90 h-full left-0 top-0 w-full" />
       <div
         ref={modal}
-        className="bg-cream-500 flex flex-col items-center max-w-full px-20 py-8 rounded-2xl w-128 z-10 modal-scroll"
+        className="bg-cream-500 flex flex-col items-center max-w-full px-10 sm:px-20 py-8 rounded-2xl w-128 z-10 modal-scroll"
       >
         <Logo className="h-10" />
         {status && status.msg ? (
