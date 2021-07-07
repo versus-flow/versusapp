@@ -40,7 +40,7 @@ const BidOnUnique = ({ close, defaultBid, drop, art, ended, user }) => {
         [
           fcl.transaction(bidTransaction),
           fcl.args([
-            fcl.arg("0xdb47998bf96c9ef1", t.Address),
+            fcl.arg("0xd796ff17107bbff6", t.Address),
             fcl.arg(parseInt(drop.dropId, 10), t.UInt64),
             fcl.arg(drop.uniqueStatus.id, t.UInt64),
             fcl.arg(newBid.toFixed(1).toString(), t.UFix64),
