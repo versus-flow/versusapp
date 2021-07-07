@@ -33,7 +33,9 @@ const Landing = () => {
             </h2>
             <div className="mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
-                First auction starting July 7 at 8AM EST
+                {timer
+                  ? "First auction starting July 7 at 8AM EST"
+                  : "First auction now open!"}
               </h4>
               {timer && (
                 <div
