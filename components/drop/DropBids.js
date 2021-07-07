@@ -32,7 +32,7 @@ const DropBids = ({ drop, art, user, timeRemaining }) => {
           <div className="py-8 md:py-0 col-span-2 h-full flex items-center justify-center">
             <Logo className="h-12 ml-2 relative" />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-4 mt-8 sm:mt-0">
             <EditionBidBox
               drop={drop}
               art={art}

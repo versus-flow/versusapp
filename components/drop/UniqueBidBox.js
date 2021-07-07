@@ -99,8 +99,8 @@ const UniqueBidBox = ({
       )}
       <div className="bg-cream-500 text-center relative w-full max-w-xs mx-auto rounded-lg flex flex-col transform">
         {winning || drop.winning === "TIE" ? (
-          <div class="vs-gradient win-border rounded-lg">
-            <div class="-translate-x-1/2 -translate-y-full absolute font-bold left-1/2 px-4 py-1 rounded-t-lg text-sm text-white transform uppercase vs-gradient">
+          <div className="vs-gradient win-border rounded-lg">
+            <div className="-translate-x-1/2 -translate-y-full absolute font-bold left-1/2 px-4 py-1 rounded-t-lg text-sm text-white transform uppercase vs-gradient">
               {ended ? "Winner" : drop.winning === "TIE" ? "Tied" : `Winning`}
             </div>
           </div>

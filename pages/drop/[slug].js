@@ -35,10 +35,10 @@ export default function Drop({ id }) {
     if (includes(["11", "12", "13", "15"], id)) return null;
     if (id === 11 || id === 12 || id === 13 || id === 15) return null;
     const drop = await fetchDrop(id);
-    const art = await fetchArt(id);
     setUpdatedDrop(drop);
-    setUpdatedArt(art);
     setloading(false);
+    const art = await fetchArt(id);
+    setUpdatedArt(art);
     window.fetches = setInterval(async () => {
       const drop = await fetchDrop(id);
       setUpdatedDrop(drop);

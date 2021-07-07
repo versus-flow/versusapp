@@ -5,7 +5,7 @@ import Twitter from "../../assets/twitter.svg";
 import Instagram from "../../assets/instagram.svg";
 import EditProfile from "../profile/EditProfile";
 
-const ProfileSummary = ({ drop }) => {
+const ProfileSummary = ({ drop, name }) => {
   const [openEdit, setOpenEdit] = useState(false);
   return (
     <>
@@ -29,7 +29,9 @@ const ProfileSummary = ({ drop }) => {
             </div>
           </div> */}
           <div className="mt-4">
-            <h2 className="font-bold font-inktrap text-3xl">My Profile</h2>
+            <h2 className="font-bold font-inktrap text-3xl">
+              {name ? `Profile ${name}` : "My Profile"}
+            </h2>
             {/* <p className="">@kanea99</p>
             <p className="mt-4">
               Alessandro Pautasso is a digital artist living in California

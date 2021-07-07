@@ -15,10 +15,12 @@ export async function fetchProfile(addr) {
   return await fcl.decode(response);
 }
 
-export default function Profile({ self }) {
+export default function Profile({ self, name }) {
   return (
     <Main>
-      {(user) => user.addr && <ProfileWrapper user={user} self={self} />}
+      {(user) =>
+        user.addr && <ProfileWrapper user={user} self={self} name={name} />
+      }
     </Main>
   );
 }
@@ -26,5 +28,5 @@ export default function Profile({ self }) {
 export async function getServerSideProps(context) {
   const name = get(context, "params.name");
   if (name === "me") return { props: { self: true } };
-  return { props: {} };
+  return { props: { name } };
 }

@@ -28,7 +28,7 @@ export const getArt = async (addr) => {
   return allPieces;
 };
 
-const ProfileWrapper = ({ self, user }) => {
+const ProfileWrapper = ({ self, user, name }) => {
   useEffect(async () => {
     if (self && user && user.addr) {
       // const profile = await fetchProfile(user.addr);
@@ -38,13 +38,13 @@ const ProfileWrapper = ({ self, user }) => {
   const [pieces, setPieces] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(async () => {
-    const allPieces = await getArt(user.addr);
+    const allPieces = await getArt(name || user.addr);
     setPieces(allPieces);
     setLoading(false);
   }, []);
   return (
     <>
-      <ProfileSummary />
+      <ProfileSummary name={name} />
       <ProfileTabs />
       {loading ? (
         <div className="bg-white">
@@ -53,7 +53,7 @@ const ProfileWrapper = ({ self, user }) => {
           </div>
         </div>
       ) : (
-        <Collection pieces={pieces} />
+        <Collection pieces={pieces} self={self} user={user} />
       )}
     </>
   );

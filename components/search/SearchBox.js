@@ -70,6 +70,7 @@ const SearchBox = () => {
         <div
           ref={bar}
           className="absolute left-0 w-full top-full shadow-sm rounded-sm bg-white mt-2 z-50 max-w-full"
+          onClick={() => setShow(false)}
         >
           {map(filteredDrops(drops, query), (r) => (
             <SearchResult key={r.id} result={r} />

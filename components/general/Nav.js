@@ -28,7 +28,7 @@ const Nav = ({ user, balance }) => {
         </Link>
       </div>
       <div className="col-span-1 hidden sm:flex justify-center items-center">
-        {/* <SearchBox /> */}
+        <SearchBox />
         {/* <Link href={`/marketplace`}>
           <a className="ml-4 font-semibold text-sm hidden sm:inline-block">
             Marketplace

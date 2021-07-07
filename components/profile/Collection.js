@@ -4,8 +4,9 @@ import { map } from "lodash";
 import ArrowButton from "../general/ArrowButton";
 import DropPreview from "../marketplace/DropPreview";
 import ListItem from "../marketplace/ListItem";
+import CollectionOnboard from "./CollectionOnboard";
 
-const Collection = ({ pieces, other }) => {
+const Collection = ({ pieces, other, self, user }) => {
   const [listItem, setListItem] = useState(false);
   return (
     <>
@@ -49,6 +50,7 @@ const Collection = ({ pieces, other }) => {
                 </>
               ) : (
                 <>
+                  {self && <CollectionOnboard user={user} />}
                   <h2 className="font-black font-inktrap leading-6 text-2xl">
                     Your collection will be shown here
                   </h2>

@@ -3,6 +3,7 @@ import moment from "moment";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import classNames from "classnames";
+import Loading from "../general/Loading";
 
 export const getWrittenTimer = (seconds) => {
   var days = Math.floor(seconds / (3600 * 24));
@@ -98,9 +99,15 @@ const DropContent = ({ drop, art, timeUntil, timeRemaining }) => {
       <div className="container">
         <div className="pt-16 pb-8 sm:container md:grid grid-cols-2 gap-16">
           <div className="w-3/4 mx-auto mb-3 md:mb-0 md:w-full">
-            <Zoom>
-              <img className="h-auto w-full" src={art} />
-            </Zoom>
+            {art ? (
+              <Zoom>
+                <img className="h-auto w-full" src={art} />
+              </Zoom>
+            ) : (
+              <div className="w-full h-48 flex justify-center items-center">
+                <Loading />
+              </div>
+            )}
           </div>
           <div className="flex flex-col items-center justify-center text-center">
             <div className="w-108 max-w-full">
