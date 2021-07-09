@@ -8,7 +8,7 @@ import classNames from "classnames";
 
 const Landing = () => {
   const [timeRemaining, settimeRemaining] = useState(
-    1625745600 - moment().unix()
+    1625832000 - moment().unix()
   );
   useEffect(() => {
     if (timeRemaining > 0) {
@@ -34,8 +34,8 @@ const Landing = () => {
             <div className="mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
                 {timer
-                  ? "Second auction starting July 8 at 8AM EST"
-                  : "Second auction now open!"}
+                  ? "The final auction starts July 9 at 8AM EST"
+                  : "Final auction now open!"}
               </h4>
               {timer && (
                 <div
@@ -94,7 +94,7 @@ const Landing = () => {
               )}
             </div>
             <ArrowButton
-              href="/drop/16"
+              href="/drop/17"
               text="View Drop"
               className="mx-auto sm:mx-0 mt-2"
             />
