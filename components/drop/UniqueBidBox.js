@@ -132,11 +132,10 @@ const UniqueBidBox = ({
               <p>
                 Highest bid by{" "}
                 <Link
-                  href="#"
-                  // href={`/profile/${get(drop, "uniqueStatus.leader")}`}
+                  href={`/profile/${get(drop, "uniqueStatus.leader")}`}
                   className="underline"
                 >
-                  {get(drop, "uniqueStatus.leader")}
+                  <a>{get(drop, "uniqueStatus.leader")}</a>
                 </Link>
               </p>
             ) : (

@@ -160,8 +160,7 @@ const EditionBidBox = ({
                       Edition {index + 1} -{" "}
                       {e.leader ? (
                         <Link
-                          href="#"
-                          to={`/profile/${e.leader}`}
+                          href={`/profile/${e.leader}`}
                           className="underline"
                         >
                           {e.leader}
