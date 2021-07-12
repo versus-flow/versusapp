@@ -8,7 +8,7 @@ import classNames from "classnames";
 
 const Landing = () => {
   const [timeRemaining, settimeRemaining] = useState(
-    1625832000 - moment().unix()
+    1626350400 - moment().unix()
   );
   useEffect(() => {
     if (timeRemaining > 0) {
@@ -26,16 +26,16 @@ const Landing = () => {
         <div className="container flex flex-col-reverse gap-16 grid-cols-2 hero-height items-center relative sm:grid z-10">
           <div className="h-full flex flex-col justify-center sm:items-start sm:py-0 text-center sm:text-left">
             <h3 className="-backdrop-hue-rotate-15 font-inktrap text-lg">
-              Ben Mauro
+              Invasion
             </h3>
             <h2 className="2xl:text-8xl font-bold font-inktrap leading-loose lg:text-7xl relative sm:-left-1 sm:text-5xl text-3xl">
-              Mech Auctions
+              MiraRuido
             </h2>
             <div className="mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
                 {timer
-                  ? "The final auction starts July 9 at 8AM EST"
-                  : "Final auction now open!"}
+                  ? "The auction starts July 15 at 8AM EST"
+                  : "Auction now open!"}
               </h4>
               {timer && (
                 <div
@@ -94,14 +94,14 @@ const Landing = () => {
               )}
             </div>
             <ArrowButton
-              href="/drop/17"
+              href="/drop/18"
               text="View Drop"
               className="mx-auto sm:mx-0 mt-2"
             />
           </div>
-          <div className="mt-6 sm:h-full sm:mt-0 w-full">
+          <div className="mt-6 sm:h-full sm:mt-0 w-full max-h-112">
             <img
-              src="/images/mauro.jpg"
+              src="/images/drops/miraruido/main.jpg"
               className="w-full sm:h-full sm:object-contain"
             />
           </div>
