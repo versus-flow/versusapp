@@ -50,7 +50,10 @@ const BidOnEdition = ({
         [
           fcl.transaction(bidTransaction),
           fcl.args([
-            fcl.arg("0xd796ff17107bbff6", t.Address),
+            fcl.arg(
+              process.env.NEXT_PUBLIC_CONTRACT || "0xdb47998bf96c9ef1",
+              t.Address
+            ),
             fcl.arg(drop.dropId, t.UInt64),
             fcl.arg(currentEdition.id, t.UInt64),
             fcl.arg(newBid.toFixed(1).toString(), t.UFix64),

@@ -31,8 +31,8 @@ export const getArt = async (addr) => {
 const ProfileWrapper = ({ self, user, name }) => {
   useEffect(async () => {
     if (self && user && user.addr) {
-      // const profile = await fetchProfile(user.addr);
-      // console.log(profile);
+      const profile = await fetchProfile(user.addr);
+      console.log(profile);
     }
   }, [self, user]);
   const [pieces, setPieces] = useState([]);

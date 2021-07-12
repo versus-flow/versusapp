@@ -83,7 +83,7 @@ import Profile from 0xCONTRACT
 pub fun main(address:Address) : &AnyResource{Profile.Public}? {
   return getAccount(address)
         .getCapability<&{Profile.Public}>(Profile.publicPath)
-        .borrow()!
+        .borrow()
 }
 `;
 
