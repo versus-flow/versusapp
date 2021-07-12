@@ -39,7 +39,6 @@ export default function Drop({ id }) {
     setloading(false);
     const art = await fetchArt(id);
     setUpdatedArt(art);
-    console.log(art);
     window.fetches = setInterval(async () => {
       const drop = await fetchDrop(id);
       setUpdatedDrop(drop);
