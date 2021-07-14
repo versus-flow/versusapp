@@ -3,7 +3,7 @@ import Twitter from "../../assets/twitter.svg";
 import Instagram from "../../assets/instagram.svg";
 import Youtube from "../../assets/youtube.svg";
 
-const DropFollow = ({ dropInfo }) => {
+const DropFollow = ({ dropInfo = {} }) => {
   return (
     <div className="bg-white py-16">
       <div className="container">

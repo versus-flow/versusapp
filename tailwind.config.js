@@ -63,6 +63,10 @@ module.exports = {
         triple: "300%",
         quad: "400%",
       },
+      maxHeight: {
+        112: "28rem",
+        128: "32rem",
+      },
     },
   },
   variants: {

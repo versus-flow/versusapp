@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { get } from "lodash";
 
 import ArrowButton from "../general/ArrowButton";
 import Twitter from "../../assets/twitter.svg";
 import Instagram from "../../assets/instagram.svg";
 import EditProfile from "../profile/EditProfile";
 
-const DropArtist = ({ drop, dropInfo }) => {
+const DropArtist = ({ drop, dropInfo = {} }) => {
   const [openEdit, setOpenEdit] = useState(false);
   return (
     <>
@@ -15,7 +16,7 @@ const DropArtist = ({ drop, dropInfo }) => {
           <div className="flex items-center">
             <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20">
               <img
-                src={dropInfo.smallImage}
+                src={get(dropInfo, "smallImage")}
                 className="h-full object-cover rounded-full w-full"
               />
             </div>
