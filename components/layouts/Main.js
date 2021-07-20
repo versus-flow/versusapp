@@ -31,6 +31,7 @@ fcl
     process.env.NEXT_PUBLIC_FLOW_TOKEN || "0x7e60df042a9c0868"
   )
   .put("0xCONTRACT", process.env.NEXT_PUBLIC_CONTRACT || "0xdb47998bf96c9ef1")
+  .put("0xPROFILE", process.env.NEXT_PUBLIC_PROFILE || "0xb85c2e3d0253e2a8")
   .put("env", process.env.NEXT_PUBLIC_FLOW_ENV || "testnet");
 
 const Main = ({ children }) => {

@@ -29,7 +29,6 @@ const EditProfile = ({ close }) => {
     if (twitter.value) dict.push({ key: "twitter", value: twitter.value });
     if (youtube.value) dict.push({ key: "youtube", value: youtube.value });
     if (discord.value) dict.push({ key: "discord", value: discord.value });
-    console.log(dict);
     try {
       await tx(
         [

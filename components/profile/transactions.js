@@ -78,9 +78,9 @@ pub fun main(address: Address): Bool {
 `;
 
 export const profileGet = `
-import Profile from 0xCONTRACT
+import Profile from 0xPROFILE
 
-pub fun main(address:Address) : &AnyResource{Profile.Public}? {
+pub fun main(address:Address) : &{Profile.Public}? {
   return getAccount(address)
         .getCapability<&{Profile.Public}>(Profile.publicPath)
         .borrow()
