@@ -19,7 +19,9 @@ export default function Profile({ self, name }) {
   return (
     <Main>
       {(user) =>
-        user.addr && <ProfileWrapper user={user} self={self} name={name} />
+        (user.addr || name) && (
+          <ProfileWrapper user={user} self={self} name={name} />
+        )
       }
     </Main>
   );
