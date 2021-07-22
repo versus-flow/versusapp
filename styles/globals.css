@@ -126,3 +126,7 @@ body {
 .zoom-holder > div {
   @apply w-full h-full;
 }
+
+[data-rmiz-modal-content] .object-cover {
+  object-fit: contain !important;
+}
