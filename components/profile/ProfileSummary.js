@@ -3,68 +3,113 @@ import React, { useState } from "react";
 import ArrowButton from "../general/ArrowButton";
 import Twitter from "../../assets/twitter.svg";
 import Instagram from "../../assets/instagram.svg";
+import Youtube from "../../assets/youtube.svg";
+import Discord from "../../assets/discord.svg";
 import EditProfile from "../profile/EditProfile";
+import { get } from "lodash";
 
-const ProfileSummary = ({ drop, name }) => {
+const ProfileSummary = ({ self, drop, name, profile = {} }) => {
   const [openEdit, setOpenEdit] = useState(false);
+  console.log(profile);
+  const { avatar, followers, following, description } = profile;
+  const twitter = get(profile, "links.twitter.url");
+  const instagram = get(profile, "links.instagram.url");
+  const youtube = get(profile, "links.youtube.url");
+  const discord = get(profile, "links.discord.url");
   return (
     <>
-      {openEdit && <EditProfile close={() => setOpenEdit(false)} />}
+      {openEdit && (
+        <EditProfile profile={openEdit} close={() => setOpenEdit(false)} />
+      )}
       <div className="container my-12">
         <div className="w-1/2">
-          {/* <div className="flex items-center">
-            <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20">
-              <img
-                src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=60"
-                className="h-full object-cover rounded-full w-full"
-              />
-            </div>
-            <div className="ml-4">
-              <p className="text-black-100 text-sm">Following</p>
-              <p className="font-bold text-xl">24</p>
-            </div>
-            <div className="ml-8">
-              <p className="text-black-100 text-sm">Followers</p>
-              <p className="font-bold text-xl">11</p>
-            </div>
-          </div> */}
+          <div className="flex items-center">
+            {avatar && (
+              <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20">
+                <img
+                  src={avatar}
+                  className="h-full object-cover rounded-full w-full"
+                />
+              </div>
+            )}
+            {following ? (
+              <>
+                <div className="ml-8">
+                  <p className="text-black-100 text-sm">Following</p>
+                  <p className="font-bold text-xl">{following.length || 0}</p>
+                </div>
+                <div className="ml-8">
+                  <p className="text-black-100 text-sm">Followers</p>
+                  <p className="font-bold text-xl">{followers.length || 0}</p>
+                </div>
+              </>
+            ) : (
+              ""
+            )}
+          </div>
           <div className="mt-4">
             <h2 className="font-bold font-inktrap text-3xl">
-              {name ? `Profile ${name}` : "My Profile"}
+              {self ? "My " : ""}Profile
             </h2>
-            {/* <p className="">@kanea99</p>
-            <p className="mt-4">
-              Alessandro Pautasso is a digital artist living in California
-              inspired by futurism, innovation and how current events will be
-              judged by future.
-            </p> */}
+            <p className="">{profile.name ? `@${profile.name}` : ""}</p>
+            <p className="mt-4">{description}</p>
           </div>
         </div>
-        <div className="hidden justify-between items-center mt-3">
+        <div className="flex justify-between items-center mt-3">
           <div className="mt-2">
-            <h5 className="text-black-100 text-sm">Social accounts</h5>
-            <div className="flex items-center mt-2">
-              <a
-                href="https://twitter.com/FlowVersus"
-                target="_blank"
-                className="cursor-pointer"
-              >
-                <Twitter className="fill-current mr-4 h-4" />
-              </a>
-              <a
-                href="https://www.instagram.com/flowversus/"
-                target="_blank"
-                className="cursor-pointer"
-              >
-                <Instagram className="fill-current h-4" />
-              </a>
-            </div>
+            {twitter || instagram || youtube || discord ? (
+              <>
+                <h5 className="text-black-100 text-sm">Social accounts</h5>
+                <div className="flex items-center mt-2">
+                  {twitter && (
+                    <a
+                      href={twitter}
+                      target="_blank"
+                      className="cursor-pointer"
+                    >
+                      <Twitter className="fill-current mr-4 h-4" />
+                    </a>
+                  )}
+                  {instagram && (
+                    <a
+                      href={instagram}
+                      target="_blank"
+                      className="cursor-pointer"
+                    >
+                      <Instagram className="fill-current mr-4 h-4" />
+                    </a>
+                  )}
+                  {youtube && (
+                    <a
+                      href={youtube}
+                      target="_blank"
+                      className="cursor-pointer"
+                    >
+                      <Youtube className="fill-current mr-4 h-4" />
+                    </a>
+                  )}
+                  {discord && (
+                    <a
+                      href={discord}
+                      target="_blank"
+                      className="cursor-pointer"
+                    >
+                      <Discord className="fill-current h-4" />
+                    </a>
+                  )}
+                </div>
+              </>
+            ) : (
+              ""
+            )}
           </div>
-          <ArrowButton
-            text="Edit"
-            className="standard-button arrow-button transparent-button"
-            onClick={() => setOpenEdit(true)}
-          />
+          {self && (
+            <ArrowButton
+              text="Edit"
+              className="standard-button arrow-button transparent-button"
+              onClick={() => setOpenEdit(profile)}
+            />
+          )}
         </div>
       </div>
     </>

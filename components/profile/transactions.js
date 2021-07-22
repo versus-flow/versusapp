@@ -93,7 +93,7 @@ import FlowToken from 0xFlowToken
 import Profile, Art, Marketplace from 0xCONTRACT
 import NonFungibleToken from 0xNonFungibleToken
 
-transaction(name: String, description: String, socials: {String: String}) {
+transaction(name: String, description: String, avatar: String, socials: {String: String}) {
   prepare(acct: AuthAccount) {
 
     let profile <-Profile.createUser(name:name, description: description, allowStoringFollowers:true, tags:["versus"])
@@ -120,6 +120,8 @@ transaction(name: String, description: String, socials: {String: String}) {
       type: Type<&{Art.CollectionPublic}>(),
       tags: ["versus", "nft"]))
 
+    profile.setAvatar(avatar)
+
     for key in socials.keys {
       let value = socials[key]
       profile.addLink(Profile.Link(key, key, value!))
@@ -129,4 +131,23 @@ transaction(name: String, description: String, socials: {String: String}) {
     acct.link<&Profile.User{Profile.Public}>(Profile.publicPath, target: Profile.storagePath)
   }
 }
+`;
+
+export const profileChange = `
+  import Profile from 0xPROFILE
+
+  transaction(name: String, description: String, avatar: String, socials: {String: String}) {
+    prepare(account: AuthAccount) {
+      let profile = account
+        .borrow<&Profile.User{Profile.Owner}>(from: Profile.storagePath)!
+      profile.setName(name)
+      profile.setDescription(description)
+      profile.setAvatar(avatar)
+
+      for key in socials.keys {
+        let value = socials[key]
+        profile.addLink(Profile.Link(key, key, value!))
+      }
+    }
+  }
 `;

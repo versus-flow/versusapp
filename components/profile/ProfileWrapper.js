@@ -9,6 +9,7 @@ import ProfileTabs from "./ProfileTabs";
 import { fetchMyArt, fetchOneArt } from "./transactions";
 import Collection from "./Collection";
 import Loading from "../general/Loading";
+import { getAllMarketplaceIDs } from "../marketplace/transactions";
 
 export const getArt = async (addr) => {
   const response = await fcl.send([
@@ -28,23 +29,40 @@ export const getArt = async (addr) => {
   return allPieces;
 };
 
+export async function getMarketplaceIDs(addr) {
+  const response = await fcl.send([
+    fcl.script(getAllMarketplaceIDs),
+    fcl.args([fcl.arg(addr, t.Address)]),
+  ]);
+  return await fcl.decode(response);
+}
+
 const ProfileWrapper = ({ self, user, name }) => {
+  const [currentProfile, setCurrentProfile] = useState({});
   useEffect(async () => {
-    if (self && user && user.addr) {
-      const profile = await fetchProfile(user.addr);
-      console.log(profile);
+    if ((self && user && user.addr) || name) {
+      const profile = await fetchProfile(self ? user.addr : name);
+      setCurrentProfile(profile || {});
+      const marketplaceIDs = await getMarketplaceIDs(self ? user.addr : name);
+      console.log(marketplaceIDs);
     }
-  }, [self, user]);
+  }, [self, user, name]);
   const [pieces, setPieces] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(async () => {
     const allPieces = await getArt(name || user.addr);
     setPieces(allPieces);
     setLoading(false);
+    const refetchProfile = async () => {
+      const profile = await fetchProfile(user.addr);
+      setCurrentProfile(profile);
+    };
+    document.addEventListener("refetch", refetchProfile, false);
+    return () => document.removeEventListener("refetch", refetchProfile, false);
   }, []);
   return (
     <>
-      <ProfileSummary name={name} />
+      <ProfileSummary self={self} name={name} profile={currentProfile} />
       <ProfileTabs />
       {loading ? (
         <div className="bg-white">

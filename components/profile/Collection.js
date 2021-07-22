@@ -26,13 +26,17 @@ const Collection = ({ pieces, other, self, user }) => {
                   shadow
                   zoom
                   img={p.img}
-                  // button={
-                  //   <ArrowButton
-                  //     text="List your item"
-                  //     className="transparent-button"
-                  //     onClick={() => setListItem(p)}
-                  //   />
-                  // }
+                  button={
+                    self ? (
+                      <ArrowButton
+                        text="List your item"
+                        className="transparent-button"
+                        onClick={() => setListItem(p)}
+                      />
+                    ) : (
+                      false
+                    )
+                  }
                 />
               ))}
             </div>
@@ -52,11 +56,13 @@ const Collection = ({ pieces, other, self, user }) => {
                 <>
                   {self && <CollectionOnboard user={user} />}
                   <h2 className="font-black font-inktrap leading-6 text-2xl">
-                    Your collection will be shown here
+                    {self ? "Your" : "This user's"} collection will be shown
+                    here
                   </h2>
                   <p className="mb-3 mt-3">
-                    When you have bought or won a bid your item will show up
-                    here
+                    {self
+                      ? "When you have bought or won a bid your item will show up here"
+                      : "When they have bought or won a bid their item will show up here"}
                   </p>
                 </>
               )}

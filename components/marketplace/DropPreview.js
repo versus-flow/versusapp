@@ -21,7 +21,11 @@ const DropPreview = ({ shadow, zoom, img, title, artist, edition, button }) => {
       </div>
       <div className="py-3 px-2">
         <h3 className="font-bold font-inktrap">{title}</h3>
-        <div className="flex justify-between mb-2 mt-2">
+        <div
+          className={classNames("flex justify-between mt-2", {
+            "mb-2": !!button,
+          })}
+        >
           <div className="flex flex-col text-black-100 text-sm">
             <span className="">{artist}</span>
             <span>{edition}</span>
