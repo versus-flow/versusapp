@@ -278,12 +278,24 @@
     "id": "19",
     "marketplaceAccount": "0xd796ff17107bbff6",
     "title": "Cloudy Thoughts",
-    "slug": "bryanbrinkman",
+    "slug": "jos",
     "handle": "bryanbrinkman",
     "smallImage": "/images/drops/bryanbrinkman/preview.jpg",
     "featuredImage": "",
     "twitter": "https://twitter.com/bryanbrinkman",
     "instagram": "https://www.instagram.com/brinkmanatee",
     "aboutArtist": "Bryan Brinkman is an award-winning multi-media artist who utilizes his career in animation and motion graphics to create fun and playful works about the crypto-verse. Using a variety of digital tools, he creates fun and inventive ways to convey ideas that are both approachable and appealing."
+  },
+  {
+    "id": "20",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "",
+    "slug": "jos",
+    "handle": "jos",
+    "smallImage": "/images/drops/jos/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/justlatpl",
+    "instagram": "https://www.instagram.com/lookattheparkinglot",
+    "aboutArtist": "Jos is a digital artist from Buenos Aires. He builds semi-static surreal worlds to share his perception: everything is as beautiful as it is absurd. But there are wonders everywhere and they manifest themselves for those who take the time to stop and observe. \n \n His main interests are surreal scenarios, dyspotic imagery, and the representation of our link to the cosmos. He began his journey in the NFT ecosystem in October 2020 and his works are already in the hands of prestigious collectors in the community."
   }
 ]
