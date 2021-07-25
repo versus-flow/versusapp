@@ -78,7 +78,7 @@ const ListItem = ({ close, piece }) => {
         </div>
         {status != "List for sale" ? (
           <p className="text-center mt-4 mb-6">
-            You are abou to list this item for sale at a price of F{price},
+            You are about to list this item for sale at a price of F{price},
             please confirm below if you would like to proceed.
           </p>
         ) : (

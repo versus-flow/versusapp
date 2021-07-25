@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 
 import Main from "../../components/layouts/Main";
@@ -6,6 +7,8 @@ import Sorting from "../../components/marketplace/filters/Sorting";
 import Results from "../../components/marketplace/Results";
 
 export default function Marketplace() {
+  const [pieces, setPieces] = useState([]);
+  useEffect(() => {}, []);
   return (
     <Main>
       {() => (

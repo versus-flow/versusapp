@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { map } from "lodash";
+import { get, map } from "lodash";
 
 import ArrowButton from "../general/ArrowButton";
 import DropPreview from "../marketplace/DropPreview";
 import ListItem from "../marketplace/ListItem";
 import CollectionOnboard from "./CollectionOnboard";
 
-const Collection = ({ pieces, other, self, user }) => {
+const Collection = ({ pieces, other, self, user, name }) => {
   const [listItem, setListItem] = useState(false);
+  const isMarketPlace = (p) => get(p, "art.name");
   return (
     <>
       {listItem && (
@@ -28,13 +29,27 @@ const Collection = ({ pieces, other, self, user }) => {
                   img={p.img}
                   button={
                     self ? (
+                      isMarketPlace(p) ? (
+                        <ArrowButton
+                          text="View on market"
+                          className="transparent-button"
+                          href={`/listing/${user.addr}/${p.id}`}
+                        />
+                      ) : (
+                        <ArrowButton
+                          text="List your item"
+                          className="transparent-button"
+                          onClick={() => setListItem(p)}
+                        />
+                      )
+                    ) : isMarketPlace(p) ? (
                       <ArrowButton
-                        text="List your item"
+                        text="View on market"
                         className="transparent-button"
-                        onClick={() => setListItem(p)}
+                        href={`/listing/${name}/${p.id}`}
                       />
                     ) : (
-                      false
+                      ""
                     )
                   }
                 />

@@ -9,7 +9,7 @@ import ProfileTabs from "./ProfileTabs";
 import { fetchMyArt, fetchOneArt } from "./transactions";
 import Collection from "./Collection";
 import Loading from "../general/Loading";
-import { getAllMarketplaceIDs } from "../marketplace/transactions";
+import { getArtContent, getMarketpaceItems } from "../marketplace/transactions";
 
 export const getArt = async (addr) => {
   const response = await fcl.send([
@@ -29,9 +29,17 @@ export const getArt = async (addr) => {
   return allPieces;
 };
 
-export async function getMarketplaceIDs(addr) {
+export async function oneArt(addr, artId) {
+  const oneArtResponse = await fcl.send([
+    fcl.script(getArtContent),
+    fcl.args([fcl.arg(addr, t.Address), fcl.arg(artId, t.UInt64)]),
+  ]);
+  return fcl.decode(oneArtResponse);
+}
+
+export async function getMyListings(addr) {
   const response = await fcl.send([
-    fcl.script(getAllMarketplaceIDs),
+    fcl.script(getMarketpaceItems),
     fcl.args([fcl.arg(addr, t.Address)]),
   ]);
   return await fcl.decode(response);
@@ -39,16 +47,27 @@ export async function getMarketplaceIDs(addr) {
 
 const ProfileWrapper = ({ self, user, name }) => {
   const [currentProfile, setCurrentProfile] = useState({});
+  const [pieces, setPieces] = useState([]);
+  const [marketPieces, setMarketPieces] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(async () => {
     if ((self && user && user.addr) || name) {
-      const profile = await fetchProfile(self ? user.addr : name);
+      const addr = self ? user.addr : name;
+      const profile = await fetchProfile(addr);
       setCurrentProfile(profile || {});
-      const marketplaceIDs = await getMarketplaceIDs(self ? user.addr : name);
-      console.log(marketplaceIDs);
+      const myListings = await getMyListings(addr);
+      const editedListings = await Promise.all(
+        map(myListings, async (l) => {
+          return {
+            ...l,
+            metadata: l.art,
+            img: await oneArt(addr, l.id),
+          };
+        })
+      );
+      setMarketPieces(editedListings);
     }
   }, [self, user, name]);
-  const [pieces, setPieces] = useState([]);
-  const [loading, setLoading] = useState(true);
   useEffect(async () => {
     const allPieces = await getArt(name || user.addr);
     setPieces(allPieces);
@@ -71,7 +90,12 @@ const ProfileWrapper = ({ self, user, name }) => {
           </div>
         </div>
       ) : (
-        <Collection pieces={pieces} self={self} user={user} />
+        <Collection
+          pieces={[...pieces, ...marketPieces]}
+          self={self}
+          user={user}
+          name={name}
+        />
       )}
     </>
   );

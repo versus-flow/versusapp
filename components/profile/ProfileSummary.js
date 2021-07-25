@@ -10,7 +10,6 @@ import { get } from "lodash";
 
 const ProfileSummary = ({ self, drop, name, profile = {} }) => {
   const [openEdit, setOpenEdit] = useState(false);
-  console.log(profile);
   const { avatar, followers, following, description } = profile;
   const twitter = get(profile, "links.twitter.url");
   const instagram = get(profile, "links.instagram.url");
