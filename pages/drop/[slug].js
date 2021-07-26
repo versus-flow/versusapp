@@ -36,7 +36,6 @@ export default function Drop({ id }) {
     if (id === 11 || id === 12 || id === 13 || id === 15) return null;
     const drop = await fetchDrop(id);
     setUpdatedDrop(drop);
-    console.log(drop);
     setloading(false);
     const art = await fetchArt(id);
     setUpdatedArt(art);

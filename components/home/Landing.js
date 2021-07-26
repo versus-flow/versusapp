@@ -8,7 +8,7 @@ import classNames from "classnames";
 
 const Landing = () => {
   const [timeRemaining, settimeRemaining] = useState(
-    1626955200 - moment().unix()
+    1627560000 - moment().unix()
   );
   useEffect(() => {
     if (timeRemaining > 0) {
@@ -25,9 +25,11 @@ const Landing = () => {
       <div className="fd-section bg-cream-500 z-10 relative sm:py-6">
         <div className="container flex flex-col-reverse gap-16 grid-cols-2 hero-height items-center relative sm:grid z-10">
           <div className="h-full flex flex-col justify-center sm:items-start sm:py-0 text-center sm:text-left">
-            <h3 className="-backdrop-hue-rotate-15 font-inktrap text-lg"></h3>
-            <h2 className="2xl:text-8xl font-bold font-inktrap leading-loose lg:text-7xl relative sm:-left-1 sm:text-5xl text-3xl">
+            <h3 className="-backdrop-hue-rotate-15 font-inktrap text-lg">
               Jos
+            </h3>
+            <h2 className="2xl:text-8xl font-bold font-inktrap leading-loose lg:text-7xl relative sm:-left-1 sm:text-5xl text-3xl">
+              Solitude 2.0
             </h2>
             <div className="mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
