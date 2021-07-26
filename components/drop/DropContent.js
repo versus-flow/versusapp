@@ -117,7 +117,9 @@ const DropContent = ({ drop, art, timeUntil, timeRemaining }) => {
               <h2 className="font-black font-inktrap text-3xl sm:text-5xl">
                 {name}
               </h2>
-              <p className="mt-8 mx-auto text-lg w-11/12">{description}</p>
+              <p className="mt-8 mx-auto text-lg w-11/12 whitespace-pre-line">
+                {description}
+              </p>
             </div>
             {Counter}
           </div>
