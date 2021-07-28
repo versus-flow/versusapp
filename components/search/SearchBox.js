@@ -30,7 +30,10 @@ const SearchBox = () => {
       const drops = await fetchAllDrops();
       const realdrops =
         process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
-          ? filter(drops, (d) => !includes([1, 6, 9, 11, 12, 13, 15], d.dropId))
+          ? filter(
+              drops,
+              (d) => !includes([1, 6, 9, 11, 12, 13, 15, 20], d.dropId)
+            )
           : drops;
       const mappedDrops = map(realdrops, (d) => ({
         id: d.dropId,

@@ -94,7 +94,7 @@ const Landing = () => {
               )}
             </div>
             <ArrowButton
-              href="/drop/20"
+              href="/drop/21"
               text="View Drop"
               className="mx-auto sm:mx-0 mt-2"
             />
