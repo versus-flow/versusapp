@@ -297,5 +297,17 @@
     "twitter": "https://twitter.com/justlatpl",
     "instagram": "https://www.instagram.com/lookattheparkinglot",
     "aboutArtist": "Jos is a digital artist from Buenos Aires. He builds semi-static surreal worlds to share his perception: everything is as beautiful as it is absurd. But there are wonders everywhere and they manifest themselves for those who take the time to stop and observe. \n \n His main interests are surreal scenarios, dyspotic imagery, and the representation of our link to the cosmos. He began his journey in the NFT ecosystem in October 2020 and his works are already in the hands of prestigious collectors in the community."
+  },
+  {
+    "id": "23",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "PATH",
+    "slug": "lorem",
+    "handle": "lorem",
+    "smallImage": "/images/drops/lorem/preview.jpg",
+    "featuredImage": "",
+    "twitter": "https://twitter.com/",
+    "instagram": "https://www.instagram.com/loremdeloop",
+    "aboutArtist": "LOREM is a self-taught creative who has worked all over the world with the ability to define motion and precisely encapsulate the emotion within."
   }
 ]
