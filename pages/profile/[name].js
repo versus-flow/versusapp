@@ -12,6 +12,7 @@ export async function fetchProfile(addr) {
     fcl.script(profileGet),
     fcl.args([fcl.arg(addr, t.Address)]),
   ]);
+  console.log(response);
   return await fcl.decode(response);
 }
 
