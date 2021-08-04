@@ -50,15 +50,39 @@ export default function Marketplace() {
         ).json(),
         (i) => i.blockEventData.id
       );
+      let withdrawn = uniqBy(
+        await (
+          await fetch(
+            getGraffleUrl("?eventType=A.CONTRACT.Marketplace.SaleWithdrawn")
+          )
+        ).json(),
+        (i) => i.blockEventData.id
+      );
       const filtered = filter(r, (item) => {
         const soldVersion = find(
           sold,
           (s) => s.blockEventData.id === item.blockEventData.id
         );
-        if (!soldVersion) return true;
-        return moment(item.eventDate).isAfter(moment(soldVersion.eventDate));
+        const withdrawnVersion = find(
+          withdrawn,
+          (s) => s.blockEventData.id === item.blockEventData.id
+        );
+        if (!soldVersion && !withdrawnVersion) return true;
+        if (!soldVersion) {
+          return moment(item.eventDate).isAfter(moment(soldVersion.eventDate));
+        } else if (!withdrawnVersion) {
+          return moment(item.eventDate).isAfter(
+            moment(withdrawnVersion.eventDate)
+          );
+        } else {
+          const mostRecentDate = moment(soldVersion.eventDate).isAfter(
+            moment(withdrawnVersion.eventDate)
+          )
+            ? moment(soldVersion.eventDate)
+            : moment(withdrawnVersion.eventDate);
+          return moment(item.eventDate).isAfter(mostRecentDate);
+        }
       });
-      // MAKE SURE TO FILTER OUT WITHDRAWN
       const pieces = await getPiecesByIds(filtered);
       setPieces(pieces);
       setLoading(false);
