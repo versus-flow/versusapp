@@ -3,7 +3,17 @@ import React from "react";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 
-const DropPreview = ({ shadow, zoom, img, title, artist, edition, button }) => {
+const DropPreview = ({
+  shadow,
+  zoom,
+  img,
+  title,
+  artist,
+  edition,
+  button,
+  price,
+  lastSold,
+}) => {
   return (
     <div
       className={classNames("bg-white p-3 rounded", {
@@ -31,10 +41,12 @@ const DropPreview = ({ shadow, zoom, img, title, artist, edition, button }) => {
             <span>{edition}</span>
           </div>
           <div className="flex flex-col text-right">
-            {/* <span className="font-bold text-xl">F150</span>
-            <span className="text-sm">
-              Last sold <span className="font-bold">F150</span>
-            </span> */}
+            {price && <span className="font-bold text-xl">F{price}</span>}
+            {lastSold && (
+              <span className="text-sm">
+                Last sold <span className="font-bold">F{lastSold}</span>
+              </span>
+            )}
           </div>
         </div>
         {button}

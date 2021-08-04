@@ -13,8 +13,8 @@ const AboutCreator = ({ piece }) => {
     <div className="bg-white py-12">
       <div className="container">
         <h3 className="font-black font-inktrap text-2xl">About the Creator</h3>
-        <div className="gap-12 grid grid-cols-12 mt-4">
-          <div className="bg-cream-500 col-span-4 flex flex-col items-center justify-center px-12 py-12 rounded">
+        <div className="gap-12 sm:grid grid-cols-12 mt-4">
+          <div className="bg-cream-500 col-span-6 md:col-span-4 flex flex-col items-center justify-center px-12 py-12 rounded">
             <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20">
               <img
                 src={dropInfo.smallImage}
@@ -33,7 +33,7 @@ const AboutCreator = ({ piece }) => {
               </a>
             </Link>
           </div>
-          <div className="col-span-8 text-lg">
+          <div className="col-span-6 md:col-span-8 text-lg mt-6 sm:mt-0">
             <p>{dropInfo.aboutArtist}</p>
           </div>
         </div>

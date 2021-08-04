@@ -44,7 +44,7 @@ export default function Sale({ id, address }) {
             <SaleMain piece={piece} />
             <DropProperties drop={piece} art={piece.img} />
             <AboutCreator piece={piece} />
-            <PurchaseHistory />
+            <PurchaseHistory id={id} />
             <div className="py-12">
               <div className="container">
                 <JoinCommunity />

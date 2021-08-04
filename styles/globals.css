@@ -130,3 +130,19 @@ body {
 [data-rmiz-modal-content] .object-cover {
   object-fit: contain !important;
 }
+
+select.hide-select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+}
+
+/* For IE10 */
+select.hide-select::-ms-expand {
+  display: none;
+}
+
+.hide-select {
+  outline: none;
+}

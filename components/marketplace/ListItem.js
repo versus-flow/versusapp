@@ -60,9 +60,9 @@ const ListItem = ({ close, piece }) => {
       <div className="absolute bg-black-600 bg-opacity-90 h-full left-0 top-0 w-full" />
       <form
         ref={modal}
-        className="bg-cream-500 flex flex-col items-center px-20 py-8 rounded w-full max-w-md z-10 modal-scroll"
+        className="bg-cream-500 flex flex-col items-center px-8 sm:px-20 pb-8 sm:py-8 rounded w-full max-w-md z-10 modal-scroll"
       >
-        <Logo className="h-10" />
+        <Logo className="h-3 sm:h-10" />
         <h4 className="font-black font-inktrap mt-8 text-2xl">
           List item for sale
         </h4>

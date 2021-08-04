@@ -22,8 +22,8 @@ const SaleMain = ({ piece }) => {
     <>
       {showList && <BuyItem close={() => setShowList(false)} piece={piece} />}
       <div className="container my-12">
-        <div className="grid grid-cols-2 gap-8">
-          <div>
+        <div className="grid sm:grid-cols-2 gap-8">
+          <div className="order-1">
             <p className="text-regGrey">
               Edition {edition} of {maxEdition}
             </p>
@@ -64,7 +64,7 @@ const SaleMain = ({ piece }) => {
                     />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-regGrey text-sm">Arist</span>
+                    <span className="text-regGrey text-sm">Artist</span>
                     <span className="font-bold">@{owner.handle}</span>
                   </div>
                 </div>
@@ -73,7 +73,7 @@ const SaleMain = ({ piece }) => {
               )}
             </div>
           </div>
-          <div className="w-full">
+          <div className="w-full sm:order-2">
             <Zoom>
               <img
                 src={piece.img}

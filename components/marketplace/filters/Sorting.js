@@ -1,15 +1,25 @@
 import Chevron from "../../../assets/chevron.svg";
+import commaNumber from "comma-number";
 
-const Sorting = () => {
+const Sorting = ({ numResults, setSortBy }) => {
   return (
     <div className="flex items-center justify-between">
       <p>
-        <span className="font-bold">1,250</span> art pieces
+        <span className="font-bold">{commaNumber(numResults)}</span> art piece
+        {numResults === "1" ? "s" : ""}
       </p>
       <div>
-        <div className="border flex font-bold justify-between px-6 py-3 rounded-xl w-48 cursor-pointer">
-          <span>Sort by</span>
-          <Chevron className="w-3" />
+        <div className="border flex font-bold justify-between px-6 py-2 sm:py-3 rounded-xl w-36 sm:w-48 cursor-pointer relative">
+          <Chevron className="w-3 absolute top-1/2 right-6 transform -translate-y-1/2" />
+          <select
+            className="w-full hide-select"
+            onChange={(e) => setSortBy(e.currentTarget.value)}
+          >
+            <option value="">Sort by</option>
+            <option value="price">Price</option>
+            <option value="atoz">A to Z</option>
+            <option value="ztoa">Z to A</option>
+          </select>
         </div>
       </div>
     </div>

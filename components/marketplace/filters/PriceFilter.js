@@ -4,27 +4,30 @@ import { Range, getTrackBackground } from "react-range";
 import Chevron from "../../../assets/chevron.svg";
 
 const STEP = 1;
-const MIN = 15;
+const MIN = 0;
 const MAX = 500;
 
-const PriceFilter = (props) => {
+const PriceFilter = ({ setPrice }) => {
   const [open, setOpen] = useState(true);
-  const [values, setValues] = React.useState([15, 500]);
+  const [values, setValues] = React.useState([0, 500]);
 
   return (
     <div className="flex flex-col mb-4 border border-lightGrey rounded-lg">
       <div className="bg-cream-500 px-6 py-3 flex items-center justify-between rounded-t-lg">
         <h4 className="text-2xl font-bold font-inktrap text-darkGrey">Price</h4>
-        <Chevron className="cursor-pointer w-4 h-4" />
+        {/* <Chevron className="cursor-pointer w-4 h-4" /> */}
       </div>
-      <div className="px-12 py-12">
+      <div className="px-8 lg:px-12 py-12">
         <div className="flex items-center flex-wrap">
           <Range
             values={values}
             step={STEP}
             min={MIN}
             max={MAX}
-            onChange={(values) => setValues(values)}
+            onChange={(values) => {
+              setValues(values);
+              setPrice(values);
+            }}
             renderTrack={({ props, children }) => (
               <div
                 onMouseDown={props.onMouseDown}
@@ -58,7 +61,7 @@ const PriceFilter = (props) => {
             renderThumb={({ index, props, isDragged }) => (
               <div {...props} className="bg-black-500 rounded-full h-4 w-4">
                 <div className="absolute -top-10 text-sm bg-black-500 text-white font-bold font-sourceSansPro px-2 py-1 rounded-sm transform -translate-x-1/2">
-                  F{Math.round(values[index])}
+                  F{values[index] > 499 ? "500+" : Math.round(values[index])}
                 </div>
                 <div
                   style={{
@@ -75,13 +78,19 @@ const PriceFilter = (props) => {
             type="number"
             className="px-4 py-4 bg-lightGrey"
             value={values[0]}
-            onChange={(e) => setValues([e.currentTarget.value, values[1]])}
+            onChange={(e) => {
+              setValues([e.currentTarget.value, values[1]]);
+              setPrice([e.currentTarget.value, values[1]]);
+            }}
           />
           <input
             type="number"
             className="px-4 py-4 bg-lightGrey"
             value={values[1]}
-            onChange={(e) => setValues([values[0], e.currentTarget.value])}
+            onChange={(e) => {
+              setValues([values[0], e.currentTarget.value]);
+              setPrice([values[0], e.currentTarget.value]);
+            }}
           />
         </div>
       </div>
