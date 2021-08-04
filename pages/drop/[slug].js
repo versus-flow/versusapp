@@ -33,12 +33,13 @@ export default function Drop({ id }) {
   );
   useEffect(async () => {
     if (includes(["11", "12", "13", "15"], id)) return null;
-    if (id === 11 || id === 12 || id === 13 || id === 15) return null;
+    if (includes([1, 6, 9, 11, 12, 13, 15, 20, 22], id)) return null;
     const drop = await fetchDrop(id);
     setUpdatedDrop(drop);
-    console.log(drop);
     setloading(false);
+    console.log(drop);
     const art = await fetchArt(id);
+    console.log(art);
     setUpdatedArt(art);
     window.fetches = setInterval(async () => {
       const drop = await fetchDrop(id);
