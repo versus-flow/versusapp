@@ -80,10 +80,10 @@ pub fun main(address: Address): Bool {
 export const profileGet = `
 import Profile from 0xPROFILE
 
-pub fun main(address:Address) : &{Profile.Public}? {
+pub fun main(address:Address) : Profile.UserProfile? {
   return getAccount(address)
         .getCapability<&{Profile.Public}>(Profile.publicPath)
-        .borrow()
+        .borrow()?.asProfile()
 }
 `;
 
