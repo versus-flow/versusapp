@@ -41,7 +41,7 @@ export default function Sale({ id, address }) {
       {(user) =>
         piece ? (
           <>
-            <SaleMain piece={piece} />
+            <SaleMain piece={piece} address={address} user={user} />
             <DropProperties drop={piece} art={piece.img} />
             <AboutCreator piece={piece} />
             <PurchaseHistory id={id} />

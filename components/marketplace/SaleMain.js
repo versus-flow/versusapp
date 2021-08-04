@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-import { find } from "lodash";
+import { find, get } from "lodash";
+import * as fcl from "@onflow/fcl";
+import * as t from "@onflow/types";
+import { tx } from "../drop/transactions";
+import { removeFromSale } from "./transactions";
 
 import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
 import BuyItem from "./BuyItem";
 
-const SaleMain = ({ piece }) => {
+const SaleMain = ({ piece, address, user }) => {
   const [showList, setShowList] = useState(false);
+  const [listingText, setListingText] = useState("Unlist");
   const {
     art: { name, edition, maxEdition, description },
     price,
@@ -18,6 +23,40 @@ const SaleMain = ({ piece }) => {
     process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
     (d) => d.id == "1"
   );
+  const unlist = async () => {
+    if (get(user, "addr") !== address) return;
+    if (listingText !== "Unlist") return;
+    setListingText("Loading");
+    try {
+      await tx(
+        [
+          fcl.transaction(removeFromSale),
+          fcl.args([fcl.arg(piece.id, t.UInt64)]),
+          fcl.proposer(fcl.currentUser().authorization),
+          fcl.payer(fcl.currentUser().authorization),
+          fcl.authorizations([fcl.currentUser().authorization]),
+          fcl.limit(9999),
+        ],
+        {
+          onStart() {
+            setListingText("Loading");
+          },
+          onSubmission() {
+            setListingText("Unlisting");
+          },
+          async onSuccess(status) {
+            setListingText("Unlisted!");
+          },
+          async onError(error) {
+            setListingText("Error");
+          },
+        }
+      );
+    } catch (e) {
+      setListingText("Unlist");
+      console.log(e);
+    }
+  };
   return (
     <>
       {showList && <BuyItem close={() => setShowList(false)} piece={piece} />}
@@ -39,6 +78,14 @@ const SaleMain = ({ piece }) => {
               >
                 Buy
               </div>
+              {get(user, "addr") === address && (
+                <div
+                  className="small-button standard-button transparent-button ml-4"
+                  onClick={unlist}
+                >
+                  {listingText}
+                </div>
+              )}
             </div>
             <div className="flex items-center mt-8">
               <div className="flex items-center mr-6">
