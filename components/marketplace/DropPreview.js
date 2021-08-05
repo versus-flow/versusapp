@@ -1,7 +1,10 @@
+import React, { useState, useEffect } from "react";
 import classNames from "classnames";
-import React from "react";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { first, get } from "lodash";
+
+import { getGraffleUrl } from "../general/helpers";
 
 const DropPreview = ({
   shadow,
@@ -12,8 +15,24 @@ const DropPreview = ({
   edition,
   button,
   price,
-  lastSold,
+  id,
 }) => {
+  const [lastSold, setLastSold] = useState(false);
+  useEffect(async () => {
+    if (id) {
+      let sold = first(
+        await (
+          await fetch(
+            getGraffleUrl(
+              `?eventType=A.CONTRACT.Marketplace.TokenPurchased&id=${id}`
+            )
+          )
+        ).json()
+      );
+      if (get(sold, "blockEventData.price"))
+        setLastSold(sold.blockEventData.price);
+    }
+  }, [id]);
   return (
     <div
       className={classNames("bg-white p-3 rounded", {

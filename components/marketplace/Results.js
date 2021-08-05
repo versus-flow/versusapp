@@ -1,4 +1,4 @@
-import { map, pick } from "lodash";
+import { get, map, pick } from "lodash";
 import Link from "next/link";
 
 import DropPreview from "./DropPreview";
@@ -9,6 +9,7 @@ const Results = ({ pieces }) => {
       {map(pieces, (p) => (
         <DropPreview
           key={p.id}
+          id={get(p, "data.id", get(p, "blockEventData.id"))}
           shadow
           img={p.img}
           title={p.data.art.name}
@@ -18,9 +19,7 @@ const Results = ({ pieces }) => {
           img={p.img}
           price={p.blockEventData.price.toFixed(1)}
           button={
-            <Link
-              href={`/listing/${p.blockEventData.from}/${p.blockEventData.id}`}
-            >
+            <Link href={`/listing/${p.blockEventData.id}`}>
               <a className="standard-button small-button block mt-2">Buy</a>
             </Link>
           }

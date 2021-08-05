@@ -113,7 +113,7 @@ const EditProfile = ({ close, profile }) => {
       <div className="absolute bg-black-600 bg-opacity-90 h-full left-0 top-0 w-full" />
       <div
         ref={modal}
-        className="bg-cream-500 flex flex-col items-center px-20 py-8 rounded-2xl w-full max-w-md z-10 modal-scroll"
+        className="bg-cream-500 flex flex-col items-center px-6 sm:px-20 py-8 rounded-2xl w-full max-w-md z-10 modal-scroll"
       >
         <div className="relative w-16 h-16">
           {profile.avatar ? (

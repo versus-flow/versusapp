@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { get, map } from "lodash";
+import Link from "next/link";
 
 import ArrowButton from "../general/ArrowButton";
 import DropPreview from "../marketplace/DropPreview";
@@ -9,6 +10,7 @@ import CollectionOnboard from "./CollectionOnboard";
 const Collection = ({ pieces, other, self, user, name }) => {
   const [listItem, setListItem] = useState(false);
   const isMarketPlace = (p) => get(p, "art.name");
+  console.log(pieces);
   return (
     <>
       {listItem && (
@@ -21,26 +23,35 @@ const Collection = ({ pieces, other, self, user, name }) => {
               {map(pieces, (p) => (
                 <DropPreview
                   key={p.id}
+                  id={p.id}
                   title={p.metadata.name}
                   artist={p.metadata.artist}
                   edition={`#${p.metadata.edition}/${p.metadata.maxEdition}`}
                   shadow
                   zoom
                   img={p.img}
+                  price={p.price ? parseFloat(p.price).toFixed(1) : false}
                   button={
                     self ? (
                       isMarketPlace(p) ? (
                         <ArrowButton
                           text="View on market"
                           className="transparent-button"
-                          href={`/listing/${user.addr}/${p.id}`}
+                          href={`/listing/${p.id}`}
                         />
                       ) : (
-                        <ArrowButton
-                          text="List your item"
-                          className="transparent-button"
-                          onClick={() => setListItem(p)}
-                        />
+                        <div className="flex items-center">
+                          <ArrowButton
+                            text="List your item"
+                            className="transparent-button"
+                            onClick={() => setListItem(p)}
+                          />
+                          <Link href={`/piece/${user.addr}/${p.id}`}>
+                            <a className="ml-4 font-bold underline cursor-pointer text-sm">
+                              View
+                            </a>
+                          </Link>
+                        </div>
                       )
                     ) : isMarketPlace(p) ? (
                       <ArrowButton

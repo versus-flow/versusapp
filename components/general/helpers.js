@@ -10,3 +10,5 @@ export const getGraffleUrl = (query) => {
     "https://prod-test-net-dashboard-api.azurewebsites.net/api/company/737eb23a-5c80-4421-8b49-15b20a42f5f4/search"
   }${editedQuery}`;
 };
+
+export const isMainnet = () => process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet";

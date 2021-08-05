@@ -22,7 +22,7 @@ const ProfileSummary = ({ self, drop, name, profile = {} }) => {
       )}
       <div className="container my-12">
         <div className="w-1/2">
-          <div className="flex items-center">
+          <div className="flex flex-col sm:flex-row sm:items-center">
             {avatar && (
               <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20">
                 <img
@@ -32,8 +32,8 @@ const ProfileSummary = ({ self, drop, name, profile = {} }) => {
               </div>
             )}
             {following ? (
-              <>
-                <div className="ml-8">
+              <div className="flex sm:items-center mt-4 sm:mt-0">
+                <div className="sm:ml-8">
                   <p className="text-black-100 text-sm">Following</p>
                   <p className="font-bold text-xl">{following.length || 0}</p>
                 </div>
@@ -41,7 +41,7 @@ const ProfileSummary = ({ self, drop, name, profile = {} }) => {
                   <p className="text-black-100 text-sm">Followers</p>
                   <p className="font-bold text-xl">{followers.length || 0}</p>
                 </div>
-              </>
+              </div>
             ) : (
               ""
             )}

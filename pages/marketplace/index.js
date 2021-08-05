@@ -12,7 +12,7 @@ import Loading from "../../components/general/Loading";
 import { getGraffleUrl } from "../../components/general/helpers";
 import { getOneMarketplaceItem } from "../../components/marketplace/transactions";
 import { oneArt } from "../../components/profile/ProfileWrapper";
-import { oneListedItem } from "../listing/[address]/[id]";
+import { oneListedItem } from "../../components/marketplace/FullItem";
 import moment from "moment";
 
 export const getPiecesByIds = async (pieces) => {
@@ -69,11 +69,11 @@ export default function Marketplace() {
         );
         if (!soldVersion && !withdrawnVersion) return true;
         if (!soldVersion) {
-          return moment(item.eventDate).isAfter(moment(soldVersion.eventDate));
-        } else if (!withdrawnVersion) {
           return moment(item.eventDate).isAfter(
             moment(withdrawnVersion.eventDate)
           );
+        } else if (!withdrawnVersion) {
+          return moment(item.eventDate).isAfter(moment(soldVersion.eventDate));
         } else {
           const mostRecentDate = moment(soldVersion.eventDate).isAfter(
             moment(withdrawnVersion.eventDate)
@@ -103,7 +103,6 @@ export default function Marketplace() {
     },
   ]);
   if (sb === "ztoa") sortedPieces = reverse(sortedPieces);
-  console.log(sortedPieces);
   return (
     <Main>
       {() => (

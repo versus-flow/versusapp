@@ -56,7 +56,6 @@ const ProfileWrapper = ({ self, user, name }) => {
       const profile = await fetchProfile(addr);
       setCurrentProfile(profile || {});
       const myListings = await getMyListings(addr);
-      console.log(myListings, addr);
       const editedListings = await Promise.all(
         map(myListings, async (l) => {
           return {

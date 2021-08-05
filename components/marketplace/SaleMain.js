@@ -10,18 +10,18 @@ import { removeFromSale } from "./transactions";
 import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
 import BuyItem from "./BuyItem";
+import { isMainnet } from "../general/helpers";
 
-const SaleMain = ({ piece, address, user }) => {
+const SaleMain = ({ piece, address, user, unlisted }) => {
   const [showList, setShowList] = useState(false);
   const [listingText, setListingText] = useState("Unlist");
   const {
-    art: { name, edition, maxEdition, description },
+    art: { name, edition, maxEdition, description, artist },
     price,
     owner,
   } = piece;
-  const dropInfo = find(
-    process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
-    (d) => d.id == "1"
+  const dropInfo = find(isMainnet() ? dropsData : testDropsData, (d) =>
+    isMainnet() ? d.handle === artist : d.id == "1"
   );
   const unlist = async () => {
     if (get(user, "addr") !== address) return;
@@ -69,24 +69,26 @@ const SaleMain = ({ piece, address, user }) => {
             <h1 className="font-black font-inktrap text-5xl">{name}</h1>
             <p className="mt-12 w-9/12">{description}</p>
             <p className="font-black font-inktrap mt-8 text-5xl">
-              F{parseFloat(price).toFixed(1)}
+              {unlisted ? "Unlisted" : `${F`{parseFloat(price).toFixed(1)}`}`}
             </p>
-            <div className="flex items-center mt-6">
-              <div
-                className="small-button standard-button"
-                onClick={() => setShowList(piece)}
-              >
-                Buy
-              </div>
-              {get(user, "addr") === address && (
+            {!unlisted && (
+              <div className="flex items-center mt-6">
                 <div
-                  className="small-button standard-button transparent-button ml-4"
-                  onClick={unlist}
+                  className="small-button standard-button"
+                  onClick={() => setShowList(piece)}
                 >
-                  {listingText}
+                  Buy
                 </div>
-              )}
-            </div>
+                {get(user, "addr") === address && (
+                  <div
+                    className="small-button standard-button transparent-button ml-4"
+                    onClick={unlist}
+                  >
+                    {listingText}
+                  </div>
+                )}
+              </div>
+            )}
             <div className="flex items-center mt-8">
               <div className="flex items-center mr-6">
                 <div className="bg-white h-12 mr-3 p-1 rounded-full shadow-lg w-12">
@@ -104,15 +106,21 @@ const SaleMain = ({ piece, address, user }) => {
               </div>
               {owner ? (
                 <div className="flex items-center">
-                  <div className="bg-white h-12 mr-3 p-1 rounded-full shadow-lg w-12">
-                    <img
-                      src={owner.avatar}
-                      className="h-full object-cover rounded-full w-full"
-                    />
+                  <div className="bg-white h-12 mr-3 p-1 rounded-full shadow-lg w-12 flex justify-center items-center">
+                    {owner.avatar ? (
+                      <img
+                        src={owner.avatar}
+                        className="h-full object-cover rounded-full w-full"
+                      />
+                    ) : (
+                      <span className="font-bold text-xl">
+                        {owner.name ? owner.name.substring(0, 1) : "?"}
+                      </span>
+                    )}
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-regGrey text-sm">Artist</span>
-                    <span className="font-bold">@{owner.handle}</span>
+                    <span className="text-regGrey text-sm">Owner</span>
+                    <span className="font-bold">@{owner.name}</span>
                   </div>
                 </div>
               ) : (
