@@ -31,7 +31,7 @@ fcl
     process.env.NEXT_PUBLIC_FLOW_TOKEN || "0x7e60df042a9c0868"
   )
   .put("0xCONTRACT", process.env.NEXT_PUBLIC_CONTRACT || "0x69915b410cca3c65")
-	.put("0xPROFILE", process.env.NEXT_PUBLIC_CONTRACT || "0x69915b410cca3c65")
+  .put("0xPROFILE", process.env.NEXT_PUBLIC_CONTRACT || "0x69915b410cca3c65")
   .put("env", process.env.NEXT_PUBLIC_FLOW_ENV || "testnet");
 
 const Main = ({ children }) => {
@@ -47,7 +47,10 @@ const Main = ({ children }) => {
       const balance = await fcl.decode(response);
       setBalance(parseFloat(balance).toFixed(2));
     }
-    if (user.addr) getBalance();
+    const int = setInterval(() => {
+      if (user.addr) getBalance();
+    }, 30000);
+    return () => clearInterval(int);
   }, [user.addr]);
   user.balance = balance;
   return (

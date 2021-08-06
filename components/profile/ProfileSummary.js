@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import * as fcl from "@onflow/fcl";
+import * as t from "@onflow/types";
 
 import ArrowButton from "../general/ArrowButton";
 import Twitter from "../../assets/twitter.svg";
@@ -6,15 +8,95 @@ import Instagram from "../../assets/instagram.svg";
 import Youtube from "../../assets/youtube.svg";
 import Discord from "../../assets/discord.svg";
 import EditProfile from "../profile/EditProfile";
-import { get } from "lodash";
+import { find, get, includes } from "lodash";
+import { tx } from "../drop/transactions";
+import { followUser, unfollowUser } from "./transactions";
 
-const ProfileSummary = ({ self, drop, name, profile = {} }) => {
+const ProfileSummary = ({ self, drop, name, profile = {}, user }) => {
   const [openEdit, setOpenEdit] = useState(false);
-  const { avatar, followers, following, description } = profile;
+  const [followText, setFollowText] = useState("");
+  const { avatar, followers, following, description, address } = profile;
+  const [numFollowers, setNumFollowers] = useState(
+    (followers || []).length || 0
+  );
+  useEffect(() => {
+    const followers = get(profile, "followers", []);
+    setNumFollowers(followers.length);
+    if (profile.address && user && user.addr) {
+      const doIFollow = find(followers, (f) => f.follower === user.addr);
+      setFollowText(doIFollow ? "Unfollow" : "Follow");
+    }
+  }, [profile.followers]);
   const twitter = get(profile, "links.twitter.url");
   const instagram = get(profile, "links.instagram.url");
   const youtube = get(profile, "links.youtube.url");
   const discord = get(profile, "links.discord.url");
+  const followAction = async () => {
+    const currentState = followText;
+    if (includes(["Follow", "Unfollow"], currentState)) {
+      setFollowText("Following");
+      try {
+        await tx(
+          [
+            fcl.transaction(
+              currentState === "Follow" ? followUser : unfollowUser
+            ),
+            fcl.args([fcl.arg(address, t.Address)]),
+            fcl.proposer(fcl.currentUser().authorization),
+            fcl.payer(fcl.currentUser().authorization),
+            fcl.authorizations([fcl.currentUser().authorization]),
+            fcl.limit(9999),
+          ],
+          {
+            onStart() {
+              setFollowText(
+                currentState === "Follow" ? "Following" : "Unfollowing"
+              );
+            },
+            onSubmission() {
+              setFollowText(
+                currentState === "Follow" ? "Following" : "Unfollowing"
+              );
+            },
+            async onSuccess(status) {
+              setFollowText(
+                currentState === "Follow" ? "Followed" : "Unfollowed"
+              );
+              setNumFollowers(
+                currentState === "Follow" ? numFollowers + 1 : numFollowers - 1
+              );
+              setTimeout(
+                () =>
+                  setFollowText(
+                    currentState === "Follow" ? "Unfollow" : "Follow"
+                  ),
+                3000
+              );
+            },
+            async onError(error) {
+              setFollowText("Error");
+              setTimeout(
+                () =>
+                  setFollowText(
+                    currentState === "Follow" ? "Unfollow" : "Follow"
+                  ),
+                3000
+              );
+              console.log(error);
+            },
+          }
+        );
+      } catch (e) {
+        console.log(e);
+        setFollowText("Error");
+        setTimeout(
+          () =>
+            setFollowText(currentState === "Follow" ? "Unfollow" : "Follow"),
+          3000
+        );
+      }
+    }
+  };
   return (
     <>
       {openEdit && (
@@ -43,7 +125,7 @@ const ProfileSummary = ({ self, drop, name, profile = {} }) => {
                 </div>
                 <div className="ml-8">
                   <p className="text-black-100 text-sm">Followers</p>
-                  <p className="font-bold text-xl">{followers.length || 0}</p>
+                  <p className="font-bold text-xl">{numFollowers}</p>
                 </div>
               </div>
             ) : (
@@ -111,6 +193,13 @@ const ProfileSummary = ({ self, drop, name, profile = {} }) => {
               text="Edit"
               className="standard-button arrow-button transparent-button"
               onClick={() => setOpenEdit(profile)}
+            />
+          )}
+          {!self && user && user.addr && followText && (
+            <ArrowButton
+              text={followText}
+              className="standard-button arrow-button transparent-button"
+              onClick={followAction}
             />
           )}
         </div>

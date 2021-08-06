@@ -151,3 +151,27 @@ export const profileChange = `
     }
   }
 `;
+
+export const followUser = `
+  import Profile from 0xPROFILE
+
+  transaction(address: Address) {
+    prepare(account: AuthAccount) {
+      let profile = account
+        .borrow<&Profile.User{Profile.Owner}>(from: Profile.storagePath)!
+      profile.follow(address, tags:["versus"])
+    }
+  }
+`;
+
+export const unfollowUser = `
+  import Profile from 0xPROFILE
+
+  transaction(address: Address) {
+    prepare(account: AuthAccount) {
+      let profile = account
+        .borrow<&Profile.User{Profile.Owner}>(from: Profile.storagePath)!
+      profile.unfollow(address)
+    }
+  }
+`;

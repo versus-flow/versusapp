@@ -81,7 +81,12 @@ const ProfileWrapper = ({ self, user, name }) => {
   }, []);
   return (
     <>
-      <ProfileSummary self={self} name={name} profile={currentProfile} />
+      <ProfileSummary
+        self={self}
+        name={name}
+        profile={currentProfile}
+        user={user}
+      />
       <ProfileTabs />
       {loading ? (
         <div className="bg-white">
