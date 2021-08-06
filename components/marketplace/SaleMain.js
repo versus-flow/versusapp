@@ -11,6 +11,7 @@ import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
 import BuyItem from "./BuyItem";
 import { isMainnet } from "../general/helpers";
+import Link from "next/link";
 
 const SaleMain = ({ piece, address, user, unlisted }) => {
   const [showList, setShowList] = useState(false);
@@ -120,7 +121,9 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-regGrey text-sm">Owner</span>
-                    <span className="font-bold">@{owner.name}</span>
+                    <Link href={`/profile/${owner.address}`}>
+                      <a className="font-bold">@{owner.name}</a>
+                    </Link>
                   </div>
                 </div>
               ) : (

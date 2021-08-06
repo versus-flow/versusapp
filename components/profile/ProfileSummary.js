@@ -23,14 +23,18 @@ const ProfileSummary = ({ self, drop, name, profile = {} }) => {
       <div className="container my-12">
         <div className="w-1/2">
           <div className="flex flex-col sm:flex-row sm:items-center">
-            {avatar && (
-              <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20">
+            <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20 flex justify-center items-center">
+              {avatar ? (
                 <img
                   src={avatar}
                   className="h-full object-cover rounded-full w-full"
                 />
-              </div>
-            )}
+              ) : (
+                <span className="font-bold text-4xl text-black-500">
+                  {profile.name ? profile.name.substring(0, 1) : "?"}
+                </span>
+              )}
+            </div>
             {following ? (
               <div className="flex sm:items-center mt-4 sm:mt-0">
                 <div className="sm:ml-8">

@@ -10,7 +10,6 @@ import CollectionOnboard from "./CollectionOnboard";
 const Collection = ({ pieces, other, self, user, name }) => {
   const [listItem, setListItem] = useState(false);
   const isMarketPlace = (p) => get(p, "art.name");
-  console.log(pieces);
   return (
     <>
       {listItem && (

@@ -6,7 +6,6 @@ import { fetchProfile } from "../../pages/profile/[name]";
 import moment from "moment";
 
 const PurchaseHistory = ({ id }) => {
-  console.log(id);
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState([]);
   useEffect(async () => {
@@ -17,15 +16,13 @@ const PurchaseHistory = ({ id }) => {
         )
       )
     ).json();
-    console.log(sold);
-    console.log(await fetchProfile("0xecbfbce121d9b798"), "pro");
     sold = await Promise.all(
       map(sold, async (s) => ({
         ...s,
         profile: await fetchProfile(s.blockEventData.to),
+        from: await fetchProfile(s.blockEventData.from),
       }))
     );
-    console.log(sold);
     setHistory(sold);
     setLoading(false);
   }, [id]);
@@ -66,7 +63,11 @@ const PurchaseHistory = ({ id }) => {
                       @{i.profile.name || i.profile.address.substring(0, 6)}
                     </span>{" "}
                     purchased the item for{" "}
-                    <span className="font-bold">F{i.blockEventData.price}</span>
+                    <span className="font-bold">F{i.blockEventData.price}</span>{" "}
+                    from{" "}
+                    <span className="font-bold">
+                      @{i.from.name || i.from.address.substring(0, 6)}
+                    </span>
                   </span>{" "}
                 </div>
               ))}
