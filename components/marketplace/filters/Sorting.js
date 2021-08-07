@@ -16,7 +16,8 @@ const Sorting = ({ numResults, setSortBy }) => {
             onChange={(e) => setSortBy(e.currentTarget.value)}
           >
             <option value="">Sort by</option>
-            <option value="price">Price</option>
+            <option value="pricelth">Price Low to High</option>
+            <option value="pricehtl">Price High to Low</option>
             <option value="atoz">A to Z</option>
             <option value="ztoa">Z to A</option>
           </select>

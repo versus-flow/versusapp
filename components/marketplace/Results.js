@@ -17,7 +17,7 @@ const Results = ({ pieces }) => {
           edition={`#${p.data.art.edition}/${p.data.art.maxEdition}`}
           zoom
           img={p.img}
-          price={p.blockEventData.price.toFixed(1)}
+          price={parseFloat(p.data.price).toFixed(1)}
           button={
             <Link href={`/listing/${p.blockEventData.id}`}>
               <a className="standard-button small-button block mt-2">Buy</a>

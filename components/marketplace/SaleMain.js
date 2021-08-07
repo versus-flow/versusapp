@@ -70,7 +70,7 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
             <h1 className="font-black font-inktrap text-5xl">{name}</h1>
             <p className="mt-12 w-9/12">{description}</p>
             <p className="font-black font-inktrap mt-8 text-5xl">
-              {unlisted ? "Unlisted" : `${F`{parseFloat(price).toFixed(1)}`}`}
+              {unlisted ? "Unlisted" : `${`F${parseFloat(price).toFixed(1)}`}`}
             </p>
             {!unlisted && (
               <div className="flex items-center mt-6">

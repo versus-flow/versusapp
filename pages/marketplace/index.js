@@ -91,17 +91,18 @@ export default function Marketplace() {
   }, []);
   const defaultArtists = uniq(map(pieces, (p) => p.data.art.artist));
   const filteredPieces = filter(pieces, (p) => {
-    if (p.blockEventData.price < price[0] || p.blockEventData.price > price[1])
-      return false;
+    if (p.data.price < price[0] || p.data.price > price[1]) return false;
     return true;
   });
   let sortedPieces = sortBy(filteredPieces, [
     (p) => {
-      if (sb === "price") return p.blockEventData.price;
+      if (sb === "pricelth") return parseFloat(p.data.price);
+      else if (sb === "pricehtl") return -parseFloat(p.data.price);
       else if (sb === "atoz" || sb === "ztoa") return p.data.art.name;
       return;
     },
   ]);
+  console.log(sb);
   if (sb === "ztoa") sortedPieces = reverse(sortedPieces);
   return (
     <Main>

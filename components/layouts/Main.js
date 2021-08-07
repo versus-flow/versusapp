@@ -47,6 +47,7 @@ const Main = ({ children }) => {
       const balance = await fcl.decode(response);
       setBalance(parseFloat(balance).toFixed(2));
     }
+    if (user.addr) getBalance();
     const int = setInterval(() => {
       if (user.addr) getBalance();
     }, 30000);

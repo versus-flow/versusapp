@@ -61,7 +61,12 @@ export default function FullItem({ id, address, unlisted }) {
       {(user) =>
         piece ? (
           <>
-            <SaleMain piece={piece} address={address} user={user} unlisted />
+            <SaleMain
+              piece={piece}
+              address={address}
+              user={user}
+              unlisted={unlisted}
+            />
             <DropProperties drop={piece} art={piece.img} />
             <AboutCreator piece={piece} />
             <PurchaseHistory id={id} />
