@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { map } from "lodash";
+import moment from "moment";
+import Link from "next/link";
+
 import Cart from "../../assets/cart.svg";
 import { getGraffleUrl } from "../general/helpers";
-import { map } from "lodash";
 import { fetchProfile } from "../../pages/profile/[name]";
-import moment from "moment";
 
 const PurchaseHistory = ({ id }) => {
   const [loading, setLoading] = useState(true);
@@ -59,15 +61,19 @@ const PurchaseHistory = ({ id }) => {
                     </div>
                   </div>
                   <span className="mt-2 sm:mt-0">
-                    <span className="font-bold">
-                      @{i.profile.name || i.profile.address.substring(0, 6)}
-                    </span>{" "}
+                    <Link href={`/profile/${i.profile.address}`}>
+                      <a className="font-bold cursor-pointer">
+                        @{i.profile.name || i.profile.address.substring(0, 6)}
+                      </a>
+                    </Link>{" "}
                     purchased the item for{" "}
                     <span className="font-bold">F{i.blockEventData.price}</span>{" "}
                     from{" "}
-                    <span className="font-bold">
-                      @{i.from.name || i.from.address.substring(0, 6)}
-                    </span>
+                    <Link href={`/profile/${i.from.address}`}>
+                      <a className="font-bold cursor-pointer">
+                        @{i.from.name || i.from.address.substring(0, 6)}
+                      </a>
+                    </Link>
                   </span>{" "}
                 </div>
               ))}
