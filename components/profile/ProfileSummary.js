@@ -11,6 +11,7 @@ import EditProfile from "../profile/EditProfile";
 import { find, get, includes } from "lodash";
 import { tx } from "../drop/transactions";
 import { followUser, unfollowUser } from "./transactions";
+import { getLink } from "../general/helpers";
 
 const ProfileSummary = ({ self, drop, name, profile = {}, user }) => {
   const [openEdit, setOpenEdit] = useState(false);
@@ -27,10 +28,10 @@ const ProfileSummary = ({ self, drop, name, profile = {}, user }) => {
       setFollowText(doIFollow ? "Unfollow" : "Follow");
     }
   }, [profile.followers]);
-  const twitter = get(profile, "links.twitter.url");
-  const instagram = get(profile, "links.instagram.url");
-  const youtube = get(profile, "links.youtube.url");
-  const discord = get(profile, "links.discord.url");
+  const twitter = getLink(profile.links || {}, "twitter");
+  const instagram = getLink(profile.links || {}, "instagram");
+  const youtube = getLink(profile.links || {}, "youtube");
+  const discord = getLink(profile.links || {}, "discord");
   const followAction = async () => {
     const currentState = followText;
     if (includes(["Follow", "Unfollow"], currentState)) {
@@ -103,7 +104,7 @@ const ProfileSummary = ({ self, drop, name, profile = {}, user }) => {
         <EditProfile profile={openEdit} close={() => setOpenEdit(false)} />
       )}
       <div className="container my-12">
-        <div className="w-1/2">
+        <div className="sm:w-1/2">
           <div className="flex flex-col sm:flex-row sm:items-center">
             <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20 flex justify-center items-center">
               {avatar ? (
@@ -173,7 +174,7 @@ const ProfileSummary = ({ self, drop, name, profile = {}, user }) => {
                       <Youtube className="fill-current mr-4 h-4" />
                     </a>
                   )}
-                  {discord && (
+                  {false && (
                     <a
                       href={discord}
                       target="_blank"

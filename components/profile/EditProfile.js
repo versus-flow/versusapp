@@ -15,6 +15,7 @@ import { profileChange, profileEdit } from "./transactions";
 import { tx } from "../drop/transactions";
 import { get } from "lodash";
 import classNames from "classnames";
+import { getLink } from "../general/helpers";
 
 const EditProfile = ({ close, profile }) => {
   const [name, setName] = useState(profile.name || "");
@@ -35,7 +36,7 @@ const EditProfile = ({ close, profile }) => {
     if (twitter.value) dict.push({ key: "twitter", value: twitter.value });
     if (youtube.value) dict.push({ key: "youtube", value: youtube.value });
     if (discord.value) dict.push({ key: "discord", value: discord.value });
-    if (profile.uuid) {
+    if (profile.address) {
       await tx(
         [
           fcl.transaction(profileChange),
@@ -200,7 +201,7 @@ const EditProfile = ({ close, profile }) => {
                 name="instagram"
                 className="standard-input no-border-input"
                 placeholder="Profile URL"
-                defaultValue={get(profile, "links.instagram.url")}
+                defaultValue={getLink(profile.links || {}, "instagram")}
               />
             </div>
             <div className="flex items-stretch mb-2">
@@ -212,7 +213,7 @@ const EditProfile = ({ close, profile }) => {
                 name="twitter"
                 className="standard-input no-border-input"
                 placeholder="Profile URL"
-                defaultValue={get(profile, "links.twitter.url")}
+                defaultValue={getLink(profile.links || {}, "twitter")}
               />
             </div>
             <div className="flex items-stretch mb-2">
@@ -224,7 +225,7 @@ const EditProfile = ({ close, profile }) => {
                 name="youtube"
                 className="standard-input no-border-input"
                 placeholder="Channel URL"
-                defaultValue={get(profile, "links.youtube.url")}
+                defaultValue={getLink(profile.links || {}, "youtube")}
               />
             </div>
             <div className="flex items-stretch">
@@ -236,7 +237,7 @@ const EditProfile = ({ close, profile }) => {
                 name="discord"
                 className="standard-input no-border-input"
                 placeholder="Include #Code"
-                defaultValue={get(profile, "links.discord.url")}
+                defaultValue={getLink(profile.links || {}, "discord")}
               />
             </div>
           </div>

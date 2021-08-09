@@ -9,7 +9,9 @@ export default function Listing({ id }) {
   const [address, setAddress] = useState(null);
   useEffect(async () => {
     let forSale = await (
-      await fetch(getGraffleUrl("?eventType=A.CONTRACT.Marketplace.ForSale"))
+      await fetch(
+        getGraffleUrl(`?eventType=A.CONTRACT.Marketplace.ForSale&id=${id}`)
+      )
     ).json();
     const item = find(forSale, (i) => i.blockEventData.id === parseInt(id, 10));
     setAddress(get(item, "blockEventData.from"));

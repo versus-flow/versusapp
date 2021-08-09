@@ -73,7 +73,7 @@ const ProfileWrapper = ({ self, user, name }) => {
     setPieces(allPieces);
     setLoading(false);
     const refetchProfile = async () => {
-      const profile = await fetchProfile(user.addr);
+      const profile = await fetchProfile(name || user.addr);
       setCurrentProfile(profile);
     };
     document.addEventListener("refetch", refetchProfile, false);

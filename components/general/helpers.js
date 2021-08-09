@@ -1,4 +1,4 @@
-import { replace } from "lodash";
+import { find, replace } from "lodash";
 
 export const getGraffleUrl = (query) => {
   const contract = (
@@ -12,3 +12,8 @@ export const getGraffleUrl = (query) => {
 };
 
 export const isMainnet = () => process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet";
+
+export const getLink = (links, title) => {
+  const item = find(links, (l) => l.title === title) || {};
+  return item.url;
+};

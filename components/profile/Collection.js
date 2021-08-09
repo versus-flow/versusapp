@@ -56,7 +56,7 @@ const Collection = ({ pieces, other, self, user, name }) => {
                       <ArrowButton
                         text="View on market"
                         className="transparent-button"
-                        href={`/listing/${name}/${p.id}`}
+                        href={`/listing/${p.id}`}
                       />
                     ) : (
                       ""

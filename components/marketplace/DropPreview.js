@@ -61,11 +61,15 @@ const DropPreview = ({
           </div>
           <div className="flex flex-col text-right">
             {price && <span className="font-bold text-xl">F{price}</span>}
-            {lastSold && (
-              <span className="text-sm">
-                Last sold <span className="font-bold">F{lastSold}</span>
-              </span>
-            )}
+            <span className={"text-sm"}>
+              {lastSold ? (
+                <>
+                  Last sold <span className="font-bold">F{lastSold}</span>
+                </>
+              ) : (
+                <span className="opacity-0">-</span>
+              )}
+            </span>
           </div>
         </div>
         {button}
