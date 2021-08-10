@@ -74,18 +74,19 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
             </p>
             {!unlisted && (
               <div className="flex items-center mt-6">
-                <div
-                  className="small-button standard-button"
-                  onClick={() => setShowList(piece)}
-                >
-                  Buy
-                </div>
-                {get(user, "addr") === address && (
+                {get(user, "addr") === address ? (
                   <div
-                    className="small-button standard-button transparent-button ml-4"
+                    className="small-button standard-button transparent-button"
                     onClick={unlist}
                   >
                     {listingText}
+                  </div>
+                ) : (
+                  <div
+                    className="small-button standard-button"
+                    onClick={() => setShowList(piece)}
+                  >
+                    Buy
                   </div>
                 )}
               </div>

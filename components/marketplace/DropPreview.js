@@ -48,7 +48,7 @@ const DropPreview = ({
           <img className="h-full object-cover w-full rounded" src={img} />
         )}
       </div>
-      <div className="py-3 px-2">
+      <div className="py-3 px-2 relative">
         <h3 className="font-bold font-inktrap">{title}</h3>
         <div
           className={classNames("flex justify-between mt-2", {
@@ -61,10 +61,12 @@ const DropPreview = ({
           </div>
           <div className="flex flex-col text-right">
             {price && <span className="font-bold text-xl">F{price}</span>}
-            <span className={"text-sm"}>
+            <span
+              className={"text-sm bottom-0 absolute flex right-0 text-right"}
+            >
               {lastSold ? (
                 <>
-                  Last sold <span className="font-bold">F{lastSold}</span>
+                  Last sold <span className="font-bold ml-1">F{lastSold}</span>
                 </>
               ) : (
                 <span className="opacity-0">-</span>

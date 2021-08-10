@@ -16,6 +16,7 @@ import { tx } from "../drop/transactions";
 import { get } from "lodash";
 import classNames from "classnames";
 import { getLink } from "../general/helpers";
+import Loading from "../general/Loading";
 
 const EditProfile = ({ close, profile }) => {
   const [name, setName] = useState(profile.name || "");
@@ -241,17 +242,23 @@ const EditProfile = ({ close, profile }) => {
               />
             </div>
           </div>
-
-          <div className="flex justify-between mt-6 w-full">
-            <ArrowButton text={saving} onClick={handleSubmit} />
-            <span
-              className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer"
-              onClick={close}
-            >
-              Cancel
-              <Arrow className="ml-2" />
-            </span>
-          </div>
+          {saving === "Saving" ? (
+            <div className="text-2xl h-16 flex flex-col justify-center items-center transform scale-50">
+              <Loading />
+              Saving
+            </div>
+          ) : (
+            <div className="flex justify-between mt-6 w-full">
+              <ArrowButton text={saving} onClick={handleSubmit} />
+              <span
+                className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer"
+                onClick={close}
+              >
+                Cancel
+                <Arrow className="ml-2" />
+              </span>
+            </div>
+          )}
         </form>
       </div>
     </div>

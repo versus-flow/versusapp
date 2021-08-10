@@ -10,6 +10,7 @@ import DropPreview from "./DropPreview";
 import ErrorMessage from "../general/ErrorMessage";
 import { tx } from "../drop/transactions";
 import { listForSale } from "./transactions";
+import Loading from "../general/Loading";
 
 const ListItem = ({ close, piece }) => {
   const [error, setError] = useState("");
@@ -44,6 +45,7 @@ const ListItem = ({ close, piece }) => {
             setTimeout(close, 300);
           },
           async onError(error) {
+            setStatus("List for sale");
             if (error) {
               const { message } = error;
               setError(message.toString());
@@ -106,19 +108,26 @@ const ListItem = ({ close, piece }) => {
             </div>
           </>
         )}
-        <div className="flex justify-between mt-6 w-full">
-          <ArrowButton text={status} onClick={handleSubmit} />
-          <span
-            className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer"
-            onClick={() => {
-              if (status === "Confirm") return setStatus("List for sale");
-              else close();
-            }}
-          >
-            Cancel
-            <Arrow className="ml-2" />
-          </span>
-        </div>
+        {status === "Listing" ? (
+          <div className="text-2xl h-16 flex flex-col justify-center items-center transform scale-50">
+            <Loading />
+            {status}
+          </div>
+        ) : (
+          <div className="flex justify-between mt-6 w-full">
+            <ArrowButton text={status} onClick={handleSubmit} />
+            <span
+              className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer"
+              onClick={() => {
+                if (status === "Confirm") return setStatus("List for sale");
+                else close();
+              }}
+            >
+              Cancel
+              <Arrow className="ml-2" />
+            </span>
+          </div>
+        )}
       </form>
     </div>
   );
