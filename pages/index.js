@@ -10,7 +10,7 @@ export default function Home() {
       {() => (
         <>
           <Landing />
-          <MarketplacePreview />
+          {/* <MarketplacePreview /> */}
           <Rewarded />
           <BetterForArt />
         </>
