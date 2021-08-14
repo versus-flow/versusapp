@@ -10,6 +10,7 @@ import { fetchMyArt, fetchOneArt } from "./transactions";
 import Collection from "./Collection";
 import Loading from "../general/Loading";
 import { getArtContent, getMarketpaceItems } from "../marketplace/transactions";
+import { getCachedImage, setCachedImage } from "../general/helpers";
 
 export const getArt = async (addr) => {
   const response = await fcl.send([
@@ -19,11 +20,15 @@ export const getArt = async (addr) => {
   const artResponse = await fcl.decode(response);
   const allPieces = await Promise.all(
     map(artResponse, async (r) => {
+      const cachedImage = getCachedImage(r.id);
+      if (cachedImage) return { ...r, img: cachedImage };
       const oneArtResponse = await fcl.send([
         fcl.script(fetchOneArt),
         fcl.args([fcl.arg(addr, t.Address), fcl.arg(r.id, t.UInt64)]),
       ]);
-      return { ...r, img: await fcl.decode(oneArtResponse) };
+      const img = await fcl.decode(oneArtResponse);
+      setCachedImage(r.id, img);
+      return { ...r, img };
     })
   );
   return allPieces;

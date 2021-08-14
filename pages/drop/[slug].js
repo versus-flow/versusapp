@@ -20,6 +20,7 @@ import Head from "next/head";
 import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
 import Loading from "../../components/general/Loading";
+import { getCachedDrop, setCachedDrop } from "../../components/general/helpers";
 
 export default function Drop({ id }) {
   const [updatedDrop, setUpdatedDrop] = useState({});
@@ -115,11 +116,17 @@ async function fetchDrop(id) {
 }
 
 async function fetchArt(id) {
+  const idP = parseInt(id, 10);
+  // const cachedImage = getCachedDrop(idP);
+  // if (cachedImage) return cachedImage;
   const response = await fcl.send([
     fcl.script(fetchVersusArt),
-    fcl.args([fcl.arg(parseInt(id), t.UInt64)]),
+    fcl.args([fcl.arg(idP, t.UInt64)]),
   ]);
-  return await fcl.decode(response);
+  const img = await fcl.decode(response);
+  // console.log(img);
+  // setCachedDrop(idP, img);
+  return img;
 }
 
 export async function getServerSideProps(context) {

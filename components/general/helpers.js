@@ -17,3 +17,29 @@ export const getLink = (links, title) => {
   const item = find(links, (l) => l.title === title) || {};
   return item.url;
 };
+
+export const getCachedImage = (id) => {
+  const imgStorage = JSON.parse(localStorage.getItem("imgStorage") || "[]");
+  const imageItem = find(imgStorage, (i) => i.id === id);
+  if (imageItem) return imageItem.img;
+  return false;
+};
+
+export const setCachedImage = (id, img) => {
+  let imgStorage = JSON.parse(localStorage.getItem("imgStorage") || "[]");
+  imgStorage = [...imgStorage, { id, img }];
+  localStorage.setItem("imgStorage", JSON.stringify(imgStorage));
+};
+
+export const getCachedDrop = (id) => {
+  const imgStorage = JSON.parse(localStorage.getItem("dropStorage") || "[]");
+  const imageItem = find(imgStorage, (i) => i.id === id);
+  if (imageItem) return imageItem.img;
+  return false;
+};
+
+export const setCachedDrop = (id, img) => {
+  let imgStorage = JSON.parse(localStorage.getItem("dropStorage") || "[]");
+  imgStorage = [...imgStorage, { id, img }];
+  localStorage.setItem("dropStorage", JSON.stringify(imgStorage));
+};
