@@ -21,8 +21,10 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
     price,
     owner,
   } = piece;
-  const dropInfo = find(isMainnet() ? dropsData : testDropsData, (d) =>
-    isMainnet() ? d.handle === artist : d.id == "1"
+  const dropInfo = find(
+    process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
+    (d) =>
+      (d.id == process.env.NEXT_PUBLIC_FLOW_ENV) === "mainnet" ? piece.id : "1"
   );
   const unlist = async () => {
     if (get(user, "addr") !== address) return;
@@ -96,14 +98,14 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
                 <div className="bg-white h-12 mr-3 p-1 rounded-full shadow-lg w-12">
                   <Zoom>
                     <img
-                      src={dropInfo.smallImage}
+                      src={get(dropInfo, "smallImage")}
                       className="h-full object-cover rounded-full w-full"
                     />
                   </Zoom>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-regGrey text-sm">Artist</span>
-                  <span className="font-bold">@{dropInfo.handle}</span>
+                  <span className="font-bold">@{get(dropInfo, "handle")}</span>
                 </div>
               </div>
               {owner ? (

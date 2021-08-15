@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { find } from "lodash";
+import { find, get } from "lodash";
 
 import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
@@ -7,7 +7,8 @@ import testDropsData from "../../components/general/testdrops.json";
 const AboutCreator = ({ piece }) => {
   const dropInfo = find(
     process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
-    (d) => d.id == "1"
+    (d) =>
+      (d.id == process.env.NEXT_PUBLIC_FLOW_ENV) === "mainnet" ? piece.id : "1"
   );
   return (
     <div className="bg-white py-12">
@@ -17,7 +18,7 @@ const AboutCreator = ({ piece }) => {
           <div className="bg-cream-500 col-span-6 md:col-span-4 flex flex-col items-center justify-center px-12 py-12 rounded">
             <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20">
               <img
-                src={dropInfo.smallImage}
+                src={get(dropInfo, "smallImage")}
                 className="h-full object-cover rounded-full w-full"
               />
             </div>
@@ -25,7 +26,7 @@ const AboutCreator = ({ piece }) => {
               {piece.metadata.artist}
             </h4>
             <p className="font-bold font-inktrap mb-2 text-center">
-              @{dropInfo.handle}
+              @{get(dropInfo, "handle")}
             </p>
             <Link href={`/profile/${piece.metadata.artistAddress}`}>
               <a className="standard-button transparent-button">
@@ -34,7 +35,7 @@ const AboutCreator = ({ piece }) => {
             </Link>
           </div>
           <div className="col-span-6 md:col-span-8 text-lg mt-6 sm:mt-0">
-            <p>{dropInfo.aboutArtist}</p>
+            <p>{get(dropInfo, "aboutArtist")}</p>
           </div>
         </div>
       </div>
