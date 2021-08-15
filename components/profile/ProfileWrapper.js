@@ -71,6 +71,8 @@ const ProfileWrapper = ({ self, user, name }) => {
   const [arts, setArts] = useState([]);
   useEffect(async () => {
     if ((self && user && user.addr) || name) {
+      setLoading(true);
+      setMarketPieces([]);
       const addr = self ? user.addr : name;
       const profile = await fetchProfile(addr);
       setCurrentProfile(profile || {});
@@ -89,8 +91,10 @@ const ProfileWrapper = ({ self, user, name }) => {
         }
       });
     }
-  }, [self, user, name]);
+  }, [self, name]);
   useEffect(async () => {
+    setLoading(true);
+    setPieces([]);
     const allPieces = await getArtNoDrawing(name || user.addr);
     setPieces(allPieces);
     setLoading(false);
@@ -111,7 +115,7 @@ const ProfileWrapper = ({ self, user, name }) => {
     };
     document.addEventListener("refetch", refetchProfile, false);
     return () => document.removeEventListener("refetch", refetchProfile, false);
-  }, []);
+  }, [self, name]);
   return (
     <>
       <ProfileSummary
