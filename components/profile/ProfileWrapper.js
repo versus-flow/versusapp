@@ -80,7 +80,9 @@ const ProfileWrapper = ({ self, user, name }) => {
         try {
           const img = await oneArt(addr, e.id);
           setMarketPieces((listings) =>
-            map(listings, (l) => (l.id === e.id ? { ...l, img } : l))
+            map(listings, (l) =>
+              l.cacheKey === e.cacheKey ? { ...l, img } : l
+            )
           );
         } catch (e) {
           console.log(e);
@@ -97,7 +99,7 @@ const ProfileWrapper = ({ self, user, name }) => {
         const pieceArt = await getArtDrawing(name || user.addr, p.id);
         setPieces((currentPieces) =>
           map(currentPieces, (ap) =>
-            ap.id === p.id ? { ...ap, img: pieceArt } : ap
+            ap.cacheKey === p.cacheKey ? { ...ap, img: pieceArt } : ap
           )
         );
         // await uploadFile(pieceArt, `piece${p.cacheKey}`);
