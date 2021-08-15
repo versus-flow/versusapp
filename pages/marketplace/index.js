@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import { filter, map, uniq, sortBy, reverse, uniqBy, find } from "lodash";
+import { filter, map, uniq, sortBy, reverse, uniqBy, find, each } from "lodash";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
 
@@ -20,7 +20,7 @@ export const getPiecesByIds = async (pieces) => {
     map(pieces, async (p) => ({
       ...p,
       data: await oneListedItem(p.blockEventData.from, p.blockEventData.id),
-      img: await oneArt(p.blockEventData.from, p.blockEventData.id),
+      // img: await oneArt(p.blockEventData.from, p.blockEventData.id),
     }))
   );
   return allItems;
@@ -86,6 +86,16 @@ export default function Marketplace() {
       const pieces = await getPiecesByIds(filtered);
       setPieces(pieces);
       setLoading(false);
+      each(pieces, async (p) => {
+        try {
+          const img = await oneArt(p.blockEventData.from, p.blockEventData.id);
+          setPieces((listings) =>
+            map(listings, (l) => (l.id === p.id ? { ...l, img } : l))
+          );
+        } catch (e) {
+          console.log(e);
+        }
+      });
     };
     findActivePieces();
   }, []);
@@ -102,7 +112,6 @@ export default function Marketplace() {
       return;
     },
   ]);
-  console.log(sb);
   if (sb === "ztoa") sortedPieces = reverse(sortedPieces);
   return (
     <Main>

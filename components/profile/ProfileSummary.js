@@ -35,7 +35,7 @@ const ProfileSummary = ({ self, drop, name, profile = {}, user }) => {
   const followAction = async () => {
     const currentState = followText;
     if (includes(["Follow", "Unfollow"], currentState)) {
-      setFollowText("Following");
+      setFollowText("Following...");
       try {
         await tx(
           [
@@ -51,12 +51,12 @@ const ProfileSummary = ({ self, drop, name, profile = {}, user }) => {
           {
             onStart() {
               setFollowText(
-                currentState === "Follow" ? "Following" : "Unfollowing"
+                currentState === "Follow" ? "Following..." : "Unfollowing"
               );
             },
             onSubmission() {
               setFollowText(
-                currentState === "Follow" ? "Following" : "Unfollowing"
+                currentState === "Follow" ? "Following..." : "Unfollowing"
               );
             },
             async onSuccess(status) {
@@ -73,14 +73,15 @@ const ProfileSummary = ({ self, drop, name, profile = {}, user }) => {
                   ),
                 3000
               );
+              const event = new Event("refetch");
+              document.dispatchEvent(event);
             },
             async onError(error) {
+              const initState = currentState;
               setFollowText("Error");
               setTimeout(
                 () =>
-                  setFollowText(
-                    currentState === "Follow" ? "Unfollow" : "Follow"
-                  ),
+                  setFollowText(initState === "Follow" ? "Unfollow" : "Follow"),
                 3000
               );
               console.log(error);
@@ -143,7 +144,7 @@ const ProfileSummary = ({ self, drop, name, profile = {}, user }) => {
         </div>
         <div className="flex justify-between items-center mt-3">
           <div className="mt-2">
-            {twitter || instagram || youtube || discord ? (
+            {twitter || instagram || youtube ? (
               <>
                 <h5 className="text-black-100 text-sm">Social accounts</h5>
                 <div className="flex items-center mt-2">
