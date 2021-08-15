@@ -24,8 +24,11 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
   const dropInfo = find(
     process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
     (d) =>
-      (d.id == process.env.NEXT_PUBLIC_FLOW_ENV) === "mainnet" ? piece.id : "1"
+      process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
+        ? artist === d.artist
+        : (d.id = "1")
   );
+  console.log(piece, dropInfo);
   const isVersus = artist === "Versus";
   const unlist = async () => {
     if (get(user, "addr") !== address) return;

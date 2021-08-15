@@ -5,10 +5,13 @@ import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
 
 const AboutCreator = ({ piece }) => {
+  const artist = piece.metadata.artist;
   const dropInfo = find(
     process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
     (d) =>
-      (d.id == process.env.NEXT_PUBLIC_FLOW_ENV) === "mainnet" ? piece.id : "1"
+      process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
+        ? artist === d.artist
+        : (d.id = "1")
   );
   const isVersus = get(piece, "art.artist") === "Versus";
   return (
