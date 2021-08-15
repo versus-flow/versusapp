@@ -26,6 +26,7 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
     (d) =>
       (d.id == process.env.NEXT_PUBLIC_FLOW_ENV) === "mainnet" ? piece.id : "1"
   );
+  const isVersus = artist === "Versus";
   const unlist = async () => {
     if (get(user, "addr") !== address) return;
     if (listingText !== "Unlist") return;
@@ -95,17 +96,23 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
             )}
             <div className="flex items-center mt-8">
               <div className="flex items-center mr-6">
-                <div className="bg-white h-12 mr-3 p-1 rounded-full shadow-lg w-12">
-                  <Zoom>
-                    <img
-                      src={get(dropInfo, "smallImage")}
-                      className="h-full object-cover rounded-full w-full"
-                    />
-                  </Zoom>
+                <div className="bg-white h-12 mr-3 p-1 rounded-full shadow-lg w-12 flex justify-center items-center">
+                  {isVersus ? (
+                    <span className="font-bold text-xl">v</span>
+                  ) : (
+                    <Zoom>
+                      <img
+                        src={get(dropInfo, "smallImage")}
+                        className="h-full object-cover rounded-full w-full"
+                      />
+                    </Zoom>
+                  )}
                 </div>
                 <div className="flex flex-col">
                   <span className="text-regGrey text-sm">Artist</span>
-                  <span className="font-bold">@{get(dropInfo, "handle")}</span>
+                  <span className="font-bold">
+                    @{isVersus ? "versus" : get(dropInfo, "handle")}
+                  </span>
                 </div>
               </div>
               {owner ? (
