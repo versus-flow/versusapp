@@ -27,7 +27,7 @@ const Results = ({ pieces }) => {
             price={parseFloat(p.data.price).toFixed(1)}
             button={
               <Link href={`/listing/${p.blockEventData.id}`}>
-                <a className="standard-button small-button block mt-2">Buy</a>
+                <a className="standard-button small-button block mt-2">View</a>
               </Link>
             }
           />
