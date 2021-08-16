@@ -28,7 +28,6 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
         ? artist === d.artist
         : (d.id = "1")
   );
-  console.log(piece, dropInfo);
   const isVersus = artist === "Versus";
   const unlist = async () => {
     if (get(user, "addr") !== address) return;
