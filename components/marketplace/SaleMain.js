@@ -12,8 +12,9 @@ import testDropsData from "../../components/general/testdrops.json";
 import BuyItem from "./BuyItem";
 import { isMainnet } from "../general/helpers";
 import Link from "next/link";
+import Loading from "../general/Loading";
 
-const SaleMain = ({ piece, address, user, unlisted }) => {
+const SaleMain = ({ piece, address, user, unlisted, art }) => {
   const [showList, setShowList] = useState(false);
   const [listingText, setListingText] = useState("Unlist");
   const {
@@ -144,12 +145,15 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
             </div>
           </div>
           <div className="w-full sm:order-2">
-            <Zoom>
-              <img
-                src={piece.img}
-                className="w-full sm:h-full sm:object-contain"
-              />
-            </Zoom>
+            {art ? (
+              <Zoom>
+                <img src={art} className="w-full sm:h-full sm:object-contain" />
+              </Zoom>
+            ) : (
+              <div className="h-24 sm:h-48 flex justify-center items-center">
+                <Loading />
+              </div>
+            )}
           </div>
         </div>
       </div>
