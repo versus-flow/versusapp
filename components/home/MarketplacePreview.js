@@ -73,7 +73,7 @@ const MarketplacePreview = () => {
           const img = await oneArt(p.blockEventData.from, p.blockEventData.id);
           setPieces((listings) =>
             map(listings, (l) =>
-              l.cacheKey === p.cacheKey ? { ...l, img } : l
+              l.data.cacheKey === p.data.cacheKey ? { ...l, img } : l
             )
           );
         } catch (e) {
