@@ -86,7 +86,9 @@ const ProfileWrapper = ({ self, user, name }) => {
       setMarketPieces(map(myListings, (m) => ({ ...m, metadata: m.art })));
       each(myListings, async (e) => {
         try {
-          const img = await oneArt(addr, e.id);
+          const img =
+            (await getCacheThumbnail(e.cacheKey, "600")) ||
+            (await oneArt(addr, e.id));
           setMarketPieces((listings) =>
             map(listings, (l) =>
               l.cacheKey === e.cacheKey ? { ...l, img } : l
