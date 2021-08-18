@@ -5,7 +5,7 @@ import Link from "next/link";
 import Arrow from "../../assets/arrow.svg";
 import ArrowButton from "../general/ArrowButton";
 import DropPreview from "../marketplace/DropPreview";
-import { getGraffleUrl } from "../general/helpers";
+import { getCacheThumbnail, getGraffleUrl } from "../general/helpers";
 import moment from "moment";
 import { getPiecesByIds } from "../../pages/marketplace";
 import Loading from "../general/Loading";
@@ -70,7 +70,9 @@ const MarketplacePreview = () => {
       setLoading(false);
       each(pieces, async (p) => {
         try {
-          const img = await oneArt(p.blockEventData.from, p.blockEventData.id);
+          const img =
+            (await getCacheThumbnail(p.data.cacheKey, 600)) ||
+            (await oneArt(p.blockEventData.from, p.blockEventData.id));
           setPieces((listings) =>
             map(listings, (l) =>
               l.data.cacheKey === p.data.cacheKey ? { ...l, img } : l

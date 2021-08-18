@@ -10,7 +10,11 @@ import { fetchMyArt, fetchOneArt } from "./transactions";
 import Collection from "./Collection";
 import Loading from "../general/Loading";
 import { getArtContent, getMarketpaceItems } from "../marketplace/transactions";
-import { resizedataURL, uploadFile } from "../general/helpers";
+import {
+  getCacheThumbnail,
+  resizedataURL,
+  uploadFile,
+} from "../general/helpers";
 
 export const getArt = async (addr) => {
   const response = await fcl.send([
@@ -20,6 +24,8 @@ export const getArt = async (addr) => {
   const artResponse = await fcl.decode(response);
   const allPieces = await Promise.all(
     map(artResponse, async (r) => {
+      // const imgUrl = await getCacheThumbnail(r.cacheKey, 600);
+      // if (imgUrl) return { ...r, img: imgUrl };
       const oneArtResponse = await fcl.send([
         fcl.script(fetchOneArt),
         fcl.args([fcl.arg(addr, t.Address), fcl.arg(r.id, t.UInt64)]),
@@ -100,7 +106,9 @@ const ProfileWrapper = ({ self, user, name }) => {
     setLoading(false);
     each(allPieces, async (p) => {
       try {
-        const pieceArt = await getArtDrawing(name || user.addr, p.id);
+        const pieceArt =
+          (await getCacheThumbnail(p.cacheKey, "600")) ||
+          (await getArtDrawing(name || user.addr, p.id));
         setPieces((currentPieces) =>
           map(currentPieces, (ap) =>
             ap.cacheKey === p.cacheKey ? { ...ap, img: pieceArt } : ap

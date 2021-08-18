@@ -77,3 +77,17 @@ export const resizedataURL = (datas, _scale) => {
     img.src = datas;
   });
 };
+
+export const getDropThumbnail = async (dropId, width = "auto") => {
+  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maindr${dropId}.jpg`;
+  const isFile = await checkForFile(url);
+  if (!isFile) return false;
+  return url;
+};
+
+export const getCacheThumbnail = async (cacheKey, width = "auto") => {
+  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maincache${cacheKey}.jpg`;
+  const isFile = await checkForFile(url);
+  if (!isFile) return false;
+  return url;
+};

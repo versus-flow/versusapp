@@ -20,6 +20,7 @@ import Head from "next/head";
 import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
 import Loading from "../../components/general/Loading";
+import { getDropThumbnail } from "../../components/general/helpers";
 
 export default function Drop({ id }) {
   const [updatedDrop, setUpdatedDrop] = useState({});
@@ -37,8 +38,8 @@ export default function Drop({ id }) {
     const drop = await fetchDrop(id);
     setUpdatedDrop(drop);
     setloading(false);
-    const art = await fetchArt(id);
-    setUpdatedArt(art);
+    setUpdatedArt(await getDropThumbnail(id));
+    setUpdatedArt(await fetchArt(id));
     window.fetches = setInterval(async () => {
       const drop = await fetchDrop(id);
       setUpdatedDrop(drop);

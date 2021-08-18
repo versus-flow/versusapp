@@ -15,6 +15,7 @@ import { getOneMarketplaceItem } from "./transactions";
 import { fetchProfile } from "../../pages/profile/[name]";
 import { fetchMyArt, fetchOneArt } from "../profile/transactions";
 import { find } from "lodash";
+import { getCacheThumbnail } from "../general/helpers";
 
 export async function oneListedItem(addr, tokenID) {
   const oneArtResponse = await fcl.send([
@@ -45,6 +46,8 @@ export default function FullItem({ id, address, unlisted }) {
         metadata: i.art,
         owner,
       });
+      const imgUrl = await getCacheThumbnail(i.cacheKey);
+      setArt(imgUrl);
       const oneArtResponse = await fcl.send([
         fcl.script(fetchOneArt),
         fcl.args([fcl.arg(address, t.Address), fcl.arg(i.id, t.UInt64)]),
@@ -59,6 +62,8 @@ export default function FullItem({ id, address, unlisted }) {
         metadata: i.art,
         owner,
       });
+      const imgUrl = await getCacheThumbnail(i.cacheKey);
+      setArt(imgUrl);
       img = await oneArt(address, parseInt(id, 10));
       setArt(img);
     }
