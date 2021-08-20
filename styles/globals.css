@@ -159,4 +159,5 @@ select.hide-select::-ms-expand {
 .scroll-hide::-webkit-scrollbar {
   width: 0; /* Remove scrollbar space */
   background: transparent; /* Optional: just make scrollbar invisible */
+  display: none; /* Safari and Chrome */
 }
