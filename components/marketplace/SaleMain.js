@@ -67,7 +67,12 @@ const SaleMain = ({ piece, address, user, unlisted, art }) => {
   return (
     <>
       {showList && (
-        <BuyItem close={() => setShowList(false)} piece={piece} user={user} />
+        <BuyItem
+          close={() => setShowList(false)}
+          piece={piece}
+          user={user}
+          art={art}
+        />
       )}
       <div className="container my-12">
         <div className="grid sm:grid-cols-2 gap-8">
@@ -75,9 +80,11 @@ const SaleMain = ({ piece, address, user, unlisted, art }) => {
             <p className="text-regGrey">
               Edition {edition} of {maxEdition}
             </p>
-            <h1 className="font-black font-inktrap text-5xl">{name}</h1>
-            <p className="mt-12 w-9/12">{description}</p>
-            <p className="font-black font-inktrap mt-8 text-5xl">
+            <h1 className="font-black font-inktrap text-3xl sm:text-5xl">
+              {name}
+            </h1>
+            <p className="mt-12 sm:w-9/12">{description}</p>
+            <p className="font-black font-inktrap mt-8 text-3xl sm:text-5xl">
               {unlisted ? "Unlisted" : `${`F${parseFloat(price).toFixed(1)}`}`}
             </p>
             {!unlisted && (
@@ -99,8 +106,8 @@ const SaleMain = ({ piece, address, user, unlisted, art }) => {
                 )}
               </div>
             )}
-            <div className="flex items-center mt-8">
-              <div className="flex items-center mr-6">
+            <div className="flex flex-col sm:flex-row sm:items-center mt-8">
+              <div className="flex items-center mb-3 sm:mb-0 sm:mr-6">
                 <div className="bg-white h-12 mr-3 p-1 rounded-full shadow-lg w-12 flex justify-center items-center">
                   {isVersus ? (
                     <span className="font-bold text-xl">v</span>

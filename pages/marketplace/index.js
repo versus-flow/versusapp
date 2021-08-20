@@ -10,6 +10,7 @@ import {
   find,
   each,
   get,
+  includes,
 } from "lodash";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
@@ -119,6 +120,7 @@ export default function Marketplace() {
   const defaultArtists = uniq(map(pieces, (p) => p.data.art.artist));
   const filteredPieces = filter(pieces, (p) => {
     if (p.data.price < price[0] || p.data.price > price[1]) return false;
+    if (artists.length && !includes(artists, p.data.art.artist)) return false;
     return true;
   });
   let sortedPieces = sortBy(filteredPieces, [
@@ -144,7 +146,7 @@ export default function Marketplace() {
                   <div className="col-span-4">
                     <Holder
                       setPrice={(v) => setPrice(v)}
-                      setArtists={setArtists}
+                      setArtists={(a) => setArtists(a)}
                       defaultArtists={defaultArtists}
                     />
                   </div>

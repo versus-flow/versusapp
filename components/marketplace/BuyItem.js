@@ -12,7 +12,7 @@ import { tx } from "../drop/transactions";
 import { purchaseItem } from "./transactions";
 import Loading from "../general/Loading";
 
-const BuyItem = ({ close, piece, user }) => {
+const BuyItem = ({ close, piece, user, art }) => {
   const [error, setError] = useState("");
   const [status, setStatus] = useState("Confirm");
   const modal = useRef(null);
@@ -76,7 +76,7 @@ const BuyItem = ({ close, piece, user }) => {
                 title={piece.metadata.name}
                 artist={piece.metadata.artist}
                 edition={`#${piece.metadata.edition}/${piece.metadata.maxEdition}`}
-                img={piece.img}
+                img={art}
                 shadow
               />
             </div>
