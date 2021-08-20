@@ -113,7 +113,7 @@ const MarketplacePreview = () => {
                   button={
                     <Link href={`/listing/${p.blockEventData.id}`}>
                       <a className="standard-button small-button block mt-2">
-                        Buy
+                        View
                       </a>
                     </Link>
                   }
