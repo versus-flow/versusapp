@@ -66,7 +66,9 @@ const SaleMain = ({ piece, address, user, unlisted, art }) => {
   };
   return (
     <>
-      {showList && <BuyItem close={() => setShowList(false)} piece={piece} />}
+      {showList && (
+        <BuyItem close={() => setShowList(false)} piece={piece} user={user} />
+      )}
       <div className="container my-12">
         <div className="grid sm:grid-cols-2 gap-8">
           <div className="order-1">

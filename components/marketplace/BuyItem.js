@@ -12,7 +12,7 @@ import { tx } from "../drop/transactions";
 import { purchaseItem } from "./transactions";
 import Loading from "../general/Loading";
 
-const BuyItem = ({ close, piece }) => {
+const BuyItem = ({ close, piece, user }) => {
   const [error, setError] = useState("");
   const [status, setStatus] = useState("Confirm");
   const modal = useRef(null);
@@ -26,7 +26,7 @@ const BuyItem = ({ close, piece }) => {
         [
           fcl.transaction(purchaseItem),
           fcl.args([
-            fcl.arg(piece.metadata.artistAddress, t.Address),
+            fcl.arg(user.address, t.Address),
             fcl.arg(piece.id, t.UInt64),
             fcl.arg(parseFloat(piece.price).toFixed(1).toString(), t.UFix64),
           ]),
