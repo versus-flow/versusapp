@@ -27,7 +27,7 @@ const BuyItem = ({ close, piece, user, art }) => {
         [
           fcl.transaction(purchaseItem),
           fcl.args([
-            fcl.arg(user.addr, t.Address),
+            fcl.arg(piece.owner.address, t.Address),
             fcl.arg(piece.id, t.UInt64),
             fcl.arg(parseFloat(piece.price).toFixed(1).toString(), t.UFix64),
           ]),
@@ -46,6 +46,7 @@ const BuyItem = ({ close, piece, user, art }) => {
           async onSuccess(status) {
             setStatus("Purchased");
             setTimeout(close, 300);
+            location.reload();
           },
           async onError(error) {
             if (error) {
@@ -65,7 +66,7 @@ const BuyItem = ({ close, piece, user, art }) => {
       <div className="absolute bg-black-600 bg-opacity-90 h-full left-0 top-0 w-full" />
       <form
         ref={modal}
-        className="bg-cream-500 flex flex-col items-center px-8 sm:px-20 pb-8 sm:py-8 rounded w-full max-w-md z-10 modal-scroll"
+        className="bg-cream-500 flex flex-col items-center px-8 sm:px-20 py-8 rounded w-full max-w-md z-10 modal-scroll"
       >
         <Logo className="h-3 sm:h-10" />
         {status === "Confirm" && (
@@ -103,7 +104,7 @@ const BuyItem = ({ close, piece, user, art }) => {
         )}
         {status === "Processing" && (
           <>
-            <h4 className="font-black font-inktrap mt-8 text-2xl">
+            <h4 className="font-black text-center font-inktrap mt-8 text-2xl">
               Processing payment...
             </h4>
             <p className="mt-6 text-center">
