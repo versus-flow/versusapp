@@ -13,7 +13,6 @@ import { purchaseItem } from "./transactions";
 import Loading from "../general/Loading";
 
 const BuyItem = ({ close, piece, user, art }) => {
-  console.log(user);
   const [error, setError] = useState("");
   const [status, setStatus] = useState("Confirm");
   const modal = useRef(null);
