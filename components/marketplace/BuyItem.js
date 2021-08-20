@@ -21,6 +21,7 @@ const BuyItem = ({ close, piece, user, art }) => {
     e.preventDefault();
     setError("");
     if (status !== "Confirm") return;
+    if (!user || !user.addr) return setError("Please connect your wallet!");
     try {
       await tx(
         [
@@ -87,6 +88,7 @@ const BuyItem = ({ close, piece, user, art }) => {
               </span>
               .
             </p>
+            {error && <ErrorMessage text={error} />}
             <div className="flex justify-between mt-6 w-full">
               <ArrowButton text={status} onClick={handleSubmit} />
               <span
