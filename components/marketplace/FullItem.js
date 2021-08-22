@@ -25,7 +25,7 @@ export async function oneListedItem(addr, tokenID) {
   return fcl.decode(oneArtResponse);
 }
 
-export default function FullItem({ id, address, unlisted }) {
+export default function FullItem({ id, address, unlisted, user }) {
   const [piece, setPiece] = useState(null);
   const [art, setArt] = useState("");
   useEffect(async () => {
@@ -69,33 +69,27 @@ export default function FullItem({ id, address, unlisted }) {
     }
     // const artist = await fetchProfile(i.art.artistAddress);
   }, []);
-  return (
-    <Main>
-      {(user) =>
-        piece ? (
-          <>
-            <SaleMain
-              piece={piece}
-              address={address}
-              user={user}
-              unlisted={unlisted}
-              art={art}
-            />
-            <DropProperties drop={piece} art={art} />
-            <AboutCreator piece={piece} />
-            <PurchaseHistory id={id} />
-            <div className="py-12">
-              <div className="container">
-                <JoinCommunity />
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="w-full h-48 min-h-screen flex justify-center pt-36">
-            <Loading />
-          </div>
-        )
-      }
-    </Main>
+  return piece ? (
+    <>
+      <SaleMain
+        piece={piece}
+        address={address}
+        user={user}
+        unlisted={unlisted}
+        art={art}
+      />
+      <DropProperties drop={piece} art={art} />
+      <AboutCreator piece={piece} />
+      <PurchaseHistory id={id} />
+      <div className="py-12">
+        <div className="container">
+          <JoinCommunity />
+        </div>
+      </div>
+    </>
+  ) : (
+    <div className="w-full h-48 min-h-screen flex justify-center pt-36">
+      <Loading />
+    </div>
   );
 }
