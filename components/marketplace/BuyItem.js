@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import useOnClickOutside from "use-onclickoutside";
+import { useRouter } from "next/router";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
 
@@ -15,6 +16,7 @@ import Loading from "../general/Loading";
 const BuyItem = ({ close, piece, user, art }) => {
   const [error, setError] = useState("");
   const [status, setStatus] = useState("Confirm");
+  const router = useRouter();
   const modal = useRef(null);
   useOnClickOutside(modal, close);
   const handleSubmit = async (e) => {
@@ -46,7 +48,7 @@ const BuyItem = ({ close, piece, user, art }) => {
           async onSuccess(status) {
             setStatus("Purchased");
             setTimeout(close, 300);
-            location.reload();
+            router.push("/profile/me");
           },
           async onError(error) {
             if (error) {
