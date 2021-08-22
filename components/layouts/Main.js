@@ -45,7 +45,7 @@ const Main = ({ children }) => {
         fcl.args([fcl.arg(user.addr, t.Address)]),
       ]);
       const balance = await fcl.decode(response);
-      setBalance(parseFloat(balance).toFixed(2));
+      setBalance(parseFloat(balance).toFixed(1));
     }
     if (user.addr) getBalance();
     const int = setInterval(() => {
