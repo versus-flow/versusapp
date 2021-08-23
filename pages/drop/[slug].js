@@ -42,14 +42,15 @@ export default function Drop({ id }) {
     setUpdatedDrop(drop);
     setloading(false);
     setUpdatedArt(await getDropThumbnail(id));
-    setUpdatedArt(await fetchArt(id));
     window.fetches = setInterval(async () => {
       const drop = await fetchDrop(id);
       setUpdatedDrop(drop);
     }, 30000);
     document.addEventListener("bid", () => fetchDrop(id), false);
-    return () =>
+    return () => {
+      clearInterval(window.fetches);
       document.removeEventListener("bid", () => fetchDrop(id), false);
+    };
   }, [id]);
   useEffect(() => {
     if (loading) return;
