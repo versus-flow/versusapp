@@ -33,6 +33,9 @@ export default function Drop({ id }) {
     (d) => d.id == id
   );
   useEffect(async () => {
+    setloading(true);
+    setUpdatedDrop({});
+    setUpdatedArt(null);
     if (includes(["11", "12", "13", "15"], id)) return null;
     if (includes([1, 6, 9, 11, 12, 13, 15, 20, 22], id)) return null;
     const drop = await fetchDrop(id);
@@ -47,7 +50,7 @@ export default function Drop({ id }) {
     document.addEventListener("bid", () => fetchDrop(id), false);
     return () =>
       document.removeEventListener("bid", () => fetchDrop(id), false);
-  }, []);
+  }, [id]);
   useEffect(() => {
     if (loading) return;
     if (
