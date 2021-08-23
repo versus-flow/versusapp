@@ -5,6 +5,7 @@ import "react-medium-image-zoom/dist/styles.css";
 import { first, get } from "lodash";
 
 import { getGraffleUrl } from "../general/helpers";
+import Loading from "../general/Loading";
 
 const DropPreview = ({
   shadow,
@@ -39,13 +40,17 @@ const DropPreview = ({
         "shadow-2xl": shadow,
       })}
     >
-      <div className="h-80 w-full zoom-holder">
-        {zoom ? (
-          <Zoom>
+      <div className="h-80 w-full zoom-holder bg-lightGrey flex justify-center items-center">
+        {img ? (
+          zoom ? (
+            <Zoom>
+              <img className="h-full object-cover w-full rounded" src={img} />
+            </Zoom>
+          ) : (
             <img className="h-full object-cover w-full rounded" src={img} />
-          </Zoom>
+          )
         ) : (
-          <img className="h-full object-cover w-full rounded" src={img} />
+          <Loading />
         )}
       </div>
       <div className="py-3 px-2 relative">

@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import useOnClickOutside from "use-onclickoutside";
+import { useRouter } from "next/router";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
 
@@ -12,21 +13,23 @@ import { tx } from "../drop/transactions";
 import { purchaseItem } from "./transactions";
 import Loading from "../general/Loading";
 
-const BuyItem = ({ close, piece }) => {
+const BuyItem = ({ close, piece, user, art }) => {
   const [error, setError] = useState("");
   const [status, setStatus] = useState("Confirm");
+  const router = useRouter();
   const modal = useRef(null);
   useOnClickOutside(modal, close);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     if (status !== "Confirm") return;
+    if (!user || !user.addr) return setError("Please connect your wallet!");
     try {
       await tx(
         [
           fcl.transaction(purchaseItem),
           fcl.args([
-            fcl.arg(piece.metadata.artistAddress, t.Address),
+            fcl.arg(piece.owner.address, t.Address),
             fcl.arg(piece.id, t.UInt64),
             fcl.arg(parseFloat(piece.price).toFixed(1).toString(), t.UFix64),
           ]),
@@ -45,6 +48,7 @@ const BuyItem = ({ close, piece }) => {
           async onSuccess(status) {
             setStatus("Purchased");
             setTimeout(close, 300);
+            router.push("/profile/me");
           },
           async onError(error) {
             if (error) {
@@ -64,7 +68,7 @@ const BuyItem = ({ close, piece }) => {
       <div className="absolute bg-black-600 bg-opacity-90 h-full left-0 top-0 w-full" />
       <form
         ref={modal}
-        className="bg-cream-500 flex flex-col items-center px-8 sm:px-20 pb-8 sm:py-8 rounded w-full max-w-md z-10 modal-scroll"
+        className="bg-cream-500 flex flex-col items-center px-8 sm:px-20 py-8 rounded w-full max-w-md z-10 modal-scroll"
       >
         <Logo className="h-3 sm:h-10" />
         {status === "Confirm" && (
@@ -76,7 +80,7 @@ const BuyItem = ({ close, piece }) => {
                 title={piece.metadata.name}
                 artist={piece.metadata.artist}
                 edition={`#${piece.metadata.edition}/${piece.metadata.maxEdition}`}
-                img={piece.img}
+                img={art}
                 shadow
               />
             </div>
@@ -87,6 +91,7 @@ const BuyItem = ({ close, piece }) => {
               </span>
               .
             </p>
+            {error && <ErrorMessage text={error} />}
             <div className="flex justify-between mt-6 w-full">
               <ArrowButton text={status} onClick={handleSubmit} />
               <span
@@ -101,7 +106,7 @@ const BuyItem = ({ close, piece }) => {
         )}
         {status === "Processing" && (
           <>
-            <h4 className="font-black font-inktrap mt-8 text-2xl">
+            <h4 className="font-black text-center font-inktrap mt-8 text-2xl">
               Processing payment...
             </h4>
             <p className="mt-6 text-center">

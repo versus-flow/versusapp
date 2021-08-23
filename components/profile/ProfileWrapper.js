@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
-import { map } from "lodash";
+import { each, find, findIndex, map } from "lodash";
 
 import ProfileSummary from "./ProfileSummary";
 import { fetchProfile } from "../../pages/profile/[name]";
@@ -10,7 +10,11 @@ import { fetchMyArt, fetchOneArt } from "./transactions";
 import Collection from "./Collection";
 import Loading from "../general/Loading";
 import { getArtContent, getMarketpaceItems } from "../marketplace/transactions";
-import { getCachedImage, setCachedImage } from "../general/helpers";
+import {
+  getCacheThumbnail,
+  resizedataURL,
+  uploadFile,
+} from "../general/helpers";
 
 export const getArt = async (addr) => {
   const response = await fcl.send([
@@ -20,8 +24,8 @@ export const getArt = async (addr) => {
   const artResponse = await fcl.decode(response);
   const allPieces = await Promise.all(
     map(artResponse, async (r) => {
-      const cachedImage = getCachedImage(r.id);
-      if (cachedImage) return { ...r, img: cachedImage };
+      // const imgUrl = await getCacheThumbnail(r.cacheKey, 600);
+      // if (imgUrl) return { ...r, img: imgUrl };
       const oneArtResponse = await fcl.send([
         fcl.script(fetchOneArt),
         fcl.args([fcl.arg(addr, t.Address), fcl.arg(r.id, t.UInt64)]),
@@ -32,6 +36,23 @@ export const getArt = async (addr) => {
     })
   );
   return allPieces;
+};
+
+export const getArtDrawing = async (addr, id) => {
+  const oneArtResponse = await fcl.send([
+    fcl.script(fetchOneArt),
+    fcl.args([fcl.arg(addr, t.Address), fcl.arg(id, t.UInt64)]),
+  ]);
+  return fcl.decode(oneArtResponse);
+};
+
+export const getArtNoDrawing = async (addr) => {
+  const response = await fcl.send([
+    fcl.script(fetchMyArt),
+    fcl.args([fcl.arg(addr, t.Address)]),
+  ]);
+  const artResponse = await fcl.decode(response);
+  return artResponse;
 };
 
 export async function oneArt(addr, artId) {
@@ -55,35 +76,58 @@ const ProfileWrapper = ({ self, user, name }) => {
   const [pieces, setPieces] = useState([]);
   const [marketPieces, setMarketPieces] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [arts, setArts] = useState([]);
   useEffect(async () => {
     if ((self && user && user.addr) || name) {
+      setLoading(true);
+      setMarketPieces([]);
       const addr = self ? user.addr : name;
       const profile = await fetchProfile(addr);
       setCurrentProfile(profile || {});
       const myListings = await getMyListings(addr);
-      const editedListings = await Promise.all(
-        map(myListings, async (l) => {
-          return {
-            ...l,
-            metadata: l.art,
-            img: await oneArt(addr, l.id),
-          };
-        })
-      );
-      setMarketPieces(editedListings);
+      setMarketPieces(map(myListings, (m) => ({ ...m, metadata: m.art })));
+      each(myListings, async (e) => {
+        try {
+          const img =
+            (await getCacheThumbnail(e.cacheKey, "600")) ||
+            (await oneArt(addr, e.id));
+          setMarketPieces((listings) =>
+            map(listings, (l) =>
+              l.cacheKey === e.cacheKey ? { ...l, img } : l
+            )
+          );
+        } catch (e) {
+          console.log(e);
+        }
+      });
     }
-  }, [self, user, name]);
+  }, [self, name]);
   useEffect(async () => {
-    const allPieces = await getArt(name || user.addr);
+    setLoading(true);
+    setPieces([]);
+    const allPieces = await getArtNoDrawing(name || user.addr);
     setPieces(allPieces);
     setLoading(false);
+    each(allPieces, async (p) => {
+      try {
+        const pieceArt =
+          (await getCacheThumbnail(p.cacheKey, "600")) ||
+          (await getArtDrawing(name || user.addr, p.id));
+        setPieces((currentPieces) =>
+          map(currentPieces, (ap) =>
+            ap.cacheKey === p.cacheKey ? { ...ap, img: pieceArt } : ap
+          )
+        );
+        // await uploadFile(pieceArt, `piece${p.cacheKey}`);
+      } catch (e) {}
+    });
     const refetchProfile = async () => {
       const profile = await fetchProfile(name || user.addr);
       setCurrentProfile(profile);
     };
     document.addEventListener("refetch", refetchProfile, false);
     return () => document.removeEventListener("refetch", refetchProfile, false);
-  }, []);
+  }, [self, name]);
   return (
     <>
       <ProfileSummary

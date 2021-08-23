@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { filter, find, map, uniqBy, get } from "lodash";
+import { filter, find, map, uniqBy, get, each } from "lodash";
 import Link from "next/link";
 
 import Arrow from "../../assets/arrow.svg";
 import ArrowButton from "../general/ArrowButton";
 import DropPreview from "../marketplace/DropPreview";
-import { getGraffleUrl } from "../general/helpers";
+import { getCacheThumbnail, getGraffleUrl } from "../general/helpers";
 import moment from "moment";
 import { getPiecesByIds } from "../../pages/marketplace";
 import Loading from "../general/Loading";
+import { oneArt } from "../profile/ProfileWrapper";
 
 const MarketplacePreview = () => {
   const [pieces, setPieces] = useState([]);
@@ -67,6 +68,20 @@ const MarketplacePreview = () => {
       const pieces = await getPiecesByIds(filtered);
       setPieces(pieces);
       setLoading(false);
+      each(pieces, async (p) => {
+        try {
+          const img =
+            (await getCacheThumbnail(p.data.cacheKey, 600)) ||
+            (await oneArt(p.blockEventData.from, p.blockEventData.id));
+          setPieces((listings) =>
+            map(listings, (l) =>
+              l.data.cacheKey === p.data.cacheKey ? { ...l, img } : l
+            )
+          );
+        } catch (e) {
+          console.log(e);
+        }
+      });
     };
     findActivePieces();
   }, []);
@@ -98,7 +113,7 @@ const MarketplacePreview = () => {
                   button={
                     <Link href={`/listing/${p.blockEventData.id}`}>
                       <a className="standard-button small-button block mt-2">
-                        Buy
+                        View
                       </a>
                     </Link>
                   }

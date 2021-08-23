@@ -15,6 +15,7 @@ import { getOneMarketplaceItem } from "./transactions";
 import { fetchProfile } from "../../pages/profile/[name]";
 import { fetchMyArt, fetchOneArt } from "../profile/transactions";
 import { find } from "lodash";
+import { getCacheThumbnail } from "../general/helpers";
 
 export async function oneListedItem(addr, tokenID) {
   const oneArtResponse = await fcl.send([
@@ -24,8 +25,9 @@ export async function oneListedItem(addr, tokenID) {
   return fcl.decode(oneArtResponse);
 }
 
-export default function FullItem({ id, address, unlisted }) {
+export default function FullItem({ id, address, unlisted, user }) {
   const [piece, setPiece] = useState(null);
+  const [art, setArt] = useState("");
   useEffect(async () => {
     let i = {};
     let img = "";
@@ -38,50 +40,56 @@ export default function FullItem({ id, address, unlisted }) {
       const thisArt = find(artResponse, (a) => a.id === parseInt(id, 10));
       i = thisArt;
       i.art = thisArt.metadata;
+      const owner = await fetchProfile(address);
+      setPiece({
+        ...i,
+        metadata: i.art,
+        owner,
+      });
+      const imgUrl = await getCacheThumbnail(i.cacheKey);
+      setArt(imgUrl);
       const oneArtResponse = await fcl.send([
         fcl.script(fetchOneArt),
         fcl.args([fcl.arg(address, t.Address), fcl.arg(i.id, t.UInt64)]),
       ]);
       img = await fcl.decode(oneArtResponse);
+      setArt(img);
     } else {
       i = await oneListedItem(address, parseInt(id, 10));
+      const owner = await fetchProfile(address);
+      setPiece({
+        ...i,
+        metadata: i.art,
+        owner,
+      });
+      const imgUrl = await getCacheThumbnail(i.cacheKey);
+      setArt(imgUrl);
       img = await oneArt(address, parseInt(id, 10));
+      setArt(img);
     }
     // const artist = await fetchProfile(i.art.artistAddress);
-    const owner = await fetchProfile(address);
-    setPiece({
-      ...i,
-      metadata: i.art,
-      img,
-      owner,
-    });
   }, []);
-  return (
-    <Main>
-      {(user) =>
-        piece ? (
-          <>
-            <SaleMain
-              piece={piece}
-              address={address}
-              user={user}
-              unlisted={unlisted}
-            />
-            <DropProperties drop={piece} art={piece.img} />
-            <AboutCreator piece={piece} />
-            <PurchaseHistory id={id} />
-            <div className="py-12">
-              <div className="container">
-                <JoinCommunity />
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="w-full h-48 min-h-screen flex justify-center pt-36">
-            <Loading />
-          </div>
-        )
-      }
-    </Main>
+  return piece ? (
+    <>
+      <SaleMain
+        piece={piece}
+        address={address}
+        user={user}
+        unlisted={unlisted}
+        art={art}
+      />
+      <DropProperties drop={piece} art={art} />
+      <AboutCreator piece={piece} />
+      <PurchaseHistory id={id} />
+      <div className="py-12">
+        <div className="container">
+          <JoinCommunity />
+        </div>
+      </div>
+    </>
+  ) : (
+    <div className="w-full h-48 min-h-screen flex justify-center pt-36">
+      <Loading />
+    </div>
   );
 }

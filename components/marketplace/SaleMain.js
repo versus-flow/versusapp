@@ -12,8 +12,9 @@ import testDropsData from "../../components/general/testdrops.json";
 import BuyItem from "./BuyItem";
 import { isMainnet } from "../general/helpers";
 import Link from "next/link";
+import Loading from "../general/Loading";
 
-const SaleMain = ({ piece, address, user, unlisted }) => {
+const SaleMain = ({ piece, address, user, unlisted, art }) => {
   const [showList, setShowList] = useState(false);
   const [listingText, setListingText] = useState("Unlist");
   const {
@@ -21,9 +22,14 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
     price,
     owner,
   } = piece;
-  const dropInfo = find(isMainnet() ? dropsData : testDropsData, (d) =>
-    isMainnet() ? d.handle === artist : d.id == "1"
+  const dropInfo = find(
+    process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
+    (d) =>
+      process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
+        ? artist === d.artist
+        : (d.id = "1")
   );
+  const isVersus = artist === "Versus";
   const unlist = async () => {
     if (get(user, "addr") !== address) return;
     if (listingText !== "Unlist") return;
@@ -60,16 +66,25 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
   };
   return (
     <>
-      {showList && <BuyItem close={() => setShowList(false)} piece={piece} />}
+      {showList && (
+        <BuyItem
+          close={() => setShowList(false)}
+          piece={piece}
+          user={user}
+          art={art}
+        />
+      )}
       <div className="container my-12">
         <div className="grid sm:grid-cols-2 gap-8">
           <div className="order-1">
             <p className="text-regGrey">
               Edition {edition} of {maxEdition}
             </p>
-            <h1 className="font-black font-inktrap text-5xl">{name}</h1>
-            <p className="mt-12 w-9/12">{description}</p>
-            <p className="font-black font-inktrap mt-8 text-5xl">
+            <h1 className="font-black font-inktrap text-3xl sm:text-5xl">
+              {name}
+            </h1>
+            <p className="mt-12 sm:w-9/12">{description}</p>
+            <p className="font-black font-inktrap mt-8 text-3xl sm:text-5xl">
               {unlisted ? "Unlisted" : `${`F${parseFloat(price).toFixed(1)}`}`}
             </p>
             {!unlisted && (
@@ -91,19 +106,25 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
                 )}
               </div>
             )}
-            <div className="flex items-center mt-8">
-              <div className="flex items-center mr-6">
-                <div className="bg-white h-12 mr-3 p-1 rounded-full shadow-lg w-12">
-                  <Zoom>
-                    <img
-                      src={dropInfo.smallImage}
-                      className="h-full object-cover rounded-full w-full"
-                    />
-                  </Zoom>
+            <div className="flex flex-col sm:flex-row sm:items-center mt-8">
+              <div className="flex items-center mb-3 sm:mb-0 sm:mr-6">
+                <div className="bg-white h-12 mr-3 p-1 rounded-full shadow-lg w-12 flex justify-center items-center">
+                  {isVersus ? (
+                    <span className="font-bold text-xl">v</span>
+                  ) : (
+                    <Zoom>
+                      <img
+                        src={get(dropInfo, "smallImage")}
+                        className="h-full object-cover rounded-full w-full"
+                      />
+                    </Zoom>
+                  )}
                 </div>
                 <div className="flex flex-col">
                   <span className="text-regGrey text-sm">Artist</span>
-                  <span className="font-bold">@{dropInfo.handle}</span>
+                  <span className="font-bold">
+                    @{isVersus ? "versus" : get(dropInfo, "handle")}
+                  </span>
                 </div>
               </div>
               {owner ? (
@@ -133,12 +154,15 @@ const SaleMain = ({ piece, address, user, unlisted }) => {
             </div>
           </div>
           <div className="w-full sm:order-2">
-            <Zoom>
-              <img
-                src={piece.img}
-                className="w-full sm:h-full sm:object-contain"
-              />
-            </Zoom>
+            {art ? (
+              <Zoom>
+                <img src={art} className="w-full sm:h-full sm:object-contain" />
+              </Zoom>
+            ) : (
+              <div className="h-24 sm:h-48 flex justify-center items-center">
+                <Loading />
+              </div>
+            )}
           </div>
         </div>
       </div>

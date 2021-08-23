@@ -18,28 +18,76 @@ export const getLink = (links, title) => {
   return item.url;
 };
 
-export const getCachedImage = (id) => {
-  const imgStorage = JSON.parse(localStorage.getItem("imgStorage") || "[]");
-  const imageItem = find(imgStorage, (i) => i.id === id);
-  if (imageItem) return imageItem.img;
-  return false;
+export const checkForFile = async (img) => {
+  try {
+    const res = await fetch(img, { method: "HEAD" });
+    return res.ok;
+  } catch (e) {
+    return false;
+  }
 };
 
-export const setCachedImage = (id, img) => {
-  let imgStorage = JSON.parse(localStorage.getItem("imgStorage") || "[]");
-  imgStorage = [...imgStorage, { id, img }];
-  localStorage.setItem("imgStorage", JSON.stringify(imgStorage));
+export const uploadFile = async (file, name) => {
+  return new Promise((resolve, reject) => {
+    var url = `https://api.cloudinary.com/v1_1/dxra4agvf/upload`;
+    var xhr = new XMLHttpRequest();
+    var fd = new FormData();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    xhr.onreadystatechange = function (e) {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        var response = JSON.parse(xhr.responseText);
+        var url = response.secure_url;
+        resolve(url);
+      }
+    };
+
+    fd.append("upload_preset", "fhgwavmy");
+    fd.append("tags", "browser_upload"); // Optional - add tag for image admin in Cloudinary
+    fd.append("file", file);
+    fd.append(
+      "filename_override",
+      `${process.env.NEXT_PUBLIC_FLOW_ENV || "testnet"}${name}`
+    );
+    xhr.send(fd);
+  });
 };
 
-export const getCachedDrop = (id) => {
-  const imgStorage = JSON.parse(localStorage.getItem("dropStorage") || "[]");
-  const imageItem = find(imgStorage, (i) => i.id === id);
-  if (imageItem) return imageItem.img;
-  return false;
+export const resizedataURL = (datas, _scale) => {
+  return new Promise(async function (resolve, reject) {
+    var img = document.createElement("img");
+    img.onload = function () {
+      var canvas = document.createElement("canvas");
+      canvas.width = img.width * _scale;
+      canvas.height = img.height * _scale;
+      var ctx = canvas.getContext("2d");
+      var maxW = img.width * _scale;
+      var maxH = img.height * _scale;
+      var iw = img.width;
+      var ih = img.height;
+      var scl = Math.min(maxW / iw, maxH / ih);
+      var iwScaled = iw * scl;
+      var ihScaled = ih * scl;
+      canvas.width = iwScaled;
+      canvas.height = ihScaled;
+      ctx.drawImage(this, 0, 0, iwScaled, ihScaled);
+      var dataURI = canvas.toDataURL();
+      resolve(dataURI);
+    };
+    img.src = datas;
+  });
 };
 
-export const setCachedDrop = (id, img) => {
-  let imgStorage = JSON.parse(localStorage.getItem("dropStorage") || "[]");
-  imgStorage = [...imgStorage, { id, img }];
-  localStorage.setItem("dropStorage", JSON.stringify(imgStorage));
+export const getDropThumbnail = async (dropId, width = "auto") => {
+  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maindr${dropId}.jpg`;
+  const isFile = await checkForFile(url);
+  if (!isFile) return false;
+  return url;
+};
+
+export const getCacheThumbnail = async (cacheKey, width = "auto") => {
+  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maincache${cacheKey}.jpg`;
+  const isFile = await checkForFile(url);
+  if (!isFile) return false;
+  return url;
 };

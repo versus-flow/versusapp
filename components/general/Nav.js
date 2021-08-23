@@ -46,8 +46,7 @@ const Nav = ({ user, balance }) => {
           <div className="flex flex-col-reverse items-center sm:flex-row">
             {user.addr && (
               <span className="mr-4 sm:text-lg order-1 sm:order-none border px-6 py-2 border-black-500 rounded-full hidden lg:inline-block">
-                Balance:{" "}
-                <span className="font-bold">{Math.round(balance)}F</span>
+                Balance: <span className="font-bold">{balance}F</span>
               </span>
             )}
             <div className="relative flex items-center" ref={addrMenu}>

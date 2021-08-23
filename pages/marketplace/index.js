@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import { filter, map, uniq, sortBy, reverse, uniqBy, find } from "lodash";
+import {
+  filter,
+  map,
+  uniq,
+  sortBy,
+  reverse,
+  uniqBy,
+  find,
+  each,
+  get,
+  includes,
+} from "lodash";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
 
@@ -9,7 +20,10 @@ import Holder from "../../components/marketplace/filters/Holder";
 import Sorting from "../../components/marketplace/filters/Sorting";
 import Results from "../../components/marketplace/Results";
 import Loading from "../../components/general/Loading";
-import { getGraffleUrl } from "../../components/general/helpers";
+import {
+  getCacheThumbnail,
+  getGraffleUrl,
+} from "../../components/general/helpers";
 import { getOneMarketplaceItem } from "../../components/marketplace/transactions";
 import { oneArt } from "../../components/profile/ProfileWrapper";
 import { oneListedItem } from "../../components/marketplace/FullItem";
@@ -20,7 +34,7 @@ export const getPiecesByIds = async (pieces) => {
     map(pieces, async (p) => ({
       ...p,
       data: await oneListedItem(p.blockEventData.from, p.blockEventData.id),
-      img: await oneArt(p.blockEventData.from, p.blockEventData.id),
+      // img: await oneArt(p.blockEventData.from, p.blockEventData.id),
     }))
   );
   return allItems;
@@ -86,12 +100,27 @@ export default function Marketplace() {
       const pieces = await getPiecesByIds(filtered);
       setPieces(pieces);
       setLoading(false);
+      each(pieces, async (p) => {
+        try {
+          const img =
+            (await getCacheThumbnail(p.data.cacheKey, 600)) ||
+            (await oneArt(p.blockEventData.from, p.blockEventData.id));
+          setPieces((listings) =>
+            map(listings, (l) =>
+              l.data.cacheKey === p.data.cacheKey ? { ...l, img } : l
+            )
+          );
+        } catch (e) {
+          console.log(e);
+        }
+      });
     };
     findActivePieces();
   }, []);
   const defaultArtists = uniq(map(pieces, (p) => p.data.art.artist));
   const filteredPieces = filter(pieces, (p) => {
     if (p.data.price < price[0] || p.data.price > price[1]) return false;
+    if (artists.length && !includes(artists, p.data.art.artist)) return false;
     return true;
   });
   let sortedPieces = sortBy(filteredPieces, [
@@ -102,7 +131,6 @@ export default function Marketplace() {
       return;
     },
   ]);
-  console.log(sb);
   if (sb === "ztoa") sortedPieces = reverse(sortedPieces);
   return (
     <Main>
@@ -118,7 +146,7 @@ export default function Marketplace() {
                   <div className="col-span-4">
                     <Holder
                       setPrice={(v) => setPrice(v)}
-                      setArtists={setArtists}
+                      setArtists={(a) => setArtists(a)}
                       defaultArtists={defaultArtists}
                     />
                   </div>

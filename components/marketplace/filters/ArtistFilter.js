@@ -34,7 +34,7 @@ const ArtistFilter = ({ setArtists, defaultArtists }) => {
         </div>
         <div className="mt-4">
           <p className="font-bold">Artists</p>
-          <div className="mt-4 border-b border-lightGrey text-mediumGrey mb-4 pb-6">
+          <div className="mt-4 border-b border-lightGrey text-mediumGrey mb-4 overflow-scroll pb-6 scroll-hide">
             {map(filteredArtists, (a) => (
               <p
                 key={a}

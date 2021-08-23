@@ -103,7 +103,8 @@ const ListItem = ({ close, piece }) => {
               />
               {error && <ErrorMessage text={error} className="mt-2" />}
               <span className="block mt-1 text-xs">
-                Small print legal jargon can go here.
+                All sales occur on the blockchain and are final. Please double
+                check the price before listing.
               </span>
             </div>
           </>
