@@ -29,11 +29,11 @@ const Nav = ({ user, balance }) => {
       </div>
       <div className="col-span-1 hidden sm:flex justify-center items-center">
         <SearchBox />
-        {/* <Link href={`/marketplace`}>
+        <Link href={`/marketplace`}>
           <a className="ml-4 font-semibold text-sm hidden sm:inline-block">
             Marketplace
           </a>
-        </Link> */}
+        </Link>
       </div>
       <div className="flex flex-1 justify-end">
         {!user.addr ? (
@@ -46,8 +46,7 @@ const Nav = ({ user, balance }) => {
           <div className="flex flex-col-reverse items-center sm:flex-row">
             {user.addr && (
               <span className="mr-4 sm:text-lg order-1 sm:order-none border px-6 py-2 border-black-500 rounded-full hidden lg:inline-block">
-                Balance:{" "}
-                <span className="font-bold">{Math.round(balance)}F</span>
+                Balance: <span className="font-bold">{balance}F</span>
               </span>
             )}
             <div className="relative flex items-center" ref={addrMenu}>
@@ -110,11 +109,11 @@ const Nav = ({ user, balance }) => {
                         Collection
                       </a>
                     </Link>
-                    {/* <Link href="/marketplace">
+                    <Link href="/marketplace">
                       <a href="#" className="block cursor-pointer px-6 py-3">
                         Marketplace
                       </a>
-                    </Link> */}
+                    </Link>
                     {/* {user.addr && (
                       <Link href="/profile/me">
                         <a className="block cursor-pointer px-6 py-3">

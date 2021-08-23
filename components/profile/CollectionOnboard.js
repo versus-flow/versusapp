@@ -51,7 +51,7 @@ const CollectionOnboard = ({ user }) => {
 
   return showButton ? (
     <ArrowButton
-      className="mb-4"
+      className="mb-4 lg-button"
       text="Create Art Collection"
       onClick={createArtCollection}
     >

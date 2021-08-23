@@ -20,6 +20,7 @@ import Head from "next/head";
 import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
 import Loading from "../../components/general/Loading";
+import { getDropThumbnail } from "../../components/general/helpers";
 
 export default function Drop({ id }) {
   const [updatedDrop, setUpdatedDrop] = useState({});
@@ -32,23 +33,25 @@ export default function Drop({ id }) {
     (d) => d.id == id
   );
   useEffect(async () => {
+    setloading(true);
+    setUpdatedDrop({});
+    setUpdatedArt(null);
     if (includes(["11", "12", "13", "15"], id)) return null;
     if (includes([1, 6, 9, 11, 12, 13, 15, 20, 22], id)) return null;
     const drop = await fetchDrop(id);
     setUpdatedDrop(drop);
     setloading(false);
-    console.log(drop);
-    const art = await fetchArt(id);
-    console.log(art);
-    setUpdatedArt(art);
+    setUpdatedArt(await getDropThumbnail(id));
     window.fetches = setInterval(async () => {
       const drop = await fetchDrop(id);
       setUpdatedDrop(drop);
     }, 30000);
     document.addEventListener("bid", () => fetchDrop(id), false);
-    return () =>
+    return () => {
+      clearInterval(window.fetches);
       document.removeEventListener("bid", () => fetchDrop(id), false);
-  }, []);
+    };
+  }, [id]);
   useEffect(() => {
     if (loading) return;
     if (

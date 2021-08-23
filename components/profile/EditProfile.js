@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import useOnClickOutside from "use-onclickoutside";
 import ArrowButton from "../general/ArrowButton";
 import * as fcl from "@onflow/fcl";
@@ -11,32 +11,40 @@ import Twitter from "../../assets/twitter.svg";
 import Youtube from "../../assets/youtube.svg";
 import Discord from "../../assets/discord.svg";
 import Arrow from "../../assets/arrow.svg";
-import { profileEdit } from "./transactions";
+import { profileChange, profileEdit } from "./transactions";
 import { tx } from "../drop/transactions";
-import { map } from "lodash";
+import { get } from "lodash";
+import classNames from "classnames";
+import { getLink } from "../general/helpers";
+import Loading from "../general/Loading";
 
-const EditProfile = ({ close }) => {
+const EditProfile = ({ close, profile }) => {
+  const [name, setName] = useState(profile.name || "");
+  const [description, setDescription] = useState(profile.description || "");
+  const [saving, setSaving] = useState("Save Changes");
   const modal = useRef(null);
   const form = useRef(null);
   useOnClickOutside(modal, close);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, description, instagram, twitter, youtube, discord } =
-      form.current;
+    if (saving !== "Save Changes") return;
+    const { avatar, instagram, twitter, youtube, discord } = form.current;
+    if (name.length > 16) return;
+    if (description.length > 255) return;
     const dict = [];
     if (instagram.value)
       dict.push({ key: "instagram", value: instagram.value });
     if (twitter.value) dict.push({ key: "twitter", value: twitter.value });
     if (youtube.value) dict.push({ key: "youtube", value: youtube.value });
     if (discord.value) dict.push({ key: "discord", value: discord.value });
-    console.log(dict);
-    try {
+    if (profile.address) {
       await tx(
         [
-          fcl.transaction(profileEdit),
+          fcl.transaction(profileChange),
           fcl.args([
-            fcl.arg(name.value, t.String),
-            fcl.arg(description.value, t.String),
+            fcl.arg(name, t.String),
+            fcl.arg(description, t.String),
+            fcl.arg(avatar.value, t.String),
             fcl.arg(dict, t.Dictionary({ key: t.String, value: t.String })),
           ]),
           fcl.proposer(fcl.currentUser().authorization),
@@ -46,21 +54,60 @@ const EditProfile = ({ close }) => {
         ],
         {
           onStart() {
-            console.log("awef");
+            setSaving("Saving");
           },
           onSubmission() {
-            console.log("submission");
+            setSaving("Saving");
           },
           async onSuccess(status) {
-            console.log(status);
+            setSaving("Saved");
+            const event = new Event("refetch");
+            document.dispatchEvent(event);
+            setTimeout(close, 1000);
           },
           async onError(error) {
+            setSaving("Save Changes");
             console.log(error);
           },
         }
       );
-    } catch (e) {
-      console.log(e);
+    } else {
+      try {
+        await tx(
+          [
+            fcl.transaction(profileEdit),
+            fcl.args([
+              fcl.arg(name, t.String),
+              fcl.arg(description, t.String),
+              fcl.arg(avatar.value, t.String),
+              fcl.arg(dict, t.Dictionary({ key: t.String, value: t.String })),
+            ]),
+            fcl.proposer(fcl.currentUser().authorization),
+            fcl.payer(fcl.currentUser().authorization),
+            fcl.authorizations([fcl.currentUser().authorization]),
+            fcl.limit(9999),
+          ],
+          {
+            onStart() {
+              setSaving("Saving");
+            },
+            onSubmission() {
+              setSaving("Saving");
+            },
+            async onSuccess(status) {
+              setSaving("Saved");
+              const event = new Event("refetch");
+              document.dispatchEvent(event);
+              setTimeout(close, 1000);
+            },
+            async onError(error) {
+              console.log(error);
+            },
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
   return (
@@ -68,16 +115,14 @@ const EditProfile = ({ close }) => {
       <div className="absolute bg-black-600 bg-opacity-90 h-full left-0 top-0 w-full" />
       <div
         ref={modal}
-        className="bg-cream-500 flex flex-col items-center px-20 py-8 rounded-2xl w-full max-w-md z-10 modal-scroll"
+        className="bg-cream-500 flex flex-col items-center px-6 sm:px-20 py-8 rounded-2xl w-full max-w-md z-10 modal-scroll"
       >
-        <div className="relative w-16">
-          <Person />
-          <div
-            style={{ backgroundColor: "#2F80ED" }}
-            className="absolute bottom-0 cursor-pointer flex h-4 items-center justify-center right-0 rounded-full w-4"
-          >
-            <Pencil className="h-3 w-3" />
-          </div>
+        <div className="relative w-16 h-16">
+          {profile.avatar ? (
+            <img className="w-full h-full object-cover" src={profile.avatar} />
+          ) : (
+            <Person />
+          )}
         </div>
         <h2 className="font-black font-inktrap mt-4 text-2xl">Edit profile</h2>
         <form className="w-full" ref={form} onSubmit={handleSubmit}>
@@ -88,8 +133,16 @@ const EditProfile = ({ close }) => {
               name="name"
               className="standard-input"
               placeholder="Enter your name"
+              defaultValue={profile.name}
+              onChange={(e) => setName(e.currentTarget.value)}
             />
-            <span className="block font-bold text-right text-xs">0/16</span>
+            <span
+              className={classNames("block font-bold text-right text-xs", {
+                "text-red": name.length > 16,
+              })}
+            >
+              {name.length}/16
+            </span>
           </div>
           {/* <div className="form-group">
             <label className="standard-label">Username</label>
@@ -115,10 +168,27 @@ const EditProfile = ({ close }) => {
               name="description"
               className="standard-input"
               placeholder="Enter your short biography"
+              defaultValue={profile.description}
+              onChange={(e) => setDescription(e.currentTarget.value)}
             />
-            <span className="block font-bold text-right text-xs">0/255</span>
+            <span
+              className={classNames("block font-bold text-right text-xs", {
+                "text-red": description.length > 255,
+              })}
+            >
+              {description.length}/255
+            </span>
           </div>
-
+          <div className="form-group">
+            <label className="standard-label">Avatar URL</label>
+            <input
+              type="text"
+              name="avatar"
+              className="standard-input"
+              placeholder="Enter a link to your avatar image"
+              defaultValue={profile.avatar}
+            />
+          </div>
           <div className="form-group">
             <label className="standard-label">
               Add links to your social media profiles
@@ -132,6 +202,7 @@ const EditProfile = ({ close }) => {
                 name="instagram"
                 className="standard-input no-border-input"
                 placeholder="Profile URL"
+                defaultValue={getLink(profile.links || {}, "instagram")}
               />
             </div>
             <div className="flex items-stretch mb-2">
@@ -143,6 +214,7 @@ const EditProfile = ({ close }) => {
                 name="twitter"
                 className="standard-input no-border-input"
                 placeholder="Profile URL"
+                defaultValue={getLink(profile.links || {}, "twitter")}
               />
             </div>
             <div className="flex items-stretch mb-2">
@@ -154,6 +226,7 @@ const EditProfile = ({ close }) => {
                 name="youtube"
                 className="standard-input no-border-input"
                 placeholder="Channel URL"
+                defaultValue={getLink(profile.links || {}, "youtube")}
               />
             </div>
             <div className="flex items-stretch">
@@ -165,20 +238,27 @@ const EditProfile = ({ close }) => {
                 name="discord"
                 className="standard-input no-border-input"
                 placeholder="Include #Code"
+                defaultValue={getLink(profile.links || {}, "discord")}
               />
             </div>
           </div>
-
-          <div className="flex justify-between mt-6 w-full">
-            <ArrowButton text="Save Changes" onClick={handleSubmit} />
-            <span
-              className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer"
-              onClick={close}
-            >
-              Cancel
-              <Arrow className="ml-2" />
-            </span>
-          </div>
+          {saving === "Saving" ? (
+            <div className="text-2xl h-16 flex flex-col justify-center items-center transform scale-50">
+              <Loading />
+              Saving
+            </div>
+          ) : (
+            <div className="flex justify-between mt-6 w-full">
+              <ArrowButton text={saving} onClick={handleSubmit} />
+              <span
+                className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer"
+                onClick={close}
+              >
+                Cancel
+                <Arrow className="ml-2" />
+              </span>
+            </div>
+          )}
         </form>
       </div>
     </div>

@@ -1,70 +1,209 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import * as fcl from "@onflow/fcl";
+import * as t from "@onflow/types";
 
 import ArrowButton from "../general/ArrowButton";
 import Twitter from "../../assets/twitter.svg";
 import Instagram from "../../assets/instagram.svg";
+import Youtube from "../../assets/youtube.svg";
+import Discord from "../../assets/discord.svg";
 import EditProfile from "../profile/EditProfile";
+import { find, get, includes } from "lodash";
+import { tx } from "../drop/transactions";
+import { followUser, unfollowUser } from "./transactions";
+import { getLink } from "../general/helpers";
 
-const ProfileSummary = ({ drop, name }) => {
+const ProfileSummary = ({ self, drop, name, profile = {}, user }) => {
   const [openEdit, setOpenEdit] = useState(false);
+  const [followText, setFollowText] = useState("");
+  const { avatar, followers, following, description, address } = profile;
+  const [numFollowers, setNumFollowers] = useState(
+    (followers || []).length || 0
+  );
+  useEffect(() => {
+    const followers = get(profile, "followers", []);
+    setNumFollowers(followers.length);
+    if (profile.address && user && user.addr) {
+      const doIFollow = find(followers, (f) => f.follower === user.addr);
+      setFollowText(doIFollow ? "Unfollow" : "Follow");
+    }
+  }, [profile.followers]);
+  const twitter = getLink(profile.links || {}, "twitter");
+  const instagram = getLink(profile.links || {}, "instagram");
+  const youtube = getLink(profile.links || {}, "youtube");
+  const discord = getLink(profile.links || {}, "discord");
+  const followAction = async () => {
+    const currentState = followText;
+    if (includes(["Follow", "Unfollow"], currentState)) {
+      setFollowText("Following...");
+      try {
+        await tx(
+          [
+            fcl.transaction(
+              currentState === "Follow" ? followUser : unfollowUser
+            ),
+            fcl.args([fcl.arg(address, t.Address)]),
+            fcl.proposer(fcl.currentUser().authorization),
+            fcl.payer(fcl.currentUser().authorization),
+            fcl.authorizations([fcl.currentUser().authorization]),
+            fcl.limit(9999),
+          ],
+          {
+            onStart() {
+              setFollowText(
+                currentState === "Follow" ? "Following..." : "Unfollowing"
+              );
+            },
+            onSubmission() {
+              setFollowText(
+                currentState === "Follow" ? "Following..." : "Unfollowing"
+              );
+            },
+            async onSuccess(status) {
+              setFollowText(
+                currentState === "Follow" ? "Followed" : "Unfollowed"
+              );
+              setNumFollowers(
+                currentState === "Follow" ? numFollowers + 1 : numFollowers - 1
+              );
+              setTimeout(
+                () =>
+                  setFollowText(
+                    currentState === "Follow" ? "Unfollow" : "Follow"
+                  ),
+                3000
+              );
+              const event = new Event("refetch");
+              document.dispatchEvent(event);
+            },
+            async onError(error) {
+              const initState = currentState;
+              setFollowText("Error");
+              setTimeout(
+                () =>
+                  setFollowText(initState === "Follow" ? "Unfollow" : "Follow"),
+                3000
+              );
+              console.log(error);
+            },
+          }
+        );
+      } catch (e) {
+        console.log(e);
+        setFollowText("Error");
+        setTimeout(
+          () =>
+            setFollowText(currentState === "Follow" ? "Unfollow" : "Follow"),
+          3000
+        );
+      }
+    }
+  };
   return (
     <>
-      {openEdit && <EditProfile close={() => setOpenEdit(false)} />}
+      {openEdit && (
+        <EditProfile profile={openEdit} close={() => setOpenEdit(false)} />
+      )}
       <div className="container my-12">
-        <div className="w-1/2">
-          {/* <div className="flex items-center">
-            <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20">
-              <img
-                src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=60"
-                className="h-full object-cover rounded-full w-full"
-              />
+        <div className="sm:w-1/2">
+          <div className="flex flex-col sm:flex-row sm:items-center">
+            <div className="bg-white h-20 p-1 rounded-full shadow-lg w-20 flex justify-center items-center">
+              {avatar ? (
+                <img
+                  src={avatar}
+                  className="h-full object-cover rounded-full w-full"
+                />
+              ) : (
+                <span className="font-bold text-4xl text-black-500">
+                  {profile.name ? profile.name.substring(0, 1) : "?"}
+                </span>
+              )}
             </div>
-            <div className="ml-4">
-              <p className="text-black-100 text-sm">Following</p>
-              <p className="font-bold text-xl">24</p>
-            </div>
-            <div className="ml-8">
-              <p className="text-black-100 text-sm">Followers</p>
-              <p className="font-bold text-xl">11</p>
-            </div>
-          </div> */}
+            {following ? (
+              <div className="flex sm:items-center mt-4 sm:mt-0">
+                <div className="sm:ml-8">
+                  <p className="text-black-100 text-sm">Following</p>
+                  <p className="font-bold text-xl">{following.length || 0}</p>
+                </div>
+                <div className="ml-8">
+                  <p className="text-black-100 text-sm">Followers</p>
+                  <p className="font-bold text-xl">{numFollowers}</p>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
           <div className="mt-4">
             <h2 className="font-bold font-inktrap text-3xl">
-              {name ? `Profile ${name}` : "My Profile"}
+              {self ? "My " : ""}Profile
             </h2>
-            {/* <p className="">@kanea99</p>
-            <p className="mt-4">
-              Alessandro Pautasso is a digital artist living in California
-              inspired by futurism, innovation and how current events will be
-              judged by future.
-            </p> */}
+            <p className="">{profile.name ? `@${profile.name}` : ""}</p>
+            <p className="mt-4">{description}</p>
           </div>
         </div>
-        <div className="hidden justify-between items-center mt-3">
+        <div className="flex justify-between items-center mt-3">
           <div className="mt-2">
-            <h5 className="text-black-100 text-sm">Social accounts</h5>
-            <div className="flex items-center mt-2">
-              <a
-                href="https://twitter.com/FlowVersus"
-                target="_blank"
-                className="cursor-pointer"
-              >
-                <Twitter className="fill-current mr-4 h-4" />
-              </a>
-              <a
-                href="https://www.instagram.com/flowversus/"
-                target="_blank"
-                className="cursor-pointer"
-              >
-                <Instagram className="fill-current h-4" />
-              </a>
-            </div>
+            {twitter || instagram || youtube ? (
+              <>
+                <h5 className="text-black-100 text-sm">Social accounts</h5>
+                <div className="flex items-center mt-2">
+                  {twitter && (
+                    <a
+                      href={twitter}
+                      target="_blank"
+                      className="cursor-pointer"
+                    >
+                      <Twitter className="fill-current mr-4 h-4" />
+                    </a>
+                  )}
+                  {instagram && (
+                    <a
+                      href={instagram}
+                      target="_blank"
+                      className="cursor-pointer"
+                    >
+                      <Instagram className="fill-current mr-4 h-4" />
+                    </a>
+                  )}
+                  {youtube && (
+                    <a
+                      href={youtube}
+                      target="_blank"
+                      className="cursor-pointer"
+                    >
+                      <Youtube className="fill-current mr-4 h-4" />
+                    </a>
+                  )}
+                  {false && (
+                    <a
+                      href={discord}
+                      target="_blank"
+                      className="cursor-pointer"
+                    >
+                      <Discord className="fill-current h-4" />
+                    </a>
+                  )}
+                </div>
+              </>
+            ) : (
+              ""
+            )}
           </div>
-          <ArrowButton
-            text="Edit"
-            className="standard-button arrow-button transparent-button"
-            onClick={() => setOpenEdit(true)}
-          />
+          {self && (
+            <ArrowButton
+              text="Edit"
+              className="standard-button arrow-button transparent-button"
+              onClick={() => setOpenEdit(profile)}
+            />
+          )}
+          {!self && user && user.addr && followText && (
+            <ArrowButton
+              text={followText}
+              className="standard-button arrow-button transparent-button"
+              onClick={followAction}
+            />
+          )}
         </div>
       </div>
     </>
