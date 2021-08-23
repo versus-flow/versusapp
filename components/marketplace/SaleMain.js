@@ -26,7 +26,7 @@ const SaleMain = ({ piece, address, user, unlisted, art }) => {
     process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
     (d) =>
       process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
-        ? artist === d.artist
+        ? artist === d.artist || artist.toLowerCase() === d.handle.toLowerCase()
         : (d.id = "1")
   );
   const isVersus = artist === "Versus";
