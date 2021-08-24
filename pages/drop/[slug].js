@@ -111,7 +111,7 @@ export default function Drop({ id }) {
   );
 }
 
-async function fetchDrop(id) {
+export async function fetchDrop(id) {
   const response = await fcl.send([
     fcl.script(fetchVersusDrop),
     fcl.args([fcl.arg(parseInt(id), t.UInt64)]),

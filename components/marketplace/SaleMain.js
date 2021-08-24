@@ -7,10 +7,8 @@ import * as t from "@onflow/types";
 import { tx } from "../drop/transactions";
 import { removeFromSale } from "./transactions";
 
-import dropsData from "../../components/general/drops.json";
-import testDropsData from "../../components/general/testdrops.json";
 import BuyItem from "./BuyItem";
-import { isMainnet } from "../general/helpers";
+import { getDropFromArtist, isMainnet } from "../general/helpers";
 import Link from "next/link";
 import Loading from "../general/Loading";
 
@@ -22,13 +20,7 @@ const SaleMain = ({ piece, address, user, unlisted, art }) => {
     price,
     owner,
   } = piece;
-  const dropInfo = find(
-    process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
-    (d) =>
-      process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
-        ? artist === d.artist || artist.toLowerCase() === d.handle.toLowerCase()
-        : (d.id = "1")
-  );
+  const dropInfo = getDropFromArtist(artist);
   const isVersus = artist === "Versus";
   const unlist = async () => {
     if (get(user, "addr") !== address) return;
