@@ -1,18 +1,11 @@
 import Link from "next/link";
 import { find, get } from "lodash";
 
-import dropsData from "../../components/general/drops.json";
-import testDropsData from "../../components/general/testdrops.json";
+import { getDropFromArtist } from "../general/helpers";
 
 const AboutCreator = ({ piece }) => {
   const artist = piece.metadata.artist;
-  const dropInfo = find(
-    process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
-    (d) =>
-      process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
-        ? artist === d.artist || artist.toLowerCase() === d.handle.toLowerCase()
-        : (d.id = "1")
-  );
+  const dropInfo = getDropFromArtist(artist);
   const isVersus = get(piece, "art.artist") === "Versus";
   return (
     <div className="bg-white py-12">
