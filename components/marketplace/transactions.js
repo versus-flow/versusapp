@@ -124,6 +124,27 @@ transaction(artId: UInt64, price: UFix64) {
 }
 `;
 
+export const sendNFT = `
+import FungibleToken from 0xFungibleToken
+import NonFungibleToken from 0xNonFungibleToken
+import Content, Art, Auction, Versus from 0xCONTRACT
+
+//this transaction will setup an newly minted item for sale
+transaction(artId: UInt64, destination: Address) {
+    let artCollection: &Art.Collection
+    prepare(account: AuthAccount) {
+        self.artCollection= account.borrow<&Art.Collection>(from: Art.CollectionStoragePath)!
+    }
+
+    execute {
+        let art <- self.artCollection.withdraw(withdrawID: artId)
+        let destAccount = getAccount(destination)
+        let destCollection = destAccount.getCapability(Art.CollectionPublicPath).borrow<&{Art.CollectionPublic}>()
+        destCollection!.deposit(token: <- art)
+    }
+}
+`;
+
 export const removeFromSale = `
 import FungibleToken from 0xFungibleToken
 import NonFungibleToken from 0xNonFungibleToken
