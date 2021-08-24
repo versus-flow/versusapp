@@ -12,7 +12,6 @@ import { bidTransaction, tx } from "./transactions";
 import Loading from "../general/Loading";
 
 const BidOnUnique = ({ close, defaultBid, drop, art, ended, user }) => {
-  console.log(user);
   const modal = useRef(null);
   const form = useRef(null);
   const [status, setStatus] = useState(null);

@@ -71,8 +71,11 @@ const MarketplacePreview = () => {
       each(pieces, async (p) => {
         try {
           const img =
-            (await getCacheThumbnail(p.data.cacheKey, 600)) ||
-            (await oneArt(p.blockEventData.from, p.blockEventData.id));
+            (await getCacheThumbnail(
+              p.data.cacheKey,
+              600,
+              get(p, "data.art.type")
+            )) || (await oneArt(p.blockEventData.from, p.blockEventData.id));
           setPieces((listings) =>
             map(listings, (l) =>
               l.data.cacheKey === p.data.cacheKey ? { ...l, img } : l

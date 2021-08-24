@@ -103,7 +103,7 @@ export default function Marketplace() {
       each(pieces, async (p) => {
         try {
           const img =
-            (await getCacheThumbnail(p.data.cacheKey, 600)) ||
+            (await getCacheThumbnail(p.data.cacheKey, 600, p.data.type)) ||
             (await oneArt(p.blockEventData.from, p.blockEventData.id));
           setPieces((listings) =>
             map(listings, (l) =>
@@ -137,7 +137,7 @@ export default function Marketplace() {
       {() => (
         <>
           <Head>
-            <title>Marketplace</title>
+            <title>Marketplace | Versus</title>
           </Head>
           <div className="bg-white min-h-screen pb-20">
             <div className="container pt-12">
