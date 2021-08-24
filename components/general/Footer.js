@@ -30,15 +30,27 @@ const Footer = () => {
               and the collector.
             </p>
           </div>
-          <div className="mt-6">
-            <p className="font-bold font-lato">Built on Flow</p>
-            <a
-              href="https://www.onflow.org/"
-              target="_blank"
-              className="cursor-pointer mt-2 flex justify-center md:block md:static"
-            >
-              <FlowLogo className="h-12 mt-1" />
-            </a>
+          <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start">
+            <div className="mt-6">
+              <p className="font-bold font-lato">Built on Flow</p>
+              <a
+                href="https://www.onflow.org/"
+                target="_blank"
+                className="cursor-pointer mt-2 flex justify-center md:block md:static"
+              >
+                <FlowLogo className="h-12 mt-1" />
+              </a>
+            </div>
+            <div className="mt-6 sm:ml-4">
+              <p className="font-bold font-lato">Powered by Graffle</p>
+              <a
+                href="https://graffle.io/"
+                target="_blank"
+                className="cursor-pointer mt-2 flex justify-center md:block md:static"
+              >
+                <img src="/icons/graffle.png" className="h-12" />
+              </a>
+            </div>
           </div>
         </div>
         <div className="col-span-3 md:col-span-4 lg:col-span-6 flex flex-col justify-between mt-6 sm:mt-0">

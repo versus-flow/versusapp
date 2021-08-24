@@ -63,6 +63,7 @@ const SaleMain = ({ piece, address, user, unlisted, art }) => {
           close={() => setShowList(false)}
           piece={piece}
           user={user}
+          address={address}
           art={art}
         />
       )}
@@ -119,24 +120,34 @@ const SaleMain = ({ piece, address, user, unlisted, art }) => {
                   </span>
                 </div>
               </div>
-              {owner ? (
+              {owner || address ? (
                 <div className="flex items-center">
                   <div className="bg-white h-12 mr-3 p-1 rounded-full shadow-lg w-12 flex justify-center items-center">
-                    {owner.avatar ? (
+                    {owner && owner.avatar ? (
                       <img
                         src={owner.avatar}
                         className="h-full object-cover rounded-full w-full"
                       />
                     ) : (
                       <span className="font-bold text-xl">
-                        {owner.name ? owner.name.substring(0, 1) : "?"}
+                        {owner
+                          ? owner.name
+                            ? owner.name.substring(0, 1)
+                            : "?"
+                          : "?"}
                       </span>
                     )}
                   </div>
                   <div className="flex flex-col">
                     <span className="text-regGrey text-sm">Owner</span>
-                    <Link href={`/profile/${owner.address}`}>
-                      <a className="font-bold">@{owner.name}</a>
+                    <Link href={`/profile/${address}`}>
+                      <a className="font-bold">
+                        {owner
+                          ? owner.name
+                            ? owner.name
+                            : "?"
+                          : address.substring(0, 6)}
+                      </a>
                     </Link>
                   </div>
                 </div>

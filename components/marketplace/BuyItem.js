@@ -13,7 +13,7 @@ import { tx } from "../drop/transactions";
 import { purchaseItem } from "./transactions";
 import Loading from "../general/Loading";
 
-const BuyItem = ({ close, piece, user, art }) => {
+const BuyItem = ({ close, piece, user, art, address }) => {
   const [error, setError] = useState("");
   const [status, setStatus] = useState("Confirm");
   const router = useRouter();
@@ -29,7 +29,7 @@ const BuyItem = ({ close, piece, user, art }) => {
         [
           fcl.transaction(purchaseItem),
           fcl.args([
-            fcl.arg(piece.owner.address, t.Address),
+            fcl.arg(address, t.Address),
             fcl.arg(piece.id, t.UInt64),
             fcl.arg(parseFloat(piece.price).toFixed(1).toString(), t.UFix64),
           ]),
