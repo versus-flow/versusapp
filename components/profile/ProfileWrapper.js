@@ -15,6 +15,7 @@ import {
   resizedataURL,
   uploadFile,
 } from "../general/helpers";
+import Head from "next/head";
 
 export const getArt = async (addr) => {
   const response = await fcl.send([
@@ -89,7 +90,7 @@ const ProfileWrapper = ({ self, user, name }) => {
       each(myListings, async (e) => {
         try {
           const img =
-            (await getCacheThumbnail(e.cacheKey, "600")) ||
+            (await getCacheThumbnail(e.cacheKey, "600", e.art.type)) ||
             (await oneArt(addr, e.id));
           setMarketPieces((listings) =>
             map(listings, (l) =>
@@ -111,7 +112,7 @@ const ProfileWrapper = ({ self, user, name }) => {
     each(allPieces, async (p) => {
       try {
         const pieceArt =
-          (await getCacheThumbnail(p.cacheKey, "600")) ||
+          (await getCacheThumbnail(p.cacheKey, "600", p.metadata.type)) ||
           (await getArtDrawing(name || user.addr, p.id));
         setPieces((currentPieces) =>
           map(currentPieces, (ap) =>
@@ -130,6 +131,16 @@ const ProfileWrapper = ({ self, user, name }) => {
   }, [self, name]);
   return (
     <>
+      <Head>
+        <title>
+          {currentProfile.name || currentProfile.address
+            ? currentProfile.name
+              ? `@${currentProfile.name}`
+              : `@${currentProfile.address}`
+            : "Profile"}{" "}
+          | Versus
+        </title>
+      </Head>
       <ProfileSummary
         self={self}
         name={name}

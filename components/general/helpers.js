@@ -1,4 +1,6 @@
 import { find, replace } from "lodash";
+import dropsData from "../../components/general/drops.json";
+import testDropsData from "../../components/general/testdrops.json";
 
 export const getGraffleUrl = (query) => {
   const contract = (
@@ -78,16 +80,36 @@ export const resizedataURL = (datas, _scale) => {
   });
 };
 
-export const getDropThumbnail = async (dropId, width = "auto") => {
-  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maindr${dropId}.jpg`;
+export const getDropThumbnail = async (
+  dropId,
+  width = "auto",
+  type = "jpg"
+) => {
+  const setType = type === "gif" ? "gif" : "jpg";
+  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maindr${dropId}.${setType}`;
   const isFile = await checkForFile(url);
   if (!isFile) return false;
   return url;
 };
 
-export const getCacheThumbnail = async (cacheKey, width = "auto") => {
-  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maincache${cacheKey}.jpg`;
+export const getCacheThumbnail = async (
+  cacheKey,
+  width = "auto",
+  type = "jpg"
+) => {
+  const setType = type === "gif" ? "gif" : "jpg";
+  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maincache${cacheKey}.${setType}`;
   const isFile = await checkForFile(url);
   if (!isFile) return false;
   return url;
+};
+
+export const getDropFromArtist = (artist) => {
+  return find(
+    process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
+    (d) =>
+      process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
+        ? artist === d.artist || artist.toLowerCase() === d.handle.toLowerCase()
+        : (d.id = "1")
+  );
 };

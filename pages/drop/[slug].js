@@ -41,7 +41,7 @@ export default function Drop({ id }) {
     const drop = await fetchDrop(id);
     setUpdatedDrop(drop);
     setloading(false);
-    setUpdatedArt(await getDropThumbnail(id));
+    setUpdatedArt(await getDropThumbnail(id, "auto", drop.metadata.type));
     window.fetches = setInterval(async () => {
       const drop = await fetchDrop(id);
       setUpdatedDrop(drop);
@@ -111,7 +111,7 @@ export default function Drop({ id }) {
   );
 }
 
-async function fetchDrop(id) {
+export async function fetchDrop(id) {
   const response = await fcl.send([
     fcl.script(fetchVersusDrop),
     fcl.args([fcl.arg(parseInt(id), t.UInt64)]),
