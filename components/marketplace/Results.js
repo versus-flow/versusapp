@@ -41,6 +41,7 @@ const Results = ({ pieces }) => {
                 "pagination-active": page === n + 1,
               })}
               onClick={() => setPage(n + 1)}
+              key={`${n}-page`}
             >
               {n + 1}
             </div>

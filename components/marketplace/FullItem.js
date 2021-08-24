@@ -46,7 +46,7 @@ export default function FullItem({ id, address, unlisted, user }) {
         metadata: i.art,
         owner,
       });
-      const imgUrl = await getCacheThumbnail(i.cacheKey);
+      const imgUrl = await getCacheThumbnail(i.cacheKey, "auto", i.art.type);
       setArt(imgUrl);
       const oneArtResponse = await fcl.send([
         fcl.script(fetchOneArt),
@@ -62,7 +62,7 @@ export default function FullItem({ id, address, unlisted, user }) {
         metadata: i.art,
         owner,
       });
-      const imgUrl = await getCacheThumbnail(i.cacheKey);
+      const imgUrl = await getCacheThumbnail(i.cacheKey, "auto", i.art.type);
       setArt(imgUrl);
       img = await oneArt(address, parseInt(id, 10));
       setArt(img);

@@ -80,15 +80,25 @@ export const resizedataURL = (datas, _scale) => {
   });
 };
 
-export const getDropThumbnail = async (dropId, width = "auto") => {
-  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maindr${dropId}.jpg`;
+export const getDropThumbnail = async (
+  dropId,
+  width = "auto",
+  type = "jpg"
+) => {
+  const setType = type === "gif" ? "gif" : "jpg";
+  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maindr${dropId}.${setType}`;
   const isFile = await checkForFile(url);
   if (!isFile) return false;
   return url;
 };
 
-export const getCacheThumbnail = async (cacheKey, width = "auto") => {
-  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maincache${cacheKey}.jpg`;
+export const getCacheThumbnail = async (
+  cacheKey,
+  width = "auto",
+  type = "jpg"
+) => {
+  const setType = type === "gif" ? "gif" : "jpg";
+  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maincache${cacheKey}.${setType}`;
   const isFile = await checkForFile(url);
   if (!isFile) return false;
   return url;
