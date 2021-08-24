@@ -1,4 +1,6 @@
 import { find, replace } from "lodash";
+import dropsData from "../../components/general/drops.json";
+import testDropsData from "../../components/general/testdrops.json";
 
 export const getGraffleUrl = (query) => {
   const contract = (
@@ -90,4 +92,14 @@ export const getCacheThumbnail = async (cacheKey, width = "auto") => {
   const isFile = await checkForFile(url);
   if (!isFile) return false;
   return url;
+};
+
+export const getDropFromArtist = (artist) => {
+  return find(
+    process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
+    (d) =>
+      process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
+        ? artist === d.artist || artist.toLowerCase() === d.handle.toLowerCase()
+        : (d.id = "1")
+  );
 };

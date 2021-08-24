@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
+import Head from "next/head";
 
-import Main from "../layouts/Main";
 import SaleMain from "./SaleMain";
 import DropProperties from "../drop/DropProperties";
 import AboutCreator from "./AboutCreator";
@@ -14,7 +14,7 @@ import { oneArt } from "../profile/ProfileWrapper";
 import { getOneMarketplaceItem } from "./transactions";
 import { fetchProfile } from "../../pages/profile/[name]";
 import { fetchMyArt, fetchOneArt } from "../profile/transactions";
-import { find } from "lodash";
+import { find, get } from "lodash";
 import { getCacheThumbnail } from "../general/helpers";
 
 export async function oneListedItem(addr, tokenID) {
@@ -71,6 +71,11 @@ export default function FullItem({ id, address, unlisted, user }) {
   }, []);
   return piece ? (
     <>
+      <Head>
+        <title>
+          {get(piece, "art.name")} by {get(piece, "art.artist")} | Versus
+        </title>
+      </Head>
       <SaleMain
         piece={piece}
         address={address}
@@ -80,7 +85,7 @@ export default function FullItem({ id, address, unlisted, user }) {
       />
       <DropProperties drop={piece} art={art} />
       <AboutCreator piece={piece} />
-      <PurchaseHistory id={id} />
+      <PurchaseHistory id={id} piece={piece} />
       <div className="py-12">
         <div className="container">
           <JoinCommunity />
