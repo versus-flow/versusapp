@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { get, map } from "lodash";
+import { get, includes, map } from "lodash";
 import Link from "next/link";
 
 import ArrowButton from "../general/ArrowButton";
@@ -35,6 +35,10 @@ const Collection = ({ pieces, other, self, user, name }) => {
                   zoom
                   img={p.img}
                   price={p.price ? parseFloat(p.price).toFixed(1) : false}
+                  showMoveNoti={
+                    self &&
+                    includes(["Bryan Brinkman", "MiraRuido"], p.metadata.name)
+                  }
                   button={
                     self ? (
                       isMarketPlace(p) ? (
