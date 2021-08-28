@@ -18,7 +18,7 @@ const PurchaseHistory = ({ id, piece }) => {
     art: { artist, edition },
   } = piece;
   const isVersus = artist === "Versus";
-  const dropInfo = isVersus ? {} : getDropFromArtist(artist);
+  const dropInfo = isVersus ? {} : getDropFromArtist(artist, piece.cacheKey);
   useEffect(async () => {
     let sold = await (
       await fetch(

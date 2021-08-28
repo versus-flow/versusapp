@@ -104,7 +104,19 @@ export const getCacheThumbnail = async (
   return url;
 };
 
-export const getDropFromArtist = (artist) => {
+export const getDropFromArtist = (artist, cacheKey) => {
+  let cachedDrop = null;
+  if (cacheKey)
+    cachedDrop = find(
+      process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
+        ? dropsData
+        : testDropsData,
+      (d) =>
+        process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
+          ? cacheKey === d.cacheKey
+          : (d.id = "1")
+    );
+  if (cachedDrop) return cachedDrop;
   return find(
     process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
     (d) =>
