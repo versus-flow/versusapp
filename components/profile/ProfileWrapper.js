@@ -31,7 +31,9 @@ export const getArt = async (addr) => {
         fcl.script(fetchOneArt),
         fcl.args([fcl.arg(addr, t.Address), fcl.arg(r.id, t.UInt64)]),
       ]);
-      return { ...r, img: await fcl.decode(oneArtResponse) };
+      const img = await fcl.decode(oneArtResponse);
+      setCachedImage(r.id, img);
+      return { ...r, img };
     })
   );
   return allPieces;

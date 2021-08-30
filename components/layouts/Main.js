@@ -30,8 +30,8 @@ fcl
     "0xFlowToken",
     process.env.NEXT_PUBLIC_FLOW_TOKEN || "0x7e60df042a9c0868"
   )
-  .put("0xCONTRACT", process.env.NEXT_PUBLIC_CONTRACT || "0x69915b410cca3c65")
-  .put("0xPROFILE", process.env.NEXT_PUBLIC_CONTRACT || "0x69915b410cca3c65")
+  .put("0xCONTRACT", process.env.NEXT_PUBLIC_CONTRACT || "0x99ca04281098b33d")
+  .put("0xPROFILE", process.env.NEXT_PUBLIC_CONTRACT || "0x99ca04281098b33d")
   .put("env", process.env.NEXT_PUBLIC_FLOW_ENV || "testnet");
 
 const Main = ({ children }) => {

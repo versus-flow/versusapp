@@ -36,7 +36,7 @@ export default function Drop({ id }) {
     setloading(true);
     setUpdatedDrop({});
     setUpdatedArt(null);
-    if (includes(["11", "12", "13", "15"], id)) return null;
+    if (includes(["11", "12", "13", "15", "20", "22"], id)) return null;
     if (includes([1, 6, 9, 11, 12, 13, 15, 20, 22], id)) return null;
     const drop = await fetchDrop(id);
     setUpdatedDrop(drop);
@@ -47,6 +47,7 @@ export default function Drop({ id }) {
       setUpdatedDrop(drop);
     }, 30000);
     document.addEventListener("bid", () => fetchDrop(id), false);
+    setUpdatedArt(await fetchArt(id));
     return () => {
       clearInterval(window.fetches);
       document.removeEventListener("bid", () => fetchDrop(id), false);
@@ -120,11 +121,17 @@ export async function fetchDrop(id) {
 }
 
 async function fetchArt(id) {
+  const idP = parseInt(id, 10);
+  // const cachedImage = getCachedDrop(idP);
+  // if (cachedImage) return cachedImage;
   const response = await fcl.send([
     fcl.script(fetchVersusArt),
-    fcl.args([fcl.arg(parseInt(id), t.UInt64)]),
+    fcl.args([fcl.arg(idP, t.UInt64)]),
   ]);
-  return await fcl.decode(response);
+  const img = await fcl.decode(response);
+  // console.log(img);
+  // setCachedDrop(idP, img);
+  return img;
 }
 
 export async function getServerSideProps(context) {

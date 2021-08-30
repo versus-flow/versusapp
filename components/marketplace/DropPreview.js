@@ -6,6 +6,7 @@ import { first, get } from "lodash";
 
 import { getGraffleUrl } from "../general/helpers";
 import Loading from "../general/Loading";
+import MoveDropNoti from "./MoveDropNoti";
 
 const DropPreview = ({
   shadow,
@@ -17,6 +18,7 @@ const DropPreview = ({
   button,
   price,
   id,
+  showMoveNoti,
 }) => {
   const [lastSold, setLastSold] = useState(false);
   useEffect(async () => {
@@ -54,6 +56,7 @@ const DropPreview = ({
         )}
       </div>
       <div className="py-3 px-2 relative">
+        {showMoveNoti && <MoveDropNoti />}
         <h3 className="font-bold font-inktrap">{title}</h3>
         <div
           className={classNames("flex justify-between mt-2", {

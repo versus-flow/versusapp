@@ -1,19 +1,24 @@
 import React, { useState } from "react";
-import { get, map } from "lodash";
+import { get, includes, map } from "lodash";
 import Link from "next/link";
 
 import ArrowButton from "../general/ArrowButton";
 import DropPreview from "../marketplace/DropPreview";
 import ListItem from "../marketplace/ListItem";
 import CollectionOnboard from "./CollectionOnboard";
+import SendItem from "../marketplace/SendItem";
 
 const Collection = ({ pieces, other, self, user, name }) => {
   const [listItem, setListItem] = useState(false);
+  const [sendItem, setSendItem] = useState(false);
   const isMarketPlace = (p) => get(p, "art.name");
   return (
     <>
       {listItem && (
         <ListItem piece={listItem} close={() => setListItem(false)} />
+      )}
+      {sendItem && (
+        <SendItem piece={sendItem} close={() => setSendItem(false)} />
       )}
       <div className="bg-white py-12">
         <div className="container">
@@ -30,14 +35,20 @@ const Collection = ({ pieces, other, self, user, name }) => {
                   zoom
                   img={p.img}
                   price={p.price ? parseFloat(p.price).toFixed(1) : false}
+                  showMoveNoti={
+                    self &&
+                    includes(["Bryan Brinkman", "MiraRuido"], p.metadata.name)
+                  }
                   button={
                     self ? (
                       isMarketPlace(p) ? (
-                        <ArrowButton
-                          text="View on market"
-                          className="transparent-button"
-                          href={`/listing/${p.id}`}
-                        />
+                        <div className="flex items-center">
+                          <ArrowButton
+                            text="View on market"
+                            className="transparent-button"
+                            href={`/listing/${p.id}`}
+                          />
+                        </div>
                       ) : (
                         <div className="flex items-center">
                           <ArrowButton
@@ -50,6 +61,12 @@ const Collection = ({ pieces, other, self, user, name }) => {
                               View
                             </a>
                           </Link>
+                          <span
+                            onClick={() => setSendItem(p)}
+                            className="ml-4 font-bold underline cursor-pointer text-sm"
+                          >
+                            Send
+                          </span>
                         </div>
                       )
                     ) : isMarketPlace(p) ? (

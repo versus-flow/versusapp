@@ -73,7 +73,7 @@ module.exports = {
     extend: {
       width: ["hover", "focus", "group-hover"],
       margin: ["hover", "focus", "group-hover"],
-      display: ["last"],
+      display: ["last", "group-hover"],
     },
   },
 };
