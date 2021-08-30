@@ -36,7 +36,7 @@ export default function Drop({ id }) {
     setloading(true);
     setUpdatedDrop({});
     setUpdatedArt(null);
-    if (includes(["11", "12", "13", "15"], id)) return null;
+    if (includes(["11", "12", "13", "15", "20", "22"], id)) return null;
     if (includes([1, 6, 9, 11, 12, 13, 15, 20, 22], id)) return null;
     const drop = await fetchDrop(id);
     setUpdatedDrop(drop);
@@ -47,6 +47,7 @@ export default function Drop({ id }) {
       setUpdatedDrop(drop);
     }, 30000);
     document.addEventListener("bid", () => fetchDrop(id), false);
+    setUpdatedArt(await fetchArt(id));
     return () => {
       clearInterval(window.fetches);
       document.removeEventListener("bid", () => fetchDrop(id), false);

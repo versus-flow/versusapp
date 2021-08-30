@@ -13,6 +13,7 @@
     "@react-hook/copy": "^2.0.1",
     "@svgr/webpack": "^5.5.0",
     "classnames": "^2.3.1",
+    "cloudinary-core": "^2.11.4",
     "comma-number": "^2.1.0",
     "fuse.js": "^6.4.6",
     "lodash": "^4.17.21",

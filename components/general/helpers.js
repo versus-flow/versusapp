@@ -1,6 +1,7 @@
 import { find, replace } from "lodash";
 import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
+import { Cloudinary } from "cloudinary-core";
 
 export const getGraffleUrl = (query) => {
   const contract = (
@@ -80,16 +81,26 @@ export const resizedataURL = (datas, _scale) => {
   });
 };
 
+const cl = new Cloudinary({ cloud_name: "dxra4agvf", secure: true });
+
 export const getDropThumbnail = async (
   dropId,
   width = "auto",
   type = "jpg"
 ) => {
   const setType = type === "gif" ? "gif" : "jpg";
-  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maindr${dropId}.${setType}`;
-  const isFile = await checkForFile(url);
+  const imageURL = cl.url(`maindr${dropId}`, {
+    transformation: [
+      {
+        width,
+        crop: "fill",
+      },
+      { fetch_format: "auto" },
+    ],
+  });
+  const isFile = await checkForFile(imageURL);
   if (!isFile) return false;
-  return url;
+  return imageURL;
 };
 
 export const getCacheThumbnail = async (
@@ -98,10 +109,18 @@ export const getCacheThumbnail = async (
   type = "jpg"
 ) => {
   const setType = type === "gif" ? "gif" : "jpg";
-  const url = `https://res.cloudinary.com/dxra4agvf/image/upload/w_${width}/v1629283084/maincache${cacheKey}.${setType}`;
-  const isFile = await checkForFile(url);
+  const imageURL = cl.url(`maincache${cacheKey}`, {
+    transformation: [
+      {
+        width,
+        crop: "fill",
+      },
+      { fetch_format: "auto" },
+    ],
+  });
+  const isFile = await checkForFile(imageURL);
   if (!isFile) return false;
-  return url;
+  return imageURL;
 };
 
 export const getDropFromArtist = (artist) => {
