@@ -13,7 +13,6 @@ export default function Drops() {
   const [drops, setDrops] = useState([]);
   useEffect(async () => {
     const allDrops = await fetchAllDrops();
-    console.log(allDrops);
     const realdrops =
       process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
         ? filter(
@@ -32,7 +31,6 @@ export default function Drops() {
       ).json(),
       (i) => i.blockEventData.id
     );
-    console.log(sold);
     const dropsWithImages = await Promise.all(
       map(sortedDrops, async (s) => {
         return {
@@ -43,7 +41,6 @@ export default function Drops() {
     );
     setDrops(dropsWithImages);
     setLoading(false);
-    console.log(sortedDrops);
   }, []);
   return (
     <Main>
