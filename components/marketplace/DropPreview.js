@@ -19,6 +19,8 @@ const DropPreview = ({
   price,
   id,
   showMoveNoti,
+  isEdition,
+  isUnique,
 }) => {
   const [lastSold, setLastSold] = useState(false);
   useEffect(async () => {
@@ -68,6 +70,16 @@ const DropPreview = ({
             <span>{edition}</span>
           </div>
           <div className="flex flex-col text-right">
+            {isEdition && (
+              <span className="text-xs absolute -mt-4 right-2 text-mediumGrey">
+                Editions sold for:
+              </span>
+            )}
+            {isUnique && (
+              <span className="text-xs absolute -mt-4 right-2 text-mediumGrey">
+                Unique sold for:
+              </span>
+            )}
             {price && <span className="font-bold text-xl">F{price}</span>}
             <span
               className={"text-sm bottom-0 absolute flex right-0 text-right"}

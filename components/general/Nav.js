@@ -34,6 +34,11 @@ const Nav = ({ user, balance }) => {
             Marketplace
           </a>
         </Link>
+        <Link href={`/drops`}>
+          <a className="ml-4 font-semibold text-sm hidden sm:inline-block">
+            Drops
+          </a>
+        </Link>
       </div>
       <div className="flex flex-1 justify-end">
         {!user.addr ? (

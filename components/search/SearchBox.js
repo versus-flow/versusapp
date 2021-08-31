@@ -9,10 +9,10 @@ import SearchResult from "./SearchResult";
 import { getAllDrops } from "../drop/transactions";
 import moment from "moment";
 
-async function fetchAllDrops() {
+export const fetchAllDrops = async () => {
   const response = await fcl.send([fcl.script(getAllDrops)]);
   return await fcl.decode(response);
-}
+};
 
 const SearchBox = () => {
   const [show, setShow] = useState(true);
