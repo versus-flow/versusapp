@@ -12,6 +12,7 @@ import FlowLogo from "../../assets/flowlogo.svg";
 import classNames from "classnames";
 import SearchBox from "../search/SearchBox";
 import ArrowButton from "./ArrowButton";
+import { Menu } from "react-feather";
 
 const Nav = ({ user, balance }) => {
   const [addrOpen, setAddrOpen] = useState(false);
@@ -42,11 +43,79 @@ const Nav = ({ user, balance }) => {
       </div>
       <div className="flex flex-1 justify-end">
         {!user.addr ? (
-          <ArrowButton
-            className="standard-button"
-            onClick={fcl.authenticate}
-            text="Connect Wallet"
-          />
+          <>
+            <ArrowButton
+              className="standard-button"
+              onClick={fcl.authenticate}
+              text="Connect Wallet"
+            />
+            <div
+              className="relative flex items-center sm:hidden"
+              ref={addrMenu}
+            >
+              {/* <Bell className="mr-4 h-6 w-6 cursor-pointer hidden lg:block" /> */}
+              <div
+                className="flex items-center cursor-pointer font-semibold text-sm"
+                onClick={() => setAddrOpen(!addrOpen)}
+              >
+                <Menu
+                  className={classNames("ml-3 w-6 transform", {
+                    "rotate-180": addrOpen,
+                  })}
+                />
+                {user.avatar && (
+                  <div className="ml-4 w-10 h-10 rounded-full hidden lg:block">
+                    <img
+                      src="https://lh3.googleusercontent.com/ogw/ADea4I4TggB1GCdvgQaIkX0S9zbSZH-evkipl6fX5p6i=s64-c-mo"
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  </div>
+                )}
+              </div>
+              {addrOpen && (
+                <div className="absolute bg-white flex flex-col mt-2 right-0 rounded-lg top-full w-92">
+                  {user.addr && (
+                    <>
+                      <div className="bg-black-900 flex font-bold items-center justify-between px-6 py-3 rounded-t-xl text-sm text-white">
+                        <span>{user.addr}</span>
+                        <Copy
+                          onClick={copy}
+                          className={classNames(
+                            "h-5 ml-4 cursor-pointer stroke-current",
+                            {
+                              "text-green-500": copied,
+                            }
+                          )}
+                        />
+                      </div>
+                      <div className="border-b border-regGrey">
+                        <div className="flex items-center px-6 py-3">
+                          <FlowLogo className="h-8 w-8" />
+                          <div className="flex-1 font-bold pl-3 text-black-100 text-sm">
+                            <div>Flow balance</div>
+                            <div className="flex justify-between">
+                              <span className="text-black-500">F{balance}</span>
+                              <span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  <div>
+                    <Link href="/drops">
+                      <a className="block cursor-pointer px-6 py-3">Drops</a>
+                    </Link>
+                    <Link href="/marketplace">
+                      <a href="#" className="block cursor-pointer px-6 py-3">
+                        Marketplace
+                      </a>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
         ) : (
           <div className="flex flex-col-reverse items-center sm:flex-row">
             {user.addr && (
