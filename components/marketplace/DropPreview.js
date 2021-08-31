@@ -3,6 +3,7 @@ import classNames from "classnames";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { first, get } from "lodash";
+import moment from "moment";
 
 import { getGraffleUrl } from "../general/helpers";
 import Loading from "../general/Loading";
@@ -21,6 +22,7 @@ const DropPreview = ({
   showMoveNoti,
   isEdition,
   isUnique,
+  dropped,
 }) => {
   const [lastSold, setLastSold] = useState(false);
   useEffect(async () => {
@@ -40,7 +42,7 @@ const DropPreview = ({
   }, [id]);
   return (
     <div
-      className={classNames("bg-white p-3 rounded", {
+      className={classNames("bg-white p-3 rounded relative", {
         "shadow-2xl": shadow,
       })}
     >
@@ -96,6 +98,14 @@ const DropPreview = ({
         </div>
         {button}
       </div>
+      {dropped && (
+        <div className="absolute flex justify-center left-0 top-full w-full">
+          <span className="py-1 sm:py-2 rounded-b text-center text-xs sm:text-sm vs-gradient w-3/4">
+            <span className="font-bold">Dropped:</span>{" "}
+            {moment.unix(parseInt(dropped, 10)).format("MMMM D, YYYY")}
+          </span>
+        </div>
+      )}
     </div>
   );
 };

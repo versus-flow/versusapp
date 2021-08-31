@@ -6,7 +6,7 @@ import Main from "../components/layouts/Main";
 import { fetchAllDrops } from "../components/search/SearchBox";
 import Loading from "../components/general/Loading";
 import DropPreview from "../components/marketplace/DropPreview";
-import { getDropThumbnail, getGraffleUrl } from "../components/general/helpers";
+import { getDropThumbnail } from "../components/general/helpers";
 
 export default function Drops() {
   const [loading, setLoading] = useState(true);
@@ -23,14 +23,6 @@ export default function Drops() {
           )
         : drops;
     const sortedDrops = reverse(sortBy(realdrops, "dropId"));
-    let sold = uniqBy(
-      await (
-        await fetch(
-          getGraffleUrl("?eventType=A.CONTRACT.Marketplace.TokenPurchased")
-        )
-      ).json(),
-      (i) => i.blockEventData.id
-    );
     const dropsWithImages = await Promise.all(
       map(sortedDrops, async (s) => {
         return {
@@ -56,7 +48,7 @@ export default function Drops() {
                   <Loading />
                 </div>
               ) : (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-x-8 gap-y-4 lg:gap-x-16 lg:gap-y-8">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-x-8 gap-y-12 lg:gap-x-16 lg:gap-y-16">
                   {map(drops, (d) => (
                     <DropPreview
                       key={d.dropId}
@@ -87,6 +79,7 @@ export default function Drops() {
                           </a>
                         </Link>
                       }
+                      dropped={d.startTime}
                     />
                   ))}
                 </div>
