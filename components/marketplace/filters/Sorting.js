@@ -6,7 +6,7 @@ const Sorting = ({ numResults, setSortBy }) => {
     <div className="flex items-center justify-between">
       <p>
         <span className="font-bold">{commaNumber(numResults)}</span> art piece
-        {numResults === "1" ? "s" : ""}
+        {numResults === 1 ? "" : "s"}
       </p>
       <div>
         <div className="border flex font-bold justify-between px-6 py-2 sm:py-3 rounded-xl w-36 sm:w-48 cursor-pointer relative">
