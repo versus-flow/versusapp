@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { filter, includes, map, reverse, sortBy, uniqBy } from "lodash";
 import Link from "next/link";
+import Head from "next/head";
 
 import Main from "../components/layouts/Main";
 import { fetchAllDrops } from "../components/search/SearchBox";
@@ -37,56 +38,62 @@ export default function Drops() {
   return (
     <Main>
       {() => (
-        <div className="py-12">
-          <div className="container">
-            <h2 className="font-bold font-inktrap text-3xl sm:text-5xl">
-              Recent Drops
-            </h2>
-            <div className="min-h-screen py-12">
-              {loading ? (
-                <div className="flex justify-center items-center">
-                  <Loading />
-                </div>
-              ) : (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-x-8 gap-y-12 lg:gap-x-16 lg:gap-y-16">
-                  {map(drops, (d) => (
-                    <DropPreview
-                      key={d.dropId}
-                      // id={false}
-                      shadow
-                      img={d.img}
-                      title={d.metadata.name}
-                      artist={d.metadata.artist}
-                      zoom
-                      price={
-                        d.winning === "EDITIONED"
-                          ? parseFloat(d.editionPrice).toFixed(1)
-                          : parseFloat(d.uniquePrice).toFixed(1)
-                      }
-                      isEdition={d.winning === "EDITIONED"}
-                      isUnique={d.winning === "UNIQUE"}
-                      edition={
-                        d.winning === "EDITIONED"
-                          ? `${
-                              map(d.editionsStatuses, (d) => {}).length
-                            } editions`
-                          : "1 edition"
-                      }
-                      button={
-                        <Link href={`/drop/${d.dropId}`}>
-                          <a className="standard-button block mt-2">
-                            View drop
-                          </a>
-                        </Link>
-                      }
-                      dropped={d.startTime}
-                    />
-                  ))}
-                </div>
-              )}
+        <>
+          {" "}
+          <Head>
+            <title>Recent Drops | Versus</title>
+          </Head>
+          <div className="py-12">
+            <div className="container">
+              <h2 className="font-bold font-inktrap text-3xl sm:text-5xl">
+                Recent Drops
+              </h2>
+              <div className="min-h-screen py-12">
+                {loading ? (
+                  <div className="flex justify-center items-center">
+                    <Loading />
+                  </div>
+                ) : (
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-x-8 gap-y-12 lg:gap-x-16 lg:gap-y-16">
+                    {map(drops, (d) => (
+                      <DropPreview
+                        key={d.dropId}
+                        // id={false}
+                        shadow
+                        img={d.img}
+                        title={d.metadata.name}
+                        artist={d.metadata.artist}
+                        zoom
+                        price={
+                          d.winning === "EDITIONED"
+                            ? parseFloat(d.editionPrice).toFixed(1)
+                            : parseFloat(d.uniquePrice).toFixed(1)
+                        }
+                        isEdition={d.winning === "EDITIONED"}
+                        isUnique={d.winning === "UNIQUE"}
+                        edition={
+                          d.winning === "EDITIONED"
+                            ? `${
+                                map(d.editionsStatuses, (d) => {}).length
+                              } editions`
+                            : "1 edition"
+                        }
+                        button={
+                          <Link href={`/drop/${d.dropId}`}>
+                            <a className="standard-button block mt-2">
+                              View drop
+                            </a>
+                          </Link>
+                        }
+                        dropped={d.startTime}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </Main>
   );
