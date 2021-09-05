@@ -9,10 +9,10 @@ const Sorting = ({ numResults, setSortBy }) => {
         {numResults === 1 ? "" : "s"}
       </p>
       <div>
-        <div className="border flex font-bold justify-between px-6 py-2 sm:py-3 rounded-xl w-36 sm:w-48 cursor-pointer relative">
+        <div className="border flex font-bold justify-between p-1 rounded-xl w-36 sm:w-48 cursor-pointer relative">
           <Chevron className="w-3 absolute top-1/2 right-6 transform -translate-y-1/2" />
           <select
-            className="w-full hide-select"
+            className="px-5 py-1 sm:py-2 w-full hide-select cursor-pointer relative bg-transparent"
             onChange={(e) => setSortBy(e.currentTarget.value)}
           >
             <option value="">Sort by</option>
