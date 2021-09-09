@@ -43,8 +43,8 @@ const Landing = () => {
                   className={classNames(
                     "grid mb-6 mt-2 w-64 max-w-full mx-auto sm:mx-0",
                     {
+                      "grid-cols-4": timer.days && timer.days > 0,
                       "grid-cols-3": !timer.days && timer.hours,
-                      "grid-cols-4": timer.days,
                       "grid-cols-2":
                         !timer.days && !timer.hours && timer.minutes,
                       "grid-cols-1":
