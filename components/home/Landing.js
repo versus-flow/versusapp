@@ -9,7 +9,7 @@ import { getDropThumbnail } from "../general/helpers";
 
 const Landing = () => {
   const [timeRemaining, settimeRemaining] = useState(
-    1631188800 - moment().unix()
+    1631793600 - moment().unix()
   );
   useEffect(() => {
     if (timeRemaining > 0) {
@@ -27,15 +27,15 @@ const Landing = () => {
         <div className="container flex flex-col-reverse gap-16 grid-cols-2 hero-height items-center relative sm:grid z-10">
           <div className="h-full flex flex-col justify-center sm:items-start sm:py-0 text-center sm:text-left">
             <h3 className="-backdrop-hue-rotate-15 font-inktrap text-xl">
-              Fran Rodr&iacute;guez
+              Nate Hill
             </h3>
             <h2 className="2xl:text-8xl font-bold font-inktrap leading-loose lg:text-7xl relative sm:-left-1 sm:text-5xl text-3xl">
-              Portal
+              Everything's New
             </h2>
             <div className="mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
                 {timer
-                  ? "The auction starts September 9nd at 8AM EST"
+                  ? "The auction starts September 16nd at 8AM EST"
                   : "Auction now open!"}
               </h4>
               {timer && (
@@ -95,14 +95,14 @@ const Landing = () => {
               )}
             </div>
             <ArrowButton
-              href="/drop/25"
+              href="/drop/26"
               text="View Drop"
               className="mx-auto sm:mx-0 mt-2"
             />
           </div>
           <div className="mt-6 sm:h-full sm:mt-0 w-full max-h-112">
             <img
-              src="https://res.cloudinary.com/dxra4agvf/image/upload/maindr25"
+              src="https://res.cloudinary.com/dxra4agvf/image/upload/maindr26"
               className="w-full sm:h-full sm:object-contain"
             />
           </div>
