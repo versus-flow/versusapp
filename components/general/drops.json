@@ -272,11 +272,13 @@
     "title": "",
     "slug": "MiraRuido",
     "handle": "MiraRuido",
+    "artist": "MiraRuido",
     "smallImage": "/images/drops/miraruido/preview.jpg",
     "featuredImage": "",
     "twitter": "https://twitter.com/miraruido",
     "instagram": "https://www.instagram.com/joseba.elorza",
-    "aboutArtist": "Joseba Elorza (a.k.a. MiraRuido) is a freelance illustrator and animator. His collages have been seen in publications like Wall Street Journal, Esquire or Hollywood Reporter and he directed and animated videos for National Geographic, Amazon Studios and Green Day among others."
+    "aboutArtist": "Joseba Elorza (a.k.a. MiraRuido) is a freelance illustrator and animator. His collages have been seen in publications like Wall Street Journal, Esquire or Hollywood Reporter and he directed and animated videos for National Geographic, Amazon Studios and Green Day among others.",
+    "cacheKey": "19"
   },
   {
     "id": "19",
