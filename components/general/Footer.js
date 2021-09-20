@@ -59,7 +59,7 @@ const Footer = () => {
             <div className="mt-2 flex flex-col">
               <a
                 className="mb-2"
-                href="mailto:support@versus-flow.art"
+                href="mailto:team@versus.auction"
                 target="_blank"
               >
                 Contact Us
@@ -76,9 +76,6 @@ const Footer = () => {
               </Link>
               <Link href="/technical">
                 <a className="mb-2">Technical Information</a>
-              </Link>
-              <Link href="/privacy">
-                <a className="mb-2">Privacy policy</a>
               </Link>
             </div>
           </div>
