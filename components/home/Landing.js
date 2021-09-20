@@ -36,7 +36,7 @@ const Landing = ({ drop }) => {
             <div className="mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
                 {timer
-                  ? "The auction starts September 16th at 8AM EST"
+                  ? "The auction starts September 23rd at 8AM EST"
                   : moment().unix() - parseInt(drop.endTime, 10) < 0
                   ? "Auction now open!"
                   : "Auction finished!"}
