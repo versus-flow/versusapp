@@ -20,7 +20,10 @@ import Head from "next/head";
 import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
 import Loading from "../../components/general/Loading";
-import { getDropThumbnail } from "../../components/general/helpers";
+import {
+  getDropThumbnail,
+  isSpecialDrop,
+} from "../../components/general/helpers";
 
 export default function Drop({ id }) {
   const [updatedDrop, setUpdatedDrop] = useState({});
@@ -41,13 +44,18 @@ export default function Drop({ id }) {
     const drop = await fetchDrop(id);
     setUpdatedDrop(drop);
     setloading(false);
-    setUpdatedArt(await getDropThumbnail(id, "auto", drop.metadata.type));
+    const isSpecial = isSpecialDrop(drop);
+    setUpdatedArt(
+      isSpecial
+        ? await fetchArt(id)
+        : await getDropThumbnail(id, "auto", drop.metadata.type)
+    );
     window.fetches = setInterval(async () => {
       const drop = await fetchDrop(id);
       setUpdatedDrop(drop);
     }, 30000);
     document.addEventListener("bid", () => fetchDrop(id), false);
-    setUpdatedArt(await fetchArt(id));
+    if (!isSpecial) setUpdatedArt(await fetchArt(id));
     return () => {
       clearInterval(window.fetches);
       document.removeEventListener("bid", () => fetchDrop(id), false);

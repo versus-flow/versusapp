@@ -1,4 +1,4 @@
-import { find, replace } from "lodash";
+import { find, includes, replace } from "lodash";
 import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
 import { Cloudinary } from "cloudinary-core";
@@ -143,4 +143,8 @@ export const getDropFromArtist = (artist, cacheKey) => {
         ? artist === d.artist || artist.toLowerCase() === d.handle.toLowerCase()
         : (d.id = "1")
   );
+};
+
+export const isSpecialDrop = (drop) => {
+  return includes(["flow"], drop.metadata.type);
 };
