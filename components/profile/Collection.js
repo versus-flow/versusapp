@@ -79,7 +79,7 @@ const Collection = ({ pieces, other, self, user, name }) => {
                       <ArrowButton
                         text="View on market"
                         className="transparent-button"
-                        href={`/piece/${user.addr || name}/${p.id}`}
+                        href={`/piece/${name}/${p.id}`}
                       />
                     )
                   }
