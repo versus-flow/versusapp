@@ -20,7 +20,7 @@ const Landing = ({ drop }) => {
     }
   }, []);
   const timer = timeRemaining > 0 ? getWrittenTimer(timeRemaining) : false;
-  console.log(moment().unix(), parseInt(drop.endTime, 10));
+  const start = moment.unix(parseInt(drop.startTime, 10));
   return (
     <>
       {/* <TopTri /> */}
@@ -36,7 +36,9 @@ const Landing = ({ drop }) => {
             <div className="mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
                 {timer
-                  ? "The auction starts September 23rd at 8AM EST"
+                  ? `The auction starts ${start.format("MMMM")} ${start.format(
+                      "Do"
+                    )} at ${start.zone(180).format("hA")} EST`
                   : moment().unix() - parseInt(drop.endTime, 10) < 0
                   ? "Auction now open!"
                   : "Auction finished!"}
