@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
 import { each, find, findIndex, map } from "lodash";
+import { useRouter } from "next/router";
 
 import ProfileSummary from "./ProfileSummary";
 import { fetchProfile } from "../../pages/profile/[name]";
@@ -16,6 +17,7 @@ import {
   uploadFile,
 } from "../general/helpers";
 import Head from "next/head";
+import StandardLoadWrapper from "../general/StandardLoadWrapper";
 
 export const getArt = async (addr) => {
   const response = await fcl.send([
@@ -77,10 +79,25 @@ const ProfileWrapper = ({ self, user, name }) => {
   const [pieces, setPieces] = useState([]);
   const [marketPieces, setMarketPieces] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [arts, setArts] = useState([]);
+  const [bigLoading, setBigLoading] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const start = () => {
+      setCurrentProfile({});
+      setBigLoading(true);
+    };
+    const end = () => setBigLoading(false);
+    router.events.on("routeChangeStart", start);
+    router.events.on("routeChangeComplete", end);
+    router.events.on("routeChangeError", end);
+    return () => {
+      router.events.off("routeChangeStart", start);
+      router.events.off("routeChangeComplete", end);
+      router.events.off("routeChangeError", end);
+    };
+  }, []);
   useEffect(async () => {
     if ((self && user && user.addr) || name) {
-      setLoading(true);
       setMarketPieces([]);
       const addr = self ? user.addr : name;
       const profile = await fetchProfile(addr);
@@ -131,36 +148,42 @@ const ProfileWrapper = ({ self, user, name }) => {
   }, [self, name]);
   return (
     <>
-      <Head>
-        <title>
-          {currentProfile.name || currentProfile.address
-            ? currentProfile.name
-              ? `@${currentProfile.name}`
-              : `@${currentProfile.address}`
-            : "Profile"}{" "}
-          | Versus
-        </title>
-      </Head>
-      <ProfileSummary
-        self={self}
-        name={name}
-        profile={currentProfile}
-        user={user}
-      />
-      <ProfileTabs />
-      {loading ? (
-        <div className="bg-white">
-          <div className="flex flex-col items-center mx-auto pb-36 pt-24 text-center w-60">
-            <Loading />{" "}
-          </div>
-        </div>
+      {self ? (
+        <Head>
+          <title>
+            {currentProfile.name || currentProfile.address
+              ? currentProfile.name
+                ? `@${currentProfile.name}`
+                : `@${currentProfile.address}`
+              : "Profile"}{" "}
+            | Versus
+          </title>
+        </Head>
       ) : (
-        <Collection
-          pieces={[...pieces, ...marketPieces]}
-          self={self}
-          user={user}
-          name={name}
-        />
+        <></>
+      )}
+      {bigLoading ? (
+        <StandardLoadWrapper large />
+      ) : (
+        <>
+          <ProfileSummary
+            self={self}
+            name={name}
+            profile={currentProfile}
+            user={user}
+          />
+          <ProfileTabs />
+          {loading ? (
+            <StandardLoadWrapper />
+          ) : (
+            <Collection
+              pieces={[...pieces, ...marketPieces]}
+              self={self}
+              user={user}
+              name={name}
+            />
+          )}
+        </>
       )}
     </>
   );

@@ -1,34 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { find, get } from "lodash";
 
-import FullItem from "../../components/marketplace/FullItem";
-import Loading from "../../components/general/Loading";
-import { getGraffleUrl } from "../../components/general/helpers";
+import FullItem, { oneListedItem } from "../../components/marketplace/FullItem";
+import {
+  getCacheThumbnail,
+  getGraffleUrl,
+} from "../../components/general/helpers";
 import Main from "../../components/layouts/Main";
+import { fetchProfile } from "../profile/[name]";
+import SEOBoilerplate from "../../components/general/SEOBoilerplate";
 
-export default function Listing({ id }) {
-  const [address, setAddress] = useState(null);
-  useEffect(async () => {
-    let forSale = await (
-      await fetch(
-        getGraffleUrl(`?eventType=A.CONTRACT.Marketplace.ForSale&id=${id}`)
-      )
-    ).json();
-    const item = find(forSale, (i) => i.blockEventData.id === parseInt(id, 10));
-    setAddress(get(item, "blockEventData.from"));
-  }, []);
+export default function Listing({ id, piece, address, art }) {
   return (
-    <Main>
-      {(user) =>
-        address ? (
-          <FullItem address={address} id={parseInt(id, 10)} user={user} />
-        ) : (
-          <div className="w-full h-48 min-h-screen flex justify-center pt-36">
-            <Loading />
-          </div>
-        )
-      }
-    </Main>
+    <>
+      <Main
+        seo={
+          <SEOBoilerplate
+            title={`${get(piece, "art.name")} by ${get(
+              piece,
+              "art.artist"
+            )} | Versus`}
+            description={get(piece, "art.description")}
+            url={`https://www.versus.auction/listing/${id}`}
+            image={art}
+          />
+        }
+      >
+        {(user) => (
+          <FullItem
+            address={address}
+            id={parseInt(id, 10)}
+            user={user}
+            piece={piece}
+          />
+        )}
+      </Main>
+    </>
   );
 }
 
@@ -36,5 +43,20 @@ export async function getServerSideProps(context) {
   const {
     params: { id },
   } = context;
-  return { props: { id } };
+  let forSale = await (
+    await fetch(
+      getGraffleUrl(`?eventType=A.CONTRACT.Marketplace.ForSale&id=${id}`)
+    )
+  ).json();
+  const item = find(forSale, (i) => i.blockEventData.id === parseInt(id, 10));
+  const address = get(item, "blockEventData.from");
+  const i = await oneListedItem(address, parseInt(id, 10));
+  const piece = {
+    ...i,
+    metadata: i.art,
+    owner: await fetchProfile(address),
+  };
+  const art = await getCacheThumbnail(i.cacheKey, 1400, i.art.type);
+
+  return { props: { id, item, piece, address, art } };
 }

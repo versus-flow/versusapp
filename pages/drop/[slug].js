@@ -3,7 +3,7 @@ import { get, find, includes } from "lodash";
 import moment from "moment";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
-import * as sdk from "@onflow/sdk";
+import { useRouter } from "next/router";
 
 import DropArtist from "../../components/drop/DropArtist";
 import DropBids from "../../components/drop/DropBids";
@@ -16,14 +16,14 @@ import {
   fetchVersusArt,
   fetchVersusDrop,
 } from "../../components/profile/transactions";
-import Head from "next/head";
 import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
-import Loading from "../../components/general/Loading";
 import { getDropThumbnail } from "../../components/general/helpers";
+import StandardLoadWrapper from "../../components/general/StandardLoadWrapper";
+import SEOBoilerplate from "../../components/general/SEOBoilerplate";
 
-export default function Drop({ id }) {
-  const [updatedDrop, setUpdatedDrop] = useState({});
+export default function Drop({ id, drop, img }) {
+  const [updatedDrop, setUpdatedDrop] = useState(drop);
   const [updatedArt, setUpdatedArt] = useState(null);
   const [timeUntil, setTimeUntil] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState(null);
@@ -32,22 +32,23 @@ export default function Drop({ id }) {
     process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
     (d) => d.id == id
   );
+  const router = useRouter();
+  useEffect(() => {
+    const start = () => setloading(true);
+    router.events.on("routeChangeStart", start);
+    return () => router.events.off("routeChangeStart", start);
+  }, []);
   useEffect(async () => {
     setloading(true);
-    setUpdatedDrop({});
-    setUpdatedArt(null);
-    if (includes(["11", "12", "13", "15", "20", "22"], id)) return null;
-    if (includes([1, 6, 9, 11, 12, 13, 15, 20, 22], id)) return null;
-    const drop = await fetchDrop(id);
-    setUpdatedDrop(drop);
+    const art = await getDropThumbnail(id, "auto", drop.metadata.type);
+    setUpdatedArt(art);
     setloading(false);
-    setUpdatedArt(await getDropThumbnail(id, "auto", drop.metadata.type));
     window.fetches = setInterval(async () => {
       const drop = await fetchDrop(id);
       setUpdatedDrop(drop);
     }, 30000);
     document.addEventListener("bid", () => fetchDrop(id), false);
-    setUpdatedArt(await fetchArt(id));
+    if (!art) setUpdatedArt(await fetchArt(id));
     return () => {
       clearInterval(window.fetches);
       document.removeEventListener("bid", () => fetchDrop(id), false);
@@ -71,19 +72,23 @@ export default function Drop({ id }) {
     }
   }, [loading, updatedDrop.timeRemaining]);
   return (
-    <Main>
+    <Main
+      seo={
+        <SEOBoilerplate
+          title={`${get(updatedDrop, "metadata.name")} by ${get(
+            updatedDrop,
+            "metadata.artist"
+          )} | Versus Auction`}
+          description={get(updatedDrop, "metadata.description")}
+          url={`https://www.versus.auction/drop/${id}`}
+          image={img}
+        />
+      }
+    >
       {(user) => (
         <>
-          <Head>
-            <title>
-              {get(updatedDrop, "metadata.name")} by{" "}
-              {get(updatedDrop, "metadata.artist")}
-            </title>
-          </Head>
           {loading ? (
-            <div className="h-96 flex justify-center items-center">
-              <Loading />
-            </div>
+            <StandardLoadWrapper large />
           ) : (
             <>
               <DropArtist drop={updatedDrop} dropInfo={dropInfo} />
@@ -136,8 +141,11 @@ async function fetchArt(id) {
 
 export async function getServerSideProps(context) {
   const id = get(context, "params.slug");
-  // const drop = await fetchDrop(id);
-  // const art = await fetchArt(id);
-
-  return { props: { id } };
+  if (includes(["11", "12", "13", "15", "20", "22"], id))
+    return { props: { id, drop: {}, art: null } };
+  if (includes([1, 6, 9, 11, 12, 13, 15, 20, 22], id))
+    return { props: { id, drop: {}, art: null } };
+  const drop = await fetchDrop(id);
+  const img = await getDropThumbnail(id, "1400", drop.metadata.type);
+  return { props: { id, drop, img } };
 }

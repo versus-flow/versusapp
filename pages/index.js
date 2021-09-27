@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 import Main from "../components/layouts/Main";
 import Landing from "../components/home/Landing";
@@ -7,12 +8,19 @@ import Rewarded from "../components/home/Rewarded";
 import BetterForArt from "../components/home/BetterForArt";
 import dropsData from "../components/general/drops.json";
 import testDropsData from "../components/general/testdrops.json";
-import Loading from "../components/general/Loading";
 import { last } from "lodash";
 import { fetchDrop } from "./drop/[slug]";
+import StandardLoadWrapper from "../components/general/StandardLoadWrapper";
 
 export default function Home() {
   const [latestDrop, setLatestDrop] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const start = () => setLoading(true);
+    router.events.on("routeChangeStart", start);
+    return () => router.events.off("routeChangeStart", start);
+  }, []);
   useEffect(async () => {
     const dropList =
       process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
@@ -25,7 +33,7 @@ export default function Home() {
   return (
     <Main>
       {() =>
-        latestDrop ? (
+        latestDrop && !loading ? (
           <>
             <Landing drop={latestDrop} />
             <MarketplacePreview />
@@ -33,9 +41,7 @@ export default function Home() {
             <BetterForArt />
           </>
         ) : (
-          <div className="h-64 flex justify-center items-center">
-            <Loading />
-          </div>
+          <StandardLoadWrapper />
         )
       }
     </Main>
