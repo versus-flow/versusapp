@@ -21,7 +21,7 @@ export default function Listing({ id, piece, address, art }) {
               "art.artist"
             )} | Versus`}
             description={get(piece, "art.description")}
-            url={`https://www.versus.auction/listing/${id}`}
+            url={`listing/${id}`}
             image={art}
           />
         }

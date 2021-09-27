@@ -38,7 +38,7 @@ export default function Drops() {
     setLoading(false);
   }, []);
   return (
-    <Main seo={<SEOBoilerplate title="Recent Drops | Versus" />}>
+    <Main seo={<SEOBoilerplate title="Recent Drops | Versus" url="drops" />}>
       {() => (
         <>
           {loading ? (

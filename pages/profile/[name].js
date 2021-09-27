@@ -31,6 +31,7 @@ export default function Profile({ self, name, profile }) {
             } | Versus`}
             description={get(profile, "description")}
             image={get(profile, "avatar")}
+            url={`profile/${profile.address}`}
           />
         ) : null
       }

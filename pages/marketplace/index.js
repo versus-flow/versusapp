@@ -129,7 +129,9 @@ export default function Marketplace() {
   ]);
   if (sb === "ztoa") sortedPieces = reverse(sortedPieces);
   return (
-    <Main seo={<SEOBoilerplate title="Marketplace | Versus" />}>
+    <Main
+      seo={<SEOBoilerplate title="Marketplace | Versus" url="marketplace" />}
+    >
       {() => (
         <div className="bg-white min-h-screen pb-20">
           <div className="container pt-12">

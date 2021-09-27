@@ -143,7 +143,7 @@ const items = [
 
 const FAQ = () => {
   return (
-    <Main seo={<SEOBoilerplate title="FAQ - Versus" />}>
+    <Main seo={<SEOBoilerplate title="FAQ - Versus" url="faq" />}>
       {() => (
         <div className="pt-12 pb-24 bg-white">
           <div className="container">

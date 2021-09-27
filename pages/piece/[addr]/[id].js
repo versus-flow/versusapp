@@ -20,7 +20,7 @@ export default function OneItem({ addr, id, piece, art }) {
             "art.artist"
           )} | Versus`}
           description={get(piece, "art.description")}
-          url={`https://www.versus.auction/piece/${addr}/${id}`}
+          url={`piece/${addr}/${id}`}
           title={art}
         />
       }

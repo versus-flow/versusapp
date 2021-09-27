@@ -3,7 +3,9 @@ import Main from "../components/layouts/Main";
 
 export default function Technical() {
   return (
-    <Main seo={<SEOBoilerplate title="Technical Information" />}>
+    <Main
+      seo={<SEOBoilerplate title="Technical Information" url="technical" />}
+    >
       {() => (
         <div className="pt-12 pb-24 bg-white">
           <div className="container">

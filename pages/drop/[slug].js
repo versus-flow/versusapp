@@ -73,7 +73,7 @@ export default function Drop({ id, drop, img }) {
             "metadata.artist"
           )} | Versus Auction`}
           description={get(updatedDrop, "metadata.description")}
-          url={`https://www.versus.auction/drop/${id}`}
+          url={`drop/${id}`}
           image={img}
         />
       }
