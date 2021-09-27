@@ -146,5 +146,9 @@ export const getDropFromArtist = (artist, cacheKey) => {
 };
 
 export const isSpecialDrop = (drop) => {
-  return includes(["flow"], drop.metadata.type);
+  return includes(["flow", "ipfs/audio"], drop.metadata.type);
+};
+
+export const isAudioDrop = (drop) => {
+  return includes(["ipfs/audio"], drop.metadata.type);
 };

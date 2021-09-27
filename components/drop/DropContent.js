@@ -5,7 +5,7 @@ import "react-medium-image-zoom/dist/styles.css";
 import classNames from "classnames";
 
 import Loading from "../general/Loading";
-import { isSpecialDrop } from "../general/helpers";
+import { isAudioDrop, isSpecialDrop } from "../general/helpers";
 import Audio from "./special/Audio";
 
 export const getWrittenTimer = (seconds) => {
@@ -98,7 +98,7 @@ const DropContent = ({ drop, art, timeUntil, timeRemaining }) => {
     );
   }
   let Special = "";
-  if (art && drop.metadata.type === "flow") {
+  if (art && isAudioDrop(drop)) {
     Special = <Audio src={art} />;
   }
   return (
