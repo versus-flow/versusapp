@@ -10,7 +10,6 @@ import {
   each,
   includes,
 } from "lodash";
-import { useRouter } from "next/router";
 
 import Main from "../../components/layouts/Main";
 import Holder from "../../components/marketplace/filters/Holder";
@@ -43,12 +42,6 @@ export default function Marketplace() {
   const [price, setPrice] = useState([0, 100000]);
   const [artists, setArtists] = useState([]);
   const [sb, setSortBy] = useState("");
-  const router = useRouter();
-  useEffect(() => {
-    const start = () => setLoading(true);
-    router.events.on("routeChangeStart", start);
-    return () => router.events.off("routeChangeStart", start);
-  }, []);
   useEffect(() => {
     const findActivePieces = async () => {
       let r = uniqBy(

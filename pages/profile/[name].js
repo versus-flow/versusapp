@@ -46,6 +46,5 @@ export async function getServerSideProps(context) {
   const name = get(context, "params.name");
   if (name === "me") return { props: { self: true } };
   const profile = await fetchProfile(name);
-  console.log(profile);
   return { props: { name, profile } };
 }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
-import { each, find, findIndex, map } from "lodash";
+import { each, includes, map } from "lodash";
+import Head from "next/head";
 import { useRouter } from "next/router";
 
 import ProfileSummary from "./ProfileSummary";
@@ -9,14 +10,8 @@ import { fetchProfile } from "../../pages/profile/[name]";
 import ProfileTabs from "./ProfileTabs";
 import { fetchMyArt, fetchOneArt } from "./transactions";
 import Collection from "./Collection";
-import Loading from "../general/Loading";
 import { getArtContent, getMarketpaceItems } from "../marketplace/transactions";
-import {
-  getCacheThumbnail,
-  resizedataURL,
-  uploadFile,
-} from "../general/helpers";
-import Head from "next/head";
+import { getCacheThumbnail } from "../general/helpers";
 import StandardLoadWrapper from "../general/StandardLoadWrapper";
 
 export const getArt = async (addr) => {
@@ -82,18 +77,12 @@ const ProfileWrapper = ({ self, user, name }) => {
   const [bigLoading, setBigLoading] = useState(false);
   const router = useRouter();
   useEffect(() => {
-    const start = () => {
-      setCurrentProfile({});
-      setBigLoading(true);
+    const start = (e) => {
+      if (includes(e, "profile")) setCurrentProfile({});
     };
-    const end = () => setBigLoading(false);
     router.events.on("routeChangeStart", start);
-    router.events.on("routeChangeComplete", end);
-    router.events.on("routeChangeError", end);
     return () => {
       router.events.off("routeChangeStart", start);
-      router.events.off("routeChangeComplete", end);
-      router.events.off("routeChangeError", end);
     };
   }, []);
   useEffect(async () => {

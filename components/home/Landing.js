@@ -38,7 +38,7 @@ const Landing = ({ drop }) => {
                 {timer
                   ? `The auction starts ${start.format("MMMM")} ${start.format(
                       "Do"
-                    )} at ${start.zone(180).format("hA")} EST`
+                    )} at ${start.utcOffset(-3).format("hA")} EST`
                   : moment().unix() - parseInt(drop.endTime, 10) < 0
                   ? "Auction now open!"
                   : "Auction finished!"}

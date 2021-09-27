@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { filter, includes, map, reverse, sortBy, uniqBy } from "lodash";
 import Link from "next/link";
 import Head from "next/head";
-import { useRouter } from "next/router";
 
 import Main from "../components/layouts/Main";
 import { fetchAllDrops } from "../components/search/SearchBox";
@@ -15,12 +14,6 @@ import StandardLoadWrapper from "../components/general/StandardLoadWrapper";
 export default function Drops() {
   const [loading, setLoading] = useState(true);
   const [drops, setDrops] = useState([]);
-  const router = useRouter();
-  useEffect(() => {
-    const start = () => setLoading(true);
-    router.events.on("routeChangeStart", start);
-    return () => router.events.off("routeChangeStart", start);
-  }, []);
   useEffect(async () => {
     const allDrops = await fetchAllDrops();
     const realdrops =

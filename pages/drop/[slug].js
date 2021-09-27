@@ -3,7 +3,6 @@ import { get, find, includes } from "lodash";
 import moment from "moment";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
-import { useRouter } from "next/router";
 
 import DropArtist from "../../components/drop/DropArtist";
 import DropBids from "../../components/drop/DropBids";
@@ -32,12 +31,6 @@ export default function Drop({ id, drop, img }) {
     process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
     (d) => d.id == id
   );
-  const router = useRouter();
-  useEffect(() => {
-    const start = () => setloading(true);
-    router.events.on("routeChangeStart", start);
-    return () => router.events.off("routeChangeStart", start);
-  }, []);
   useEffect(async () => {
     setloading(true);
     const art = await getDropThumbnail(id, "auto", drop.metadata.type);

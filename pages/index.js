@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import React, { useState } from "react";
 
 import Main from "../components/layouts/Main";
 import Landing from "../components/home/Landing";
@@ -12,28 +11,12 @@ import { last } from "lodash";
 import { fetchDrop } from "./drop/[slug]";
 import StandardLoadWrapper from "../components/general/StandardLoadWrapper";
 
-export default function Home() {
-  const [latestDrop, setLatestDrop] = useState(false);
+const Home = ({ latestDrop }) => {
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  useEffect(() => {
-    const start = () => setLoading(true);
-    router.events.on("routeChangeStart", start);
-    return () => router.events.off("routeChangeStart", start);
-  }, []);
-  useEffect(async () => {
-    const dropList =
-      process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
-        ? dropsData
-        : testDropsData;
-    const latest = last(dropList);
-    const drop = await fetchDrop(parseInt(latest.id, 10));
-    setLatestDrop({ ...drop, info: latest });
-  }, []);
   return (
     <Main>
       {() =>
-        latestDrop && !loading ? (
+        !loading ? (
           <>
             <Landing drop={latestDrop} />
             <MarketplacePreview />
@@ -46,4 +29,15 @@ export default function Home() {
       }
     </Main>
   );
+};
+
+export async function getServerSideProps(context) {
+  const dropList =
+    process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData;
+  const latest = last(dropList);
+  const drop = await fetchDrop(parseInt(latest.id, 10));
+  const latestDrop = { ...drop, info: latest };
+  return { props: { latestDrop } };
 }
+
+export default Home;
