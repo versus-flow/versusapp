@@ -7,14 +7,11 @@ import SaleMain from "./SaleMain";
 import DropProperties from "../drop/DropProperties";
 import AboutCreator from "./AboutCreator";
 import PurchaseHistory from "./PurchaseHistory";
-import BetterForArt from "../home/BetterForArt";
 import JoinCommunity from "../general/JoinCommunity";
 import Loading from "../general/Loading";
 import { oneArt } from "../profile/ProfileWrapper";
 import { getOneMarketplaceItem } from "./transactions";
-import { fetchProfile } from "../../pages/profile/[name]";
-import { fetchMyArt, fetchOneArt } from "../profile/transactions";
-import { find, get } from "lodash";
+import { get } from "lodash";
 import { getCacheThumbnail } from "../general/helpers";
 
 export async function oneListedItem(addr, tokenID) {
@@ -25,49 +22,37 @@ export async function oneListedItem(addr, tokenID) {
   return fcl.decode(oneArtResponse);
 }
 
-export default function FullItem({ id, address, unlisted, user }) {
-  const [piece, setPiece] = useState(null);
+export default function FullItem({ id, address, unlisted, user, piece }) {
   const [art, setArt] = useState("");
   useEffect(async () => {
-    let i = {};
     let img = "";
     if (unlisted) {
-      const response = await fcl.send([
-        fcl.script(fetchMyArt),
-        fcl.args([fcl.arg(address, t.Address)]),
-      ]);
-      const artResponse = await fcl.decode(response);
-      const thisArt = find(artResponse, (a) => a.id === parseInt(id, 10));
-      i = thisArt;
-      i.art = thisArt.metadata;
-      const owner = await fetchProfile(address);
-      setPiece({
-        ...i,
-        metadata: i.art,
-        owner,
-      });
-      const imgUrl = await getCacheThumbnail(i.cacheKey, "auto", i.art.type);
+      const imgUrl = await getCacheThumbnail(
+        piece.cacheKey,
+        "auto",
+        piece.art.type
+      );
       setArt(imgUrl);
-      const oneArtResponse = await fcl.send([
-        fcl.script(fetchOneArt),
-        fcl.args([fcl.arg(address, t.Address), fcl.arg(i.id, t.UInt64)]),
-      ]);
-      img = await fcl.decode(oneArtResponse);
-      setArt(img);
+      if (!imgUrl) {
+        const oneArtResponse = await fcl.send([
+          fcl.script(fetchOneArt),
+          fcl.args([fcl.arg(address, t.Address), fcl.arg(piece.id, t.UInt64)]),
+        ]);
+        img = await fcl.decode(oneArtResponse);
+        setArt(img);
+      }
     } else {
-      i = await oneListedItem(address, parseInt(id, 10));
-      const owner = await fetchProfile(address);
-      setPiece({
-        ...i,
-        metadata: i.art,
-        owner,
-      });
-      const imgUrl = await getCacheThumbnail(i.cacheKey, "auto", i.art.type);
+      const imgUrl = await getCacheThumbnail(
+        piece.cacheKey,
+        "auto",
+        piece.art.type
+      );
       setArt(imgUrl);
-      img = await oneArt(address, parseInt(id, 10));
-      setArt(img);
+      if (!imgUrl) {
+        img = await oneArt(address, parseInt(id, 10));
+        setArt(img);
+      }
     }
-    // const artist = await fetchProfile(i.art.artistAddress);
   }, []);
   return piece ? (
     <>

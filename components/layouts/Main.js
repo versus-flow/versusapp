@@ -6,6 +6,7 @@ import * as t from "@onflow/types";
 import Nav from "../general/Nav";
 import Footer from "../general/Footer";
 import { fetchOneUser } from "../profile/transactions";
+import SEOBoilerplate from "../general/SEOBoilerplate";
 
 fcl
   .config()
@@ -34,7 +35,7 @@ fcl
   .put("0xPROFILE", process.env.NEXT_PUBLIC_CONTRACT || "0x99ca04281098b33d")
   .put("env", process.env.NEXT_PUBLIC_FLOW_ENV || "testnet");
 
-const Main = ({ children }) => {
+const Main = ({ children, seo }) => {
   const [user, setUser] = useState({ loggedIn: null });
   const [balance, setBalance] = useState(0);
   useEffect(() => fcl.currentUser().subscribe(setUser), []);
@@ -54,47 +55,9 @@ const Main = ({ children }) => {
     return () => clearInterval(int);
   }, [user.addr]);
   user.balance = balance;
-  const baseURL = "https://www.versus.auction/";
   return (
     <>
-      <Head>
-        <link
-          rel="icon"
-          type="image/png"
-          href="/images/icon.png"
-          sizes="16x16"
-        />
-        <title>Versus - Better for Art</title>
-        <meta name="title" content="Versus - Better for Art" />
-        <meta
-          name="description"
-          content="Versus is a novel NFT art marketplace that works to empower the artist and the collector."
-        />
-
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={baseURL} />
-        <meta property="og:title" content="Versus - Better for Art" />
-        <meta
-          property="og:description"
-          content="Versus is a novel NFT art marketplace that works to empower the artist and the collector."
-        />
-        <meta
-          property="og:image"
-          content={`${baseURL}images/versussocial.png`}
-        />
-
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={baseURL} />
-        <meta property="twitter:title" content="Versus - Better for Art" />
-        <meta
-          property="twitter:description"
-          content="Versus is a novel NFT art marketplace that works to empower the artist and the collector."
-        />
-        <meta
-          property="twitter:image"
-          content={`${baseURL}images/versussocial.png`}
-        />
-      </Head>
+      {seo || <SEOBoilerplate />}
       <Nav user={user} balance={balance} />
       {typeof children === String
         ? React.cloneElement(children, { user })

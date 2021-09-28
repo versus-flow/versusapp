@@ -6,6 +6,7 @@ import * as t from "@onflow/types";
 import Main from "../../components/layouts/Main";
 import { profileGet } from "../../components/profile/transactions";
 import ProfileWrapper from "../../components/profile/ProfileWrapper";
+import SEOBoilerplate from "../../components/general/SEOBoilerplate";
 
 export async function fetchProfile(addr) {
   const response = await fcl.send([
@@ -15,9 +16,26 @@ export async function fetchProfile(addr) {
   return await fcl.decode(response);
 }
 
-export default function Profile({ self, name }) {
+export default function Profile({ self, name, profile }) {
   return (
-    <Main>
+    <Main
+      seo={
+        profile ? (
+          <SEOBoilerplate
+            title={`${
+              profile.name || profile.address
+                ? profile.name
+                  ? `@${profile.name} Profile`
+                  : `@${profile.address} Profile`
+                : "Profile"
+            } | Versus`}
+            description={get(profile, "description")}
+            image={get(profile, "avatar")}
+            url={`profile/${profile.address}`}
+          />
+        ) : null
+      }
+    >
       {(user) =>
         (user.addr || name) && (
           <ProfileWrapper user={user} self={self} name={name} />
@@ -30,5 +48,7 @@ export default function Profile({ self, name }) {
 export async function getServerSideProps(context) {
   const name = get(context, "params.name");
   if (name === "me") return { props: { self: true } };
-  return { props: { name } };
+  const profile = await fetchProfile(name);
+  console.log(profile);
+  return { props: { name, profile } };
 }
