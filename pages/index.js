@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Main from "../components/layouts/Main";
 import Landing from "../components/home/Landing";
@@ -9,24 +9,18 @@ import dropsData from "../components/general/drops.json";
 import testDropsData from "../components/general/testdrops.json";
 import { last } from "lodash";
 import { fetchDrop } from "./drop/[slug]";
-import StandardLoadWrapper from "../components/general/StandardLoadWrapper";
 
 const Home = ({ latestDrop }) => {
-  const [loading, setLoading] = useState(false);
   return (
     <Main>
-      {() =>
-        !loading ? (
-          <>
-            <Landing drop={latestDrop} />
-            <MarketplacePreview />
-            <Rewarded />
-            <BetterForArt />
-          </>
-        ) : (
-          <StandardLoadWrapper />
-        )
-      }
+      {() => (
+        <>
+          <Landing drop={latestDrop} />
+          <MarketplacePreview />
+          <Rewarded />
+          <BetterForArt />
+        </>
+      )}
     </Main>
   );
 };
