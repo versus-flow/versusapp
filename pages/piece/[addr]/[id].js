@@ -21,7 +21,7 @@ export default function OneItem({ addr, id, piece, art }) {
           )} | Versus`}
           description={get(piece, "art.description")}
           url={`piece/${addr}/${id}`}
-          title={art}
+          image={art}
         />
       }
     >
