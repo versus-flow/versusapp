@@ -101,7 +101,7 @@ const SendItem = ({ close, piece }) => {
             <ArrowButton text={status} onClick={handleSubmit} />
             <span
               className="flex font-bold font-roboto items-center text-sm tracking-wide cursor-pointer"
-              onClick={handleSubmit}
+              onClick={close}
             >
               Cancel
               <Arrow className="ml-2" />
