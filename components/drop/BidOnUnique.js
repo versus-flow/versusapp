@@ -40,12 +40,12 @@ const BidOnUnique = ({ close, defaultBid, drop, art, ended, user }) => {
           fcl.transaction(bidTransaction),
           fcl.args([
             fcl.arg(
-              process.env.NEXT_PUBLIC_CONTRACT || "0xdb47998bf96c9ef1",
+              process.env.NEXT_PUBLIC_CONTRACT || "0x99ca04281098b33d",
               t.Address
             ),
             fcl.arg(parseInt(drop.dropId, 10), t.UInt64),
             fcl.arg(drop.uniqueStatus.id, t.UInt64),
-            fcl.arg(newBid.toFixed(1).toString(), t.UFix64),
+            fcl.arg(newBid.toFixed(3).toString(), t.UFix64),
           ]),
           fcl.proposer(fcl.currentUser().authorization),
           fcl.payer(fcl.currentUser().authorization),

@@ -3,7 +3,10 @@ import moment from "moment";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import classNames from "classnames";
+
 import Loading from "../general/Loading";
+import { isAudioDrop, isSpecialDrop } from "../general/helpers";
+import Audio from "./special/Audio";
 
 export const getWrittenTimer = (seconds) => {
   var days = Math.floor(seconds / (3600 * 24));
@@ -94,15 +97,23 @@ const DropContent = ({ drop, art, timeUntil, timeRemaining }) => {
       </>
     );
   }
+  let Special = "";
+  if (art && isAudioDrop(drop)) {
+    Special = <Audio src={art} />;
+  }
   return (
     <div className="bg-white">
       <div className="container">
         <div className="pt-16 pb-8 sm:container md:grid grid-cols-2 gap-16">
           <div className="w-3/4 mx-auto mb-3 md:mb-0 md:w-full">
             {art ? (
-              <Zoom>
-                <img className="h-auto w-full" src={art} />
-              </Zoom>
+              isSpecialDrop(drop) ? (
+                Special
+              ) : (
+                <Zoom>
+                  <img className="h-auto w-full" src={art} />
+                </Zoom>
+              )
             ) : (
               <div className="w-full h-48 flex justify-center items-center">
                 <Loading />
