@@ -60,6 +60,8 @@ export const purchaseItem = `
     
             // if collection is not created yet we make it.
             if !collectionCap.check() {
+                account.unlink(Art.CollectionPublicPath)
+                destroy <- account.load<@AnyResource>(from:Art.CollectionStoragePath)
                 // store an empty NFT Collection in account storage
                 account.save<@NonFungibleToken.Collection>(<- Art.createEmptyCollection(), to: Art.CollectionStoragePath)
     
