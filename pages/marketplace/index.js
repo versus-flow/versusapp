@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Head from "next/head";
 import {
   filter,
   map,
@@ -9,11 +8,8 @@ import {
   uniqBy,
   find,
   each,
-  get,
   includes,
 } from "lodash";
-import * as fcl from "@onflow/fcl";
-import * as t from "@onflow/types";
 
 import Main from "../../components/layouts/Main";
 import Holder from "../../components/marketplace/filters/Holder";
@@ -24,10 +20,10 @@ import {
   getCacheThumbnail,
   getGraffleUrl,
 } from "../../components/general/helpers";
-import { getOneMarketplaceItem } from "../../components/marketplace/transactions";
 import { oneArt } from "../../components/profile/ProfileWrapper";
 import { oneListedItem } from "../../components/marketplace/FullItem";
 import moment from "moment";
+import SEOBoilerplate from "../../components/general/SEOBoilerplate";
 
 export const getPiecesByIds = async (pieces) => {
   const allItems = await Promise.all(
@@ -133,40 +129,37 @@ export default function Marketplace() {
   ]);
   if (sb === "ztoa") sortedPieces = reverse(sortedPieces);
   return (
-    <Main>
+    <Main
+      seo={<SEOBoilerplate title="Marketplace | Versus" url="marketplace" />}
+    >
       {() => (
-        <>
-          <Head>
-            <title>Marketplace | Versus</title>
-          </Head>
-          <div className="bg-white min-h-screen pb-20">
-            <div className="container pt-12">
-              {!loading ? (
-                <div className="w-full md:grid grid-cols-12 gap-12">
-                  <div className="col-span-4">
-                    <Holder
-                      setPrice={(v) => setPrice(v)}
-                      setArtists={(a) => setArtists(a)}
-                      defaultArtists={defaultArtists}
-                    />
-                  </div>
-                  <div className="col-span-8 md:pr-12">
-                    <Sorting
-                      numResults={sortedPieces.length}
-                      setSortBy={(s) => setSortBy(s)}
-                    />
-                    <Results pieces={sortedPieces} />
-                  </div>
+        <div className="bg-white min-h-screen pb-20">
+          <div className="container pt-12">
+            {!loading ? (
+              <div className="w-full md:grid grid-cols-12 gap-12">
+                <div className="col-span-4">
+                  <Holder
+                    setPrice={(v) => setPrice(v)}
+                    setArtists={(a) => setArtists(a)}
+                    defaultArtists={defaultArtists}
+                  />
                 </div>
-              ) : (
-                <div className="flex justify-center items-center h-64">
-                  {" "}
-                  <Loading />
+                <div className="col-span-8 md:pr-12">
+                  <Sorting
+                    numResults={sortedPieces.length}
+                    setSortBy={(s) => setSortBy(s)}
+                  />
+                  <Results pieces={sortedPieces} />
                 </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="flex justify-center items-center h-64">
+                {" "}
+                <Loading />
+              </div>
+            )}
           </div>
-        </>
+        </div>
       )}
     </Main>
   );

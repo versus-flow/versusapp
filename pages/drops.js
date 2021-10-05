@@ -8,6 +8,8 @@ import { fetchAllDrops } from "../components/search/SearchBox";
 import Loading from "../components/general/Loading";
 import DropPreview from "../components/marketplace/DropPreview";
 import { getDropThumbnail } from "../components/general/helpers";
+import SEOBoilerplate from "../components/general/SEOBoilerplate";
+import StandardLoadWrapper from "../components/general/StandardLoadWrapper";
 
 export default function Drops() {
   const [loading, setLoading] = useState(true);
@@ -36,24 +38,18 @@ export default function Drops() {
     setLoading(false);
   }, []);
   return (
-    <Main>
+    <Main seo={<SEOBoilerplate title="Recent Drops | Versus" url="drops" />}>
       {() => (
         <>
-          {" "}
-          <Head>
-            <title>Recent Drops | Versus</title>
-          </Head>
-          <div className="py-12">
-            <div className="container">
-              <h2 className="font-bold font-inktrap text-3xl sm:text-5xl">
-                Recent Drops
-              </h2>
-              <div className="min-h-screen py-12">
-                {loading ? (
-                  <div className="flex justify-center items-center">
-                    <Loading />
-                  </div>
-                ) : (
+          {loading ? (
+            <StandardLoadWrapper />
+          ) : (
+            <div className="py-12">
+              <div className="container">
+                <h2 className="font-bold font-inktrap text-3xl sm:text-5xl">
+                  Recent Drops
+                </h2>
+                <div className="min-h-screen py-12">
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-x-8 gap-y-12 lg:gap-x-16 lg:gap-y-16">
                     {map(drops, (d) => (
                       <DropPreview
@@ -89,10 +85,10 @@ export default function Drops() {
                       />
                     ))}
                   </div>
-                )}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </>
       )}
     </Main>

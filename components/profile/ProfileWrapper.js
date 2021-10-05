@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
-import { each, find, findIndex, map } from "lodash";
+import { each, includes, map } from "lodash";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
 import ProfileSummary from "./ProfileSummary";
 import { fetchProfile } from "../../pages/profile/[name]";
 import ProfileTabs from "./ProfileTabs";
 import { fetchMyArt, fetchOneArt } from "./transactions";
 import Collection from "./Collection";
-import Loading from "../general/Loading";
 import { getArtContent, getMarketpaceItems } from "../marketplace/transactions";
-import {
-  getCacheThumbnail,
-  resizedataURL,
-  uploadFile,
-} from "../general/helpers";
-import Head from "next/head";
+import { getCacheThumbnail } from "../general/helpers";
+import StandardLoadWrapper from "../general/StandardLoadWrapper";
 
 export const getArt = async (addr) => {
   const response = await fcl.send([
@@ -77,10 +74,19 @@ const ProfileWrapper = ({ self, user, name }) => {
   const [pieces, setPieces] = useState([]);
   const [marketPieces, setMarketPieces] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [arts, setArts] = useState([]);
+  const [bigLoading, setBigLoading] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const start = (e) => {
+      if (includes(e, "profile")) setCurrentProfile({});
+    };
+    router.events.on("routeChangeStart", start);
+    return () => {
+      router.events.off("routeChangeStart", start);
+    };
+  }, []);
   useEffect(async () => {
     if ((self && user && user.addr) || name) {
-      setLoading(true);
       setMarketPieces([]);
       const addr = self ? user.addr : name;
       const profile = await fetchProfile(addr);
@@ -131,36 +137,42 @@ const ProfileWrapper = ({ self, user, name }) => {
   }, [self, name]);
   return (
     <>
-      <Head>
-        <title>
-          {currentProfile.name || currentProfile.address
-            ? currentProfile.name
-              ? `@${currentProfile.name}`
-              : `@${currentProfile.address}`
-            : "Profile"}{" "}
-          | Versus
-        </title>
-      </Head>
-      <ProfileSummary
-        self={self}
-        name={name}
-        profile={currentProfile}
-        user={user}
-      />
-      <ProfileTabs />
-      {loading ? (
-        <div className="bg-white">
-          <div className="flex flex-col items-center mx-auto pb-36 pt-24 text-center w-60">
-            <Loading />{" "}
-          </div>
-        </div>
+      {self ? (
+        <Head>
+          <title>
+            {currentProfile.name || currentProfile.address
+              ? currentProfile.name
+                ? `@${currentProfile.name}`
+                : `@${currentProfile.address}`
+              : "Profile"}{" "}
+            | Versus
+          </title>
+        </Head>
       ) : (
-        <Collection
-          pieces={[...pieces, ...marketPieces]}
-          self={self}
-          user={user}
-          name={name}
-        />
+        <></>
+      )}
+      {bigLoading ? (
+        <StandardLoadWrapper large />
+      ) : (
+        <>
+          <ProfileSummary
+            self={self}
+            name={name}
+            profile={currentProfile}
+            user={user}
+          />
+          <ProfileTabs />
+          {loading ? (
+            <StandardLoadWrapper />
+          ) : (
+            <Collection
+              pieces={[...pieces, ...marketPieces]}
+              self={self}
+              user={user}
+              name={name}
+            />
+          )}
+        </>
       )}
     </>
   );

@@ -1,6 +1,6 @@
 import { map } from "lodash";
-import Head from "next/head";
 
+import SEOBoilerplate from "../components/general/SEOBoilerplate";
 import Main from "../components/layouts/Main";
 
 const items = [
@@ -143,26 +143,21 @@ const items = [
 
 const FAQ = () => {
   return (
-    <Main>
+    <Main seo={<SEOBoilerplate title="FAQ - Versus" url="faq" />}>
       {() => (
-        <>
-          <Head>
-            <title>FAQ</title>
-          </Head>
-          <div className="pt-12 pb-24 bg-white">
-            <div className="container">
-              <h1 className="text-4xl font-bold font-lato mt-4 mb-1">FAQ</h1>
-              <div className="mt-8 text-lg">
-                {map(items, (i, index) => (
-                  <div key={`faq-${index}`} className="mb-12">
-                    <h3 className="text-2xl font-bold">{i.question}</h3>
-                    <div className="text-lg mt-6">{i.answer}</div>
-                  </div>
-                ))}
-              </div>
+        <div className="pt-12 pb-24 bg-white">
+          <div className="container">
+            <h1 className="text-4xl font-bold font-lato mt-4 mb-1">FAQ</h1>
+            <div className="mt-8 text-lg">
+              {map(items, (i, index) => (
+                <div key={`faq-${index}`} className="mb-12">
+                  <h3 className="text-2xl font-bold">{i.question}</h3>
+                  <div className="text-lg mt-6">{i.answer}</div>
+                </div>
+              ))}
             </div>
           </div>
-        </>
+        </div>
       )}
     </Main>
   );
