@@ -18,7 +18,6 @@
     "cloudinary-core": "^2.11.4",
     "comma-number": "^2.1.0",
     "fuse.js": "^6.4.6",
-    "graffle-js-sdk": "file:../stream-sdk",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "next": "10.2.3",
