@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { get, find, includes } from "lodash";
+import { get, find, includes, clone, uniqueId } from "lodash";
 import moment from "moment";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
-import GraffleSDK from "graffle-js-sdk";
 
 import DropArtist from "../../components/drop/DropArtist";
 import DropBids from "../../components/drop/DropBids";
@@ -21,6 +20,7 @@ import testDropsData from "../../components/general/testdrops.json";
 import { getDropThumbnail } from "../../components/general/helpers";
 import StandardLoadWrapper from "../../components/general/StandardLoadWrapper";
 import SEOBoilerplate from "../../components/general/SEOBoilerplate";
+import GraffleSDK from "../../components/general/graffle";
 
 export default function Drop({ id, drop, img }) {
   const [updatedDrop, setUpdatedDrop] = useState(drop);
@@ -37,16 +37,7 @@ export default function Drop({ id, drop, img }) {
     const art = await getDropThumbnail(id, "auto", drop.metadata.type);
     setUpdatedArt(art);
     setloading(false);
-    window.fetches = setInterval(async () => {
-      const drop = await fetchDrop(id);
-      setUpdatedDrop(drop);
-    }, 30000);
-    document.addEventListener("bid", () => fetchDrop(id), false);
     if (!art) setUpdatedArt(await fetchArt(id));
-    return () => {
-      clearInterval(window.fetches);
-      document.removeEventListener("bid", () => fetchDrop(id), false);
-    };
   }, [id]);
   useEffect(() => {
     if (loading) return;
@@ -66,24 +57,65 @@ export default function Drop({ id, drop, img }) {
     }
   }, [loading, updatedDrop.timeRemaining]);
   const clientConfig = {
-    projectId: process.env.GRAFFLE_PROJECT_ID,
+    projectId: process.env.NEXT_PUBLIC_GRAFFLE_PROJECT_ID,
     mainNetApiKey:
       process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
-        ? process.env.GRAFFLE_PRIMARY_KEY
+        ? process.env.NEXT_PUBLIC_GRAFFLE_PRIMARY_KEY
         : "",
     testNetApiKey:
       process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
         ? ""
-        : process.env.GRAFFLE_PRIMARY_KEY,
+        : process.env.NEXT_PUBLIC_GRAFFLE_PRIMARY_KEY,
   };
 
-  const streamSDK = new GraffleSDK(clientConfig);
-  const feed = () => {
-    console.log(feed);
+  const streamSDK = new GraffleSDK(
+    clientConfig,
+    process.env.NEXT_PUBLIC_FLOW_ENV !== "mainnet"
+  );
+  const feed = async (message) => {
+    if (get(message, "blockEventData.dropId") != id) return;
+    const isBid = includes(get(message, "flowEventId"), "Bid");
+    if (isBid) {
+      const {
+        blockEventData: { auctionId, bidder, price },
+      } = message;
+      let newDrop = clone(drop);
+      if (get(newDrop, "uniqueStatus.id") === auctionId) {
+        const { uniqueStatus } = newDrop;
+        newDrop.uniqueStatus = {
+          ...uniqueStatus,
+          bids: uniqueStatus.bids + 1,
+          leader: bidder,
+          price,
+          minNextBid: parseFloat(uniqueStatus.minNextBid) + price,
+        };
+        setUpdatedDrop(newDrop);
+      } else {
+        const edition = find(
+          newDrop.editionsStatuses,
+          (e) => e.id === auctionId
+        );
+        if (edition) {
+          newDrop.editionsStatuses[auctionId] = {
+            ...edition,
+            bids: edition.bids + 1,
+            leader: bidder,
+            price,
+            minNextBid: parseFloat(edition.minNextBid) + price,
+          };
+        }
+        setUpdatedDrop(newDrop);
+      }
+      return;
+    }
+    const isSettle = includes(get(message, "flowEventId"), "Settle");
+    if (isSettle) {
+      const d = await fetchDrop(id);
+      setUpdatedDrop(d);
+    }
   };
   useEffect(() => {
-    streamSDK.stream(feed, process.env.NEXT_PUBLIC_FLOW_ENV === "testnet");
-
+    streamSDK.stream(feed);
     return () => {};
   }, [id]);
   return (

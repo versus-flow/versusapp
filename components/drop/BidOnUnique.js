@@ -72,9 +72,6 @@ const BidOnUnique = ({ close, defaultBid, drop, art, ended, user }) => {
               subtext: "Your bid was successfully submitted.",
               allowClose: true,
             });
-            const event = document.createEvent("Event");
-            event.initEvent("bid", true, true);
-            document.dispatchEvent(event);
           },
           async onError(error) {
             if (error) {
@@ -134,7 +131,12 @@ const BidOnUnique = ({ close, defaultBid, drop, art, ended, user }) => {
             </h4>
             <p className="mt-4 w-3/4 text-center mx-auto">{status.subtext}</p>
             {status.allowClose ? (
-              <ArrowButton text="Close" className="mt-8" onClick={close} />
+              <ArrowButton
+                text="Close"
+                className="mt-8"
+                onClick={close}
+                link={false}
+              />
             ) : (
               <Loading className="mt-8" />
             )}
@@ -176,7 +178,7 @@ const BidOnUnique = ({ close, defaultBid, drop, art, ended, user }) => {
                 step="0.1"
               />
               <p className="mt-2 text-xs">
-                You must place a bid higher than F
+                You must place a bid of at least F
                 {parseFloat(drop.uniqueStatus.minNextBid).toFixed(2)}
               </p>
               <span className="w-full left-0 absolute top-full mt-4 text-center text-sm normal-case">

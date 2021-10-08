@@ -77,9 +77,6 @@ const BidOnEdition = ({
               subtext: "Your bid was successfully submitted.",
               allowClose: true,
             });
-            const event = document.createEvent("Event");
-            event.initEvent("bid", true, true);
-            document.dispatchEvent(event);
           },
           onSubmission() {
             setStatus({
@@ -145,7 +142,12 @@ const BidOnEdition = ({
             </h4>
             <p className="mt-4 w-3/4 text-center mx-auto">{status.subtext}</p>
             {status.allowClose ? (
-              <ArrowButton text="Close" className="mt-8" onClick={close} />
+              <ArrowButton
+                text="Close"
+                className="mt-8"
+                onClick={close}
+                link={false}
+              />
             ) : (
               <Loading className="mt-8" />
             )}
@@ -184,7 +186,7 @@ const BidOnEdition = ({
                 step="0.1"
               />
               <p className="mt-2 text-xs">
-                You must place a bid higher than F
+                You must place a bid of at least F
                 {parseFloat(currentEdition.minNextBid).toFixed(2)}
               </p>
             </form>
