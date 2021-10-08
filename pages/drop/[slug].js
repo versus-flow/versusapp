@@ -3,6 +3,7 @@ import { get, find, includes } from "lodash";
 import moment from "moment";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
+import GraffleSDK from "graffle-js-sdk";
 
 import DropArtist from "../../components/drop/DropArtist";
 import DropBids from "../../components/drop/DropBids";
@@ -64,6 +65,27 @@ export default function Drop({ id, drop, img }) {
       return () => clearInterval(timer);
     }
   }, [loading, updatedDrop.timeRemaining]);
+  const clientConfig = {
+    projectId: process.env.GRAFFLE_PROJECT_ID,
+    mainNetApiKey:
+      process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
+        ? process.env.GRAFFLE_PRIMARY_KEY
+        : "",
+    testNetApiKey:
+      process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
+        ? ""
+        : process.env.GRAFFLE_PRIMARY_KEY,
+  };
+
+  const streamSDK = new GraffleSDK(clientConfig);
+  const feed = () => {
+    console.log(feed);
+  };
+  useEffect(() => {
+    streamSDK.stream(feed, process.env.NEXT_PUBLIC_FLOW_ENV === "testnet");
+
+    return () => {};
+  }, [id]);
   return (
     <Main
       seo={
