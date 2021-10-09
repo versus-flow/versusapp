@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { get, find, includes, clone, uniqueId } from "lodash";
+import {
+  get,
+  find,
+  includes,
+  clone,
+  uniqueId,
+  update,
+  size,
+  reduce,
+} from "lodash";
 import moment from "moment";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
@@ -21,6 +30,9 @@ import { getDropThumbnail } from "../../components/general/helpers";
 import StandardLoadWrapper from "../../components/general/StandardLoadWrapper";
 import SEOBoilerplate from "../../components/general/SEOBoilerplate";
 import GraffleSDK from "../../components/general/graffle";
+import UniqueBidBox from "../../components/drop/UniqueBidBox";
+import DropArt from "../../components/drop/DropArt";
+import DropCounter from "../../components/drop/DropCounter";
 
 export default function Drop({ id, drop, img }) {
   const [updatedDrop, setUpdatedDrop] = useState(drop);
@@ -118,6 +130,15 @@ export default function Drop({ id, drop, img }) {
     streamSDK.stream(feed);
     return () => {};
   }, [id]);
+  const oneSidedDrop = size(updatedDrop.editionsStatuses) === 0;
+  const uniqueTotal = parseFloat(get(updatedDrop, "uniqueStatus.price"));
+  const editionTotal = reduce(
+    updatedDrop.editionsStatuses,
+    (sum, e) => sum + parseFloat(e.price),
+    0
+  );
+  const ended = !updatedDrop.active && updatedDrop.winning !== "TIE";
+  const hasntStarted = parseFloat(updatedDrop.startTime) - moment().unix() > 0;
   return (
     <Main
       seo={
@@ -140,19 +161,47 @@ export default function Drop({ id, drop, img }) {
             <>
               <DropArtist drop={updatedDrop} dropInfo={dropInfo} />
               <DropTabs id={id} />
-              <DropContent
-                drop={updatedDrop}
-                art={updatedArt}
-                timeUntil={timeUntil}
-                timeRemaining={timeRemaining}
-              />{" "}
-              {timeUntil <= 0 && (
-                <DropBids
-                  drop={updatedDrop}
-                  art={updatedArt}
-                  timeRemaining={timeRemaining}
-                  user={user}
-                />
+              {oneSidedDrop ? (
+                <div>
+                  <div className="bg-white pb-6 sm:pb-24">
+                    <div className="container">
+                      <div className="sm:container mx-auto md:mx-0 md:max-w-none md:grid grid-cols-2 items-stretch pt-12 pb-3">
+                        <DropCounter
+                          drop={updatedDrop}
+                          timeRemaining={timeRemaining}
+                          timeUntil={timeUntil}
+                        />
+                        <UniqueBidBox
+                          drop={updatedDrop}
+                          art={updatedArt}
+                          winning={uniqueTotal > editionTotal}
+                          ended={ended}
+                          hasntStarted={hasntStarted}
+                          user={user}
+                          timeRemaining={timeRemaining}
+                          single
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <DropContent
+                    drop={updatedDrop}
+                    art={updatedArt}
+                    timeUntil={timeUntil}
+                    timeRemaining={timeRemaining}
+                  />{" "}
+                  {timeUntil <= 0 && (
+                    <DropBids
+                      drop={updatedDrop}
+                      art={updatedArt}
+                      timeRemaining={timeRemaining}
+                      user={user}
+                    />
+                  )}
+                </>
               )}
               <DropProperties drop={updatedDrop} art={updatedArt} />
               <DropFollow dropInfo={dropInfo} />
