@@ -387,5 +387,16 @@
     "twitter": "https://twitter.com/vanortondesign",
     "instagram": "https://www.instagram.com/vanortondesign",
     "aboutArtist": "Van Orton are twin brothers from Italy. \n \n Their art is influenced by pop culture, inspired by stained-glass windows of churches and evolved with geometric inserts and lines of light. They started out by reinterpreting cult movies of the 1980s, which led to their being contracted by brands including Disney, Microsoft, Armani and BMW."
+  },
+  {
+    "id": "30",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "BIBL3",
+    "slug": "money_alotta",
+    "handle": "money_alotta",
+    "artist": "Alotta Money",
+    "smallImage": "/images/drops/money_alotta/preview.jpg",
+    "twitter": "https://twitter.com/money_alotta",
+    "aboutArtist": "Alotta Money's artwork are like cyberdelic pills mixed with crypto currency anarcho propaganda, triple dipped in nonsense."
   }
 ]
