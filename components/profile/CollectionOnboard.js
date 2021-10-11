@@ -5,6 +5,7 @@ import * as t from "@onflow/types";
 import ArrowButton from "../general/ArrowButton";
 import { tx } from "../drop/transactions";
 import { checkForArtConnection, connectArtCollection } from "./transactions";
+import { checkForTSCollection } from "../ts/transactions";
 
 const CollectionOnboard = ({ user }) => {
   const [run, setRun] = useState(0);
@@ -20,7 +21,18 @@ const CollectionOnboard = ({ user }) => {
       if (user && user.addr) setShowButton(!dResponse);
       if (dResponse) console.log("verified");
     }
+    async function checkTSCollection() {
+      const response = await fcl.send([
+        fcl.script(checkForTSCollection),
+        fcl.args([fcl.arg(user.addr, t.Address)]),
+      ]);
+      const dResponse = await fcl.decode(response);
+      console.log(dResponse);
+      if (user && user.addr) setShowButton(!dResponse);
+      if (dResponse) console.log("verified");
+    }
     checkCollection();
+    checkTSCollection();
   }, [user, run]);
 
   const createArtCollection = async (e) => {
