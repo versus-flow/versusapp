@@ -2,8 +2,7 @@ export const checkForTSCollection = `
 import TopShot from 0xTOPSHOTADDRESS
 pub fun main(address: Address): Bool {
     let account = getAccount(address)
-    var collectionCap = account.getCapability(/public/MomentCollection).borrow<&{TopShot.MomentCollectionPublic}>()!
-    return collectionCap.check()
+    return account.getCapability<&{TopShot.MomentCollectionPublic}>(/public/MomentCollection).check()
 }
 `;
 
