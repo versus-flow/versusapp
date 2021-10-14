@@ -73,6 +73,10 @@ body {
   @apply w-48;
 }
 
+.xl-button {
+  @apply w-64 max-w-full;
+}
+
 .vs-gradient {
   background: linear-gradient(270deg, #ff7bca 0%, #ffc56f 100%);
 }

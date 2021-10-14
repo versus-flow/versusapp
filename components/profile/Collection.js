@@ -22,6 +22,7 @@ const Collection = ({ pieces, other, self, user, name }) => {
       )}
       <div className="bg-white py-12">
         <div className="container">
+          {self && <CollectionOnboard user={user} />}
           {pieces.length ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4 lg:gap-x-16 lg:gap-y-8">
               {map(pieces, (p) => (
@@ -100,7 +101,6 @@ const Collection = ({ pieces, other, self, user, name }) => {
                 </>
               ) : (
                 <>
-                  {self && <CollectionOnboard user={user} />}
                   <h2 className="font-black font-inktrap leading-6 text-2xl">
                     {self ? "Your" : "This user's"} collection will be shown
                     here
