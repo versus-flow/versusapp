@@ -99,7 +99,7 @@ const CollectionOnboard = ({ user }) => {
       ) : (
         ""
       )}
-      {showTSButton ? (
+      {false ? (
         <ArrowButton
           className="mb-4 xl-button"
           text="Create TopShot Collection"

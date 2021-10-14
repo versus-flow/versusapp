@@ -35,5 +35,6 @@ export default function GraffleSDK(clientConfig, isTestNet = false) {
         });
       });
     }
+    return connection;
   };
 }

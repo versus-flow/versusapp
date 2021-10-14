@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   get,
   find,
@@ -50,6 +50,13 @@ export default function Drop({ id, drop, img }) {
     setUpdatedArt(art);
     setloading(false);
     if (!art) setUpdatedArt(await fetchArt(id));
+    window.fetches = setInterval(async () => {
+      const drop = await fetchDrop(id);
+      setUpdatedDrop(drop);
+    }, 30000);
+    return () => {
+      clearInterval(window.fetches);
+    };
   }, [id]);
   useEffect(() => {
     if (loading) return;
@@ -99,7 +106,7 @@ export default function Drop({ id, drop, img }) {
           bids: uniqueStatus.bids + 1,
           leader: bidder,
           price,
-          minNextBid: parseFloat(uniqueStatus.minNextBid) + price,
+          minNextBid: parseFloat(uniqueStatus.bidIncrement) + price,
         };
         setUpdatedDrop(newDrop);
       } else {
@@ -113,7 +120,7 @@ export default function Drop({ id, drop, img }) {
             bids: edition.bids + 1,
             leader: bidder,
             price,
-            minNextBid: parseFloat(edition.minNextBid) + price,
+            minNextBid: parseFloat(edition.bidIncrement) + price,
           };
         }
         setUpdatedDrop(newDrop);
@@ -126,10 +133,11 @@ export default function Drop({ id, drop, img }) {
       setUpdatedDrop(d);
     }
   };
-  useEffect(() => {
-    streamSDK.stream(feed);
-    return () => {};
+  let conn = useRef();
+  useEffect(async () => {
+    conn.current = await streamSDK.stream(feed);
   }, [id]);
+  useEffect(() => () => conn.current.stop(), []);
   const oneSidedDrop = size(updatedDrop.editionsStatuses) === 0;
   const uniqueTotal = parseFloat(get(updatedDrop, "uniqueStatus.price"));
   const editionTotal = reduce(

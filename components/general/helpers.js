@@ -6,7 +6,7 @@ import testDropsData from "../../components/general/testdrops.json";
 
 export const getGraffleUrl = (query) => {
   const contract = (
-    process.env.NEXT_PUBLIC_CONTRACT || "0x69915b410cca3c65"
+    process.env.NEXT_PUBLIC_CONTRACT || "0x99ca04281098b33d"
   ).substr(2);
   const editedQuery = replace(query, "CONTRACT", contract);
   return `${
