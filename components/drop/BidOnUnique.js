@@ -10,6 +10,7 @@ import ArrowButton from "../general/ArrowButton";
 import { get, includes } from "lodash";
 import { bidTransaction, tx } from "./transactions";
 import Loading from "../general/Loading";
+import ArtPreview from "./special/ArtPreview";
 
 const BidOnUnique = ({ close, defaultBid, drop, art, ended, user }) => {
   const modal = useRef(null);
@@ -146,7 +147,7 @@ const BidOnUnique = ({ close, defaultBid, drop, art, ended, user }) => {
             <h4 className="font-black font-inktrap mt-8 text-xl">
               Own the unique
             </h4>
-            <img className="h-auto mt-6 w-64" src={art} />
+            <ArtPreview drop={drop} art={art} />
             <div className="mt-6">
               <span>
                 The current bid is{" "}

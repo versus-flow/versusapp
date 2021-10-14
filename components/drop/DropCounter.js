@@ -2,7 +2,7 @@ import classNames from "classnames";
 
 import { getWrittenTimer } from "./DropContent";
 
-const DropCounter = ({ drop, timeUntil, timeRemaining }) => {
+const DropCounter = ({ drop, timeUntil, timeRemaining, noCount }) => {
   const {
     metadata: { artist, name, description },
   } = drop;
@@ -86,7 +86,7 @@ const DropCounter = ({ drop, timeUntil, timeRemaining }) => {
           {description}
         </p>
       </div>
-      {Counter}
+      {noCount ? "" : Counter}
     </div>
   );
 };
