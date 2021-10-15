@@ -30,29 +30,36 @@ const SingleBidHistory = ({ drop, latestMessage }) => {
         <Loading className="h-24" />
       ) : (
         <div className="w-full mt-6">
-          <div className="grid grid-cols-12 font-inktrap font-black text-sm uppercase">
-            <div className="col-span-2 hidden sm:block">Rank</div>
-            <div className="col-span-9 sm:col-span-8">Bidders Name</div>
-            <div className="col-span-3 sm:col-span-2">Bid</div>
-          </div>
-          <div className="pt-3">
-            {bidHistory.length ? (
-              map(bidHistory, (b, index) => (
-                <div
-                  key={b.id}
-                  className={classNames("grid grid-cols-12 font-inktrap py-3", {
-                    "font-bold": index === 0,
-                  })}
-                >
-                  <div className="col-span-2 hidden sm:block">{index + 1}</div>
-                  <div className="col-span-9 sm:col-span-8">{b.bidder}</div>
-                  <div className="col-span-3 sm:col-span-2">F{b.price}</div>
-                </div>
-              ))
-            ) : (
-              <p>No bids have been placed yet</p>
-            )}
-          </div>
+          {bidHistory.length ? (
+            <>
+              <div className="grid grid-cols-12 font-inktrap font-black text-sm uppercase">
+                <div className="col-span-2 hidden sm:block">Rank</div>
+                <div className="col-span-9 sm:col-span-8">Bidders Name</div>
+                <div className="col-span-3 sm:col-span-2">Bid</div>
+              </div>
+              <div className="pt-3">
+                {map(bidHistory, (b, index) => (
+                  <div
+                    key={b.id}
+                    className={classNames(
+                      "grid grid-cols-12 font-inktrap py-3",
+                      {
+                        "font-bold": index === 0,
+                      }
+                    )}
+                  >
+                    <div className="col-span-2 hidden sm:block">
+                      {index + 1}
+                    </div>
+                    <div className="col-span-9 sm:col-span-8">{b.bidder}</div>
+                    <div className="col-span-3 sm:col-span-2">F{b.price}</div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <p>No bids have been placed yet</p>
+          )}
         </div>
       )}
     </div>

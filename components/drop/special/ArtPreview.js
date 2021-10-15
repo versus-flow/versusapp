@@ -13,7 +13,12 @@ const ArtPreview = ({ drop, art }) => {
   } else if (art && isVideoDrop(drop)) {
     Preview = (
       <div className="h-36 mt-3">
-        <VideoPlayer src={art} autoPlay />
+        <VideoPlayer
+          src={art}
+          autoPlay
+          className="max-h-full max-w-full sm:max-w-xs"
+          muted
+        />
       </div>
     );
   } else Preview = <img className="h-auto mt-6 w-64" src={art} />;

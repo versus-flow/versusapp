@@ -5,6 +5,7 @@ const VideoPlayer = ({
   className = "",
   autoPlay = false,
   controls = false,
+  muted = false,
 }) => {
   return (
     <div className={`w-full flex justify-center ${className}`}>
@@ -13,6 +14,7 @@ const VideoPlayer = ({
         className={className}
         autoPlay={autoPlay}
         controls={controls}
+        muted={muted}
       />
     </div>
   );
