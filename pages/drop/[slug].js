@@ -50,13 +50,13 @@ export default function Drop({ id, drop, img }) {
     setUpdatedArt(art);
     setloading(false);
     if (!art) setUpdatedArt(await fetchArt(id));
-    window.fetches = setInterval(async () => {
-      const drop = await fetchDrop(id);
-      setUpdatedDrop(drop);
-    }, 30000);
-    return () => {
-      clearInterval(window.fetches);
-    };
+    // window.fetches = setInterval(async () => {
+    //   const drop = await fetchDrop(id);
+    //   setUpdatedDrop(drop);
+    // }, 30000);
+    // return () => {
+    //   clearInterval(window.fetches);
+    // };
   }, [id]);
   useEffect(() => {
     if (loading) return;
