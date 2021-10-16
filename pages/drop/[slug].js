@@ -39,6 +39,7 @@ import DropCounter from "../../components/drop/DropCounter";
 import SingleBidHistory from "../../components/drop/special/SingleBidHistory";
 
 export default function Drop({ id, drop, img }) {
+  console.log(drop);
   const [updatedDrop, setUpdatedDrop] = useState(drop);
   const [updatedArt, setUpdatedArt] = useState(null);
   const [timeUntil, setTimeUntil] = useState(null);

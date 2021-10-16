@@ -8,11 +8,11 @@ import { tx } from "../drop/transactions";
 import { removeFromSale } from "./transactions";
 
 import BuyItem from "./BuyItem";
-import { getDropFromArtist, isMainnet } from "../general/helpers";
+import { getDropFromArtist, isMainnet, isVideoDrop } from "../general/helpers";
 import Link from "next/link";
 import Loading from "../general/Loading";
 
-const SaleMain = ({ piece, address, user, unlisted, art }) => {
+const SaleMain = ({ piece, address, user, unlisted, art, isVideo }) => {
   const [showList, setShowList] = useState(false);
   const [listingText, setListingText] = useState("Unlist");
   const {
@@ -158,9 +158,22 @@ const SaleMain = ({ piece, address, user, unlisted, art }) => {
           </div>
           <div className="w-full sm:order-2">
             {art ? (
-              <Zoom>
-                <img src={art} className="w-full sm:h-full sm:object-contain" />
-              </Zoom>
+              isVideo ? (
+                <video
+                  src={`https://gateway.pinata.cloud/ipfs/${art}`}
+                  className="h-full object-cover w-full rounded"
+                  controls
+                  autoPlay
+                  muted
+                />
+              ) : (
+                <Zoom>
+                  <img
+                    src={art}
+                    className="w-full sm:h-full sm:object-contain"
+                  />
+                </Zoom>
+              )
             ) : (
               <div className="h-24 sm:h-48 flex justify-center items-center">
                 <Loading />

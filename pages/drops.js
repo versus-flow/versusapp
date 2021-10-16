@@ -7,7 +7,7 @@ import Main from "../components/layouts/Main";
 import { fetchAllDrops } from "../components/search/SearchBox";
 import Loading from "../components/general/Loading";
 import DropPreview from "../components/marketplace/DropPreview";
-import { getDropThumbnail } from "../components/general/helpers";
+import { getDropThumbnail, isVideoDrop } from "../components/general/helpers";
 import SEOBoilerplate from "../components/general/SEOBoilerplate";
 import StandardLoadWrapper from "../components/general/StandardLoadWrapper";
 
@@ -56,7 +56,8 @@ export default function Drops() {
                         key={d.dropId}
                         // id={false}
                         shadow
-                        img={d.img}
+                        src={d.img}
+                        video={isVideoDrop(d)}
                         title={d.metadata.name}
                         artist={d.metadata.artist}
                         zoom

@@ -12,6 +12,7 @@ import ErrorMessage from "../general/ErrorMessage";
 import { tx } from "../drop/transactions";
 import { purchaseItem } from "./transactions";
 import Loading from "../general/Loading";
+import { isVideoDrop } from "../general/helpers";
 
 const BuyItem = ({ close, piece, user, art, address }) => {
   const [error, setError] = useState("");
@@ -80,7 +81,8 @@ const BuyItem = ({ close, piece, user, art, address }) => {
                 title={piece.metadata.name}
                 artist={piece.metadata.artist}
                 edition={`#${piece.metadata.edition}/${piece.metadata.maxEdition}`}
-                img={art}
+                src={art}
+                video={isVideoDrop(piece)}
                 shadow
               />
             </div>
