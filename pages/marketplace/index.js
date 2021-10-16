@@ -49,7 +49,6 @@ export default function Marketplace() {
   const [price, setPrice] = useState([0, 100000]);
   const [artists, setArtists] = useState([]);
   const [sb, setSortBy] = useState("");
-  console.log(pieces);
   useEffect(() => {
     const findActivePieces = async () => {
       let r = uniqBy(
