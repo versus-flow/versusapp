@@ -7,6 +7,7 @@ import DropPreview from "../marketplace/DropPreview";
 import ListItem from "../marketplace/ListItem";
 import CollectionOnboard from "./CollectionOnboard";
 import SendItem from "../marketplace/SendItem";
+import { isVideoDrop } from "../general/helpers";
 
 const Collection = ({ pieces, other, self, user, name }) => {
   const [listItem, setListItem] = useState(false);
@@ -34,12 +35,13 @@ const Collection = ({ pieces, other, self, user, name }) => {
                   edition={`#${p.metadata.edition}/${p.metadata.maxEdition}`}
                   shadow
                   zoom
-                  img={p.img}
+                  src={p.img}
                   price={p.price ? parseFloat(p.price).toFixed(1) : false}
                   showMoveNoti={
                     self &&
                     includes(["Bryan Brinkman", "MiraRuido"], p.metadata.name)
                   }
+                  video={isVideoDrop(p)}
                   button={
                     self ? (
                       isMarketPlace(p) ? (

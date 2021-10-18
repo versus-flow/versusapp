@@ -12,7 +12,7 @@ import MoveDropNoti from "./MoveDropNoti";
 const DropPreview = ({
   shadow,
   zoom,
-  img,
+  src,
   title,
   artist,
   edition,
@@ -23,6 +23,7 @@ const DropPreview = ({
   isEdition,
   isUnique,
   dropped,
+  video,
 }) => {
   const [lastSold, setLastSold] = useState(false);
   useEffect(async () => {
@@ -40,6 +41,16 @@ const DropPreview = ({
         setLastSold(sold.blockEventData.price);
     }
   }, [id]);
+  let Media = "";
+  if (video)
+    Media = (
+      <video
+        src={`https://gateway.pinata.cloud/ipfs/${src}`}
+        className="h-full object-cover w-full rounded"
+        controls
+      />
+    );
+  else Media = <img className="h-full object-cover w-full rounded" src={src} />;
   return (
     <div
       className={classNames("bg-white p-3 rounded relative", {
@@ -47,17 +58,7 @@ const DropPreview = ({
       })}
     >
       <div className="h-80 w-full zoom-holder bg-lightGrey flex justify-center items-center">
-        {img ? (
-          zoom ? (
-            <Zoom>
-              <img className="h-full object-cover w-full rounded" src={img} />
-            </Zoom>
-          ) : (
-            <img className="h-full object-cover w-full rounded" src={img} />
-          )
-        ) : (
-          <Loading />
-        )}
+        {src ? zoom && !video ? <Zoom>{Media}</Zoom> : Media : <Loading />}
       </div>
       <div className="py-3 px-2 relative">
         {showMoveNoti && <MoveDropNoti />}

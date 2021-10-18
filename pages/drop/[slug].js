@@ -26,27 +26,35 @@ import {
 } from "../../components/profile/transactions";
 import dropsData from "../../components/general/drops.json";
 import testDropsData from "../../components/general/testdrops.json";
-import { getDropThumbnail } from "../../components/general/helpers";
+import {
+  getDropThumbnail,
+  isSpecialDrop,
+} from "../../components/general/helpers";
 import StandardLoadWrapper from "../../components/general/StandardLoadWrapper";
 import SEOBoilerplate from "../../components/general/SEOBoilerplate";
 import GraffleSDK from "../../components/general/graffle";
 import UniqueBidBox from "../../components/drop/UniqueBidBox";
 import DropArt from "../../components/drop/DropArt";
 import DropCounter from "../../components/drop/DropCounter";
+import SingleBidHistory from "../../components/drop/special/SingleBidHistory";
 
 export default function Drop({ id, drop, img }) {
+  console.log(drop);
   const [updatedDrop, setUpdatedDrop] = useState(drop);
   const [updatedArt, setUpdatedArt] = useState(null);
   const [timeUntil, setTimeUntil] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState(null);
   const [loading, setloading] = useState(true);
+  const [latestMessage, setLatestMessage] = useState({});
   const dropInfo = find(
     process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
     (d) => d.id == id
   );
   useEffect(async () => {
     setloading(true);
-    const art = await getDropThumbnail(id, "auto", drop.metadata.type);
+    const art = isSpecialDrop(drop)
+      ? await fetchArt(id)
+      : await getDropThumbnail(id, "auto", drop.metadata.type);
     setUpdatedArt(art);
     setloading(false);
     if (!art) setUpdatedArt(await fetchArt(id));
@@ -95,6 +103,7 @@ export default function Drop({ id, drop, img }) {
     if (get(message, "blockEventData.dropId") != id) return;
     const isBid = includes(get(message, "flowEventId"), "Bid");
     if (isBid) {
+      setLatestMessage(message);
       const {
         blockEventData: { auctionId, bidder, price },
       } = message;
@@ -171,13 +180,19 @@ export default function Drop({ id, drop, img }) {
               <DropTabs id={id} />
               {oneSidedDrop ? (
                 <div>
+                  <div className="bg-white py-6 sm:py-12">
+                    <div className="container md:h-120">
+                      <DropArt drop={updatedDrop} art={updatedArt} full />
+                    </div>
+                  </div>
                   <div className="bg-white pb-6 sm:pb-24">
                     <div className="container">
-                      <div className="sm:container mx-auto md:mx-0 md:max-w-none md:grid grid-cols-2 items-stretch pt-12 pb-3">
+                      <div className="sm:container mx-auto md:mx-0 md:max-w-none md:grid grid-cols-2 items-stretch md:pt-12 pb-3">
                         <DropCounter
                           drop={updatedDrop}
                           timeRemaining={timeRemaining}
                           timeUntil={timeUntil}
+                          noCount
                         />
                         <UniqueBidBox
                           drop={updatedDrop}
@@ -188,6 +203,12 @@ export default function Drop({ id, drop, img }) {
                           user={user}
                           timeRemaining={timeRemaining}
                           single
+                        />
+                      </div>
+                      <div className="py-6 sm:py-12">
+                        <SingleBidHistory
+                          drop={updatedDrop}
+                          latestMessage={latestMessage}
                         />
                       </div>
                     </div>

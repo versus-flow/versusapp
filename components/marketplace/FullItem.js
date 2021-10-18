@@ -12,7 +12,8 @@ import Loading from "../general/Loading";
 import { oneArt } from "../profile/ProfileWrapper";
 import { getOneMarketplaceItem } from "./transactions";
 import { get } from "lodash";
-import { getCacheThumbnail } from "../general/helpers";
+import { getCacheThumbnail, isVideoDrop } from "../general/helpers";
+import { fetchOneArt } from "../profile/transactions";
 
 export async function oneListedItem(addr, tokenID) {
   const oneArtResponse = await fcl.send([
@@ -24,14 +25,13 @@ export async function oneListedItem(addr, tokenID) {
 
 export default function FullItem({ id, address, unlisted, user, piece }) {
   const [art, setArt] = useState("");
+  const isVideo = isVideoDrop(piece);
   useEffect(async () => {
     let img = "";
     if (unlisted) {
-      const imgUrl = await getCacheThumbnail(
-        piece.cacheKey,
-        "auto",
-        piece.art.type
-      );
+      const imgUrl = isVideo
+        ? ""
+        : await getCacheThumbnail(piece.cacheKey, "auto", piece.art.type);
       setArt(imgUrl);
       if (!imgUrl) {
         const oneArtResponse = await fcl.send([
@@ -67,6 +67,7 @@ export default function FullItem({ id, address, unlisted, user, piece }) {
         user={user}
         unlisted={unlisted}
         art={art}
+        isVideo={isVideo}
       />
       <DropProperties drop={piece} art={art} />
       <AboutCreator piece={piece} />

@@ -10,6 +10,7 @@ import Arrow from "../../assets/arrow.svg";
 import ArrowButton from "../general/ArrowButton";
 import { bidTransaction, tx } from "./transactions";
 import Loading from "../general/Loading";
+import ArtPreview from "./special/ArtPreview";
 
 const BidOnEdition = ({
   close,
@@ -157,7 +158,7 @@ const BidOnEdition = ({
             <h4 className="font-black font-inktrap mt-8 text-xl">
               Own edition {editionNum}/{totalEditions}
             </h4>
-            <img className="h-auto mt-6 w-64" src={art} />
+            <ArtPreview drop={drop} art={art} />
             <div className="mt-6">
               <span>
                 The current bid is{" "}
