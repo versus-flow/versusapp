@@ -17,7 +17,7 @@ export const getWrittenTimer = (seconds) => {
   };
 };
 
-const DropContent = ({ drop, art, timeUntil, timeRemaining }) => {
+const DropContent = ({ drop, art, timeUntil, timeRemaining, dutch }) => {
   return (
     <div className="bg-white">
       <div className="container">
@@ -27,6 +27,7 @@ const DropContent = ({ drop, art, timeUntil, timeRemaining }) => {
             drop={drop}
             timeRemaining={timeRemaining}
             timeUntil={timeUntil}
+            dutch
           />
         </div>
       </div>

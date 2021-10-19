@@ -2,7 +2,7 @@ import classNames from "classnames";
 
 import { getWrittenTimer } from "./DropContent";
 
-const DropCounter = ({ drop, timeUntil, timeRemaining, noCount }) => {
+const DropCounter = ({ drop, timeUntil, timeRemaining, noCount, dutch }) => {
   const {
     metadata: { artist, name, description },
   } = drop;
@@ -58,6 +58,8 @@ const DropCounter = ({ drop, timeUntil, timeRemaining, noCount }) => {
         </div>
       </div>
     );
+  } else if (dutch) {
+    Counter = "";
   } else if (drop.winning === "TIE") {
     Counter = (
       <span>
