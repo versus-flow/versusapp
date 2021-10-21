@@ -6,7 +6,7 @@ import * as t from "@onflow/types";
 import { tx } from "../transactions";
 import { cancelDutchBid } from "./transactions";
 
-const BidRow = ({ bid }) => {
+const BidRow = ({ bid, fullBid }) => {
   console.log(bid);
   const [withdrawing, setWithdrawing] = useState(false);
   let status = "";
@@ -15,7 +15,6 @@ const BidRow = ({ bid }) => {
   const buttonClass =
     "py-2 px-8 border rounded inline-block cursor-pointer hover:bg-borderGrey text-sm";
   const withdrawBid = async () => {
-    console.log(bid.id);
     try {
       await tx(
         [
@@ -48,7 +47,7 @@ const BidRow = ({ bid }) => {
       console.log(e);
     }
   };
-  if (bid.winning && !bid.confirmed) {
+  if (fullBid.winning && !fullBid.confirmed) {
     status = "Qualifying";
     statusColor = "#FFAF00";
     Buttons = (
@@ -63,7 +62,7 @@ const BidRow = ({ bid }) => {
         </div>
       </div>
     );
-  } else if (bid.winning && bid.confirmed) {
+  } else if (fullBid.winning && fullBid.confirmed) {
     status = "Confirmed";
     statusColor = "#56BD66";
   } else {
@@ -73,12 +72,12 @@ const BidRow = ({ bid }) => {
 
   return (
     <div className="grid grid-cols-12 text-sm border-t border-borderGrey py-4 items-center">
-      <div className="col-span-2 font-black">F{bid.amount}</div>
+      <div className="col-span-2 font-black">F{parseFloat(fullBid.amount)}</div>
       <div className="col-span-2 font-black" style={{ color: statusColor }}>
         {status}
       </div>
       <div className="col-span-2 sm:col-span-2">
-        {moment.unix(parseFloat(bid.time)).format("h:mma MM/DD/YY")}
+        {moment.unix(parseFloat(fullBid.time)).format("h:mma MM/DD/YY")}
       </div>
       <div className="col-span-6 flex justify-end items-center">{Buttons}</div>
     </div>

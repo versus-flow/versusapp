@@ -1,14 +1,14 @@
 export const fetchDutchDrop = `
-    import AuctionDutch from 0xCONTRACT
-    pub fun main(id: UInt64) : AuctionDutch.AuctionDutchStatus {
-        return AuctionDutch.getAuctionDutch(id)!
+    import DutchAuction from 0xCONTRACT
+    pub fun main(id: UInt64) : DutchAuction.DutchAuctionStatus {
+        return DutchAuction.getDutchAuction(id)!
     }
 `;
 
 export const makeDutchBid = `
 import FungibleToken from 0xFungibleToken
 import NonFungibleToken from 0xNonFungibleToken
-import Versus, AuctionDutch, Art from 0xCONTRACT
+import Versus, DutchAuction, Art from 0xCONTRACT
 
 // Transaction to make a bid in a marketplace for the given dropId and auctionId
 transaction(marketplace: Address, id: UInt64, bidAmount: UFix64) {
@@ -17,7 +17,7 @@ transaction(marketplace: Address, id: UInt64, bidAmount: UFix64) {
 
 	let vaultCap: Capability<&{FungibleToken.Receiver}>
 	let collectionCap: Capability<&{NonFungibleToken.Receiver}> 
-	let dutchAuctionCap: Capability<&AuctionDutch.BidCollection{AuctionDutch.BidCollectionPublic}>
+	let dutchAuctionCap: Capability<&DutchAuction.BidCollection{DutchAuction.BidCollectionPublic}>
 	let temporaryVault: @FungibleToken.Vault
 
 	prepare(account: AuthAccount) {
@@ -41,15 +41,15 @@ transaction(marketplace: Address, id: UInt64, bidAmount: UFix64) {
 			account.link<&{NonFungibleToken.Receiver}>(/public/versusArtNFTCollection, target: Art.CollectionStoragePath)
 		}
 
-		let bidCap=account.getCapability<&AuctionDutch.BidCollection{AuctionDutch.BidCollectionPublic}>(AuctionDutch.BidCollectionPublicPath)
+		let bidCap=account.getCapability<&DutchAuction.BidCollection{DutchAuction.BidCollectionPublic}>(DutchAuction.BidCollectionPublicPath)
 		if ! bidCap.check() {
 
-			account.unlink(AuctionDutch.BidCollectionPublicPath)
-			destroy <- account.load<@AnyResource>(from:AuctionDutch.BidCollectionStoragePath)
+			account.unlink(DutchAuction.BidCollectionPublicPath)
+			destroy <- account.load<@AnyResource>(from:DutchAuction.BidCollectionStoragePath)
 
-			let collection <- AuctionDutch.createEmptyBidCollection()
-			account.save(<- collection, to: AuctionDutch.BidCollectionStoragePath)
-			account.link<&AuctionDutch.BidCollection{AuctionDutch.BidCollectionPublic}>(AuctionDutch.BidCollectionPublicPath, target: AuctionDutch.BidCollectionStoragePath)
+			let collection <- DutchAuction.createEmptyBidCollection()
+			account.save(<- collection, to: DutchAuction.BidCollectionStoragePath)
+			account.link<&DutchAuction.BidCollection{DutchAuction.BidCollectionPublic}>(DutchAuction.BidCollectionPublicPath, target: DutchAuction.BidCollectionStoragePath)
 		}
 
 		self.dutchAuctionCap=bidCap
@@ -69,18 +69,35 @@ transaction(marketplace: Address, id: UInt64, bidAmount: UFix64) {
 `;
 
 export const getAuctionBids = `
-    import AuctionDutch from 0xCONTRACT
-    pub fun main(id: UInt64) : AuctionDutch.Bids {
-        return AuctionDutch.getBids(id)
+    import DutchAuction from 0xCONTRACT
+    pub fun main(id: UInt64) : DutchAuction.Bids {
+        return DutchAuction.getBids(id)
     }
 `;
 
+export const getAddressDutchBids = `
+	import DutchAuction from 0xCONTRACT
+
+	pub fun main(address: Address, auction: UInt64) : [DutchAuction.ExcessFlowReport]   {
+		let account=getAccount(address)
+		let bidCollection=account.getCapability<&DutchAuction.BidCollection{DutchAuction.BidCollectionPublic}>(DutchAuction.BidCollectionPublicPath).borrow()!
+		var reports :[DutchAuction.ExcessFlowReport] =[]
+		for bid in bidCollection.getIds() {
+			let report=bidCollection.getReport(bid)
+			if report.auctionId==auction {
+				reports.append(bidCollection.getReport(bid))
+			}
+		}
+		return reports
+	}
+`;
+
 export const cancelDutchBid = `
-	import AuctionDutch from 0xCONTRACT
+	import DutchAuction from 0xCONTRACT
 	transaction(id: UInt64) {
-		let dutchAuction: &AuctionDutch.BidCollection
+		let dutchAuction: &DutchAuction.BidCollection
 		prepare(account: AuthAccount) {
-			self.dutchAuction=account.borrow<&AuctionDutch.BidCollection>(from: AuctionDutch.BidCollectionStoragePath) ?? panic("Could not borrow bid collection")
+			self.dutchAuction=account.borrow<&DutchAuction.BidCollection>(from: DutchAuction.BidCollectionStoragePath) ?? panic("Could not borrow bid collection")
 		}
 		execute {
 			self.dutchAuction.cancelBid(id)
