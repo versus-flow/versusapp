@@ -4,11 +4,12 @@ import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
 
 import { tx } from "../transactions";
-import { cancelDutchBid } from "./transactions";
+import { cancelDutchBid, withdrawExcess } from "./transactions";
 
 const BidRow = ({ bid, fullBid }) => {
   console.log(bid);
   const [withdrawing, setWithdrawing] = useState(false);
+  const [returning, setReturning] = useState(false);
   let status = "";
   let statusColor = "black";
   let Buttons = "";
@@ -47,6 +48,40 @@ const BidRow = ({ bid, fullBid }) => {
       console.log(e);
     }
   };
+  const takeDifference = async () => {
+    try {
+      await tx(
+        [
+          fcl.transaction(withdrawExcess),
+          fcl.args([fcl.arg(parseInt(bid.id), t.UInt64)]),
+          fcl.proposer(fcl.currentUser().authorization),
+          fcl.payer(fcl.currentUser().authorization),
+          fcl.authorizations([fcl.currentUser().authorization]),
+          fcl.limit(9999),
+        ],
+        {
+          onStart() {
+            setReturning(true);
+          },
+          onSubmission() {
+            setReturning(true);
+          },
+          async onSuccess(status) {
+            setReturning(false);
+          },
+          async onError(error) {
+            if (error) {
+              console.log(error);
+              setReturning(false);
+            }
+          },
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   if (fullBid.winning && !fullBid.confirmed) {
     status = "Qualifying";
     statusColor = "#FFAF00";
@@ -65,6 +100,19 @@ const BidRow = ({ bid, fullBid }) => {
   } else if (fullBid.winning && fullBid.confirmed) {
     status = "Confirmed";
     statusColor = "#56BD66";
+    Buttons = (
+      <div>
+        <div
+          className={buttonClass}
+          onClick={takeDifference}
+          disabled={returning}
+        >
+          {returning
+            ? "Returning..."
+            : `Take Difference - ${parseFloat(bid.excessAmount)}F`}
+        </div>
+      </div>
+    );
   } else {
     status = "NGMI";
     statusColor = "#E1322A";

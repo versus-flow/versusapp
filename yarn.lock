@@ -1067,22 +1067,14 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@onflow/config@0.0.2", "@onflow/config@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@onflow/config/-/config-0.0.2.tgz#caed7df27e9258ce2d4eae43f5e6f22caa119547"
-  integrity sha512-H/+yrAalzEnMWkubiWsDdWytKSzd+OfRCddTlaRUelxfXhcfw2QWegH9N8EzeKfKXcQ6PLzvu9vQwhFxCZTE8Q==
+"@onflow/fcl@^0.0.78":
+  version "0.0.77"
+  resolved "https://registry.yarnpkg.com/@onflow/fcl/-/fcl-0.0.77.tgz#2a2da9ec8f90e0cf012d9a459a3472b57e416549"
+  integrity sha512-hgFW51Va29KwlzhDy6Fm15UesfXluRTR5RJn+zrm5d5HFfkquaxKOnMGT5waKVFn5u4THQIE6v+OnaDDchGNpg==
   dependencies:
-    "@onflow/util-actor" "0.0.2"
-
-"@onflow/fcl@^0.0.71":
-  version "0.0.71"
-  resolved "https://registry.yarnpkg.com/@onflow/fcl/-/fcl-0.0.71.tgz#32dbc30f4291095ae9bc877127336618c5494074"
-  integrity sha512-RMfm8BEt1kMdrQCBOAXPfBk+KPwemtwP78c0rA3PBg6maB3h96KYJSGW7+Fv5jmx/xZHFuvmk2R9nGv29pJ3DQ==
-  dependencies:
-    "@onflow/config" "0.0.2"
     "@onflow/interaction" "0.0.11"
     "@onflow/rlp" "0.0.3"
-    "@onflow/sdk" "0.0.47"
+    "@onflow/sdk" "^0.0.54"
     "@onflow/types" "^0.0.4"
     "@onflow/util-actor" "0.0.2"
     "@onflow/util-address" "0.0.0"
@@ -1108,16 +1100,16 @@
   resolved "https://registry.yarnpkg.com/@onflow/rlp/-/rlp-0.0.3.tgz#42e10944309732bfd9acca79710c8210b9aabd4c"
   integrity sha512-oAf0VEiMjX8eC6Vd66j1BdGYTHOM6UBaS/sLSScnc7bKX5gICqe2gtEsCeJVE9rUzRk3GD3JqXRnPAW6YFWd/Q==
 
-"@onflow/sdk@0.0.47":
-  version "0.0.47"
-  resolved "https://registry.yarnpkg.com/@onflow/sdk/-/sdk-0.0.47.tgz#bc4961d0019ccf226ed1a180bfdab64087fe4b07"
-  integrity sha512-ouZL5aze9biIJfJeNUzbc4oU54ljTEFFcEXFkR13XBdMkVr3kJ7aA3EkB1T0+iezLEqxV8dkTuDnpCNmMjqJEQ==
+"@onflow/sdk@^0.0.54":
+  version "0.0.54"
+  resolved "https://registry.yarnpkg.com/@onflow/sdk/-/sdk-0.0.54.tgz#e5aae23c0a1f3707e47ddab1ca2c1d78e5e75d7a"
+  integrity sha512-4kC1kpxUvWUvWs7kymWX6bJjmch155XmNc3GRT3ZLeCQPIYbEYGVagH9AJzdmBRvxgFiiNpPJaNAjD3NusgCLQ==
   dependencies:
     "@improbable-eng/grpc-web" "^0.14.0"
     "@improbable-eng/grpc-web-node-http-transport" "^0.14.0"
-    "@onflow/config" "^0.0.2"
     "@onflow/protobuf" "^0.1.8"
     "@onflow/rlp" "^0.0.3"
+    "@onflow/util-actor" "0.0.2"
     "@onflow/util-address" "^0.0.0"
     "@onflow/util-invariant" "^0.0.0"
     "@onflow/util-template" "0.0.1"
@@ -1127,6 +1119,11 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@onflow/types/-/types-0.0.4.tgz#d4a9c3e301d23182dd256b73d3679c952fe653f0"
   integrity sha512-47r0qTM45mR7FSvyEE0njGljkpgy3MCf/2W82pfZ/PTFGWr1nsGV/4j2bUfK9Sry4Ymz2W20iRZVP3xpqOhqGw==
+
+"@onflow/types@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@onflow/types/-/types-0.0.5.tgz#933f12dd85eadfec1ab62d23bd767e993c7be0cf"
+  integrity sha512-Pgh3hz3Cr8KPpkaDd1E3FdQRASGqpfA1NK7dtgz+6xdTdESeqU2z0ksocrOdfy9ikRvKt4RyFmDuXPx2CVbjuQ==
 
 "@onflow/util-actor@0.0.2":
   version "0.0.2"

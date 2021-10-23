@@ -36,6 +36,7 @@ const BidOnDutch = ({ close, defaultBid, drop, art, ended, user, id }) => {
     //       drop.uniqueStatus.minNextBid
     //     ).toFixed(2)}`
     //   );
+    console.log(newBid, newBid.toFixed(3).toString(), id);
     try {
       await tx(
         [

@@ -107,3 +107,20 @@ export const cancelDutchBid = `
 		}
 	}
 `;
+
+export const withdrawExcess = `
+	import FungibleToken from 0xFungibleToken
+	import DutchAuction from 0xCONTRACT
+
+	transaction(id: UInt64) {
+		let vaultCap: Capability<&{FungibleToken.Receiver}>
+		let dutchAuction: &DutchAuction.BidCollection
+		prepare(account: AuthAccount) {
+			self.dutchAuction=account.borrow<&DutchAuction.BidCollection>(from: DutchAuction.BidCollectionStoragePath) ?? panic("Could not borrow bid collection")
+			self.vaultCap = account.getCapability<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
+		}
+		execute {
+			self.dutchAuction.withdrawExcessFlow(id: id, vaultCap: self.vaultCap)
+		}
+	}
+`;

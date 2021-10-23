@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "@microsoft/signalr": "^5.0.10",
-    "@onflow/fcl": "^0.0.71",
-    "@onflow/types": "^0.0.4",
+    "@onflow/fcl": "^0.0.78",
+    "@onflow/types": "^0.0.5",
     "@react-hook/copy": "^2.0.1",
     "@svgr/webpack": "^5.5.0",
     "axios": "^0.22.0",
