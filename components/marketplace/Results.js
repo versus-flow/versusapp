@@ -4,6 +4,7 @@ import { chunk, get, map, pick, times } from "lodash";
 import Link from "next/link";
 
 import DropPreview from "./DropPreview";
+import { isVideoDrop } from "../general/helpers";
 
 const Results = ({ pieces }) => {
   const [page, setPage] = useState(1);
@@ -23,7 +24,8 @@ const Results = ({ pieces }) => {
             artist={p.data.art.artist}
             edition={`#${p.data.art.edition}/${p.data.art.maxEdition}`}
             zoom
-            img={p.img}
+            src={p.img}
+            video={isVideoDrop(p)}
             price={parseFloat(p.data.price).toFixed(1)}
             button={
               <Link href={`/listing/${p.blockEventData.id}`}>

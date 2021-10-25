@@ -165,3 +165,9 @@ select.hide-select::-ms-expand {
   background: transparent; /* Optional: just make scrollbar invisible */
   display: none; /* Safari and Chrome */
 }
+
+.full-holder > div {
+  max-height: 100%;
+  height: 100%;
+  width: 100%;
+}

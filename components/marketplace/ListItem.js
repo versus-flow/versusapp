@@ -11,6 +11,7 @@ import ErrorMessage from "../general/ErrorMessage";
 import { tx } from "../drop/transactions";
 import { listForSale } from "./transactions";
 import Loading from "../general/Loading";
+import { isVideoDrop } from "../general/helpers";
 
 const ListItem = ({ close, piece }) => {
   const [error, setError] = useState("");
@@ -74,7 +75,8 @@ const ListItem = ({ close, piece }) => {
             title={piece.metadata.name}
             artist={piece.metadata.artist}
             edition={`#${piece.metadata.edition}/${piece.metadata.maxEdition}`}
-            img={piece.img}
+            src={piece.img}
+            video={isVideoDrop(piece)}
             shadow
           />
         </div>

@@ -5,7 +5,11 @@ import Link from "next/link";
 import Arrow from "../../assets/arrow.svg";
 import ArrowButton from "../general/ArrowButton";
 import DropPreview from "../marketplace/DropPreview";
-import { getCacheThumbnail, getGraffleUrl } from "../general/helpers";
+import {
+  getCacheThumbnail,
+  getGraffleUrl,
+  isVideoDrop,
+} from "../general/helpers";
 import moment from "moment";
 import { getPiecesByIds } from "../../pages/marketplace";
 import Loading from "../general/Loading";
@@ -111,7 +115,8 @@ const MarketplacePreview = () => {
                   artist={p.data.art.artist}
                   edition={`#${p.data.art.edition}/${p.data.art.maxEdition}`}
                   zoom
-                  img={p.img}
+                  src={p.img}
+                  video={isVideoDrop(p)}
                   price={parseFloat(p.data.price).toFixed(1)}
                   button={
                     <Link href={`/listing/${p.blockEventData.id}`}>

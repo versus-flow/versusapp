@@ -27,11 +27,18 @@ import SEOBoilerplate from "../../components/general/SEOBoilerplate";
 
 export const getPiecesByIds = async (pieces) => {
   const allItems = await Promise.all(
-    map(pieces, async (p) => ({
-      ...p,
-      data: await oneListedItem(p.blockEventData.from, p.blockEventData.id),
-      // img: await oneArt(p.blockEventData.from, p.blockEventData.id),
-    }))
+    map(pieces, async (p) => {
+      const data = await oneListedItem(
+        p.blockEventData.from,
+        p.blockEventData.id
+      );
+      return {
+        ...p,
+        data,
+        metadata: data.art,
+        // img: await oneArt(p.blockEventData.from, p.blockEventData.id),
+      };
+    })
   );
   return allItems;
 };

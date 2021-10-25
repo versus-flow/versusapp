@@ -147,9 +147,29 @@ export const getDropFromArtist = (artist, cacheKey) => {
 };
 
 export const isSpecialDrop = (drop) => {
-  return includes(["flow", "ipfs/audio"], drop.metadata.type);
+  return includes(["flow", "ipfs/audio", "ipfs/video"], drop.metadata.type);
 };
 
 export const isAudioDrop = (drop) => {
   return includes(["ipfs/audio"], drop.metadata.type);
+};
+
+export const isVideoDrop = (drop) => {
+  return includes(["ipfs/video"], drop.metadata.type);
+};
+
+export const getVideoDimensionsOf = (url) => {
+  return new Promise((resolve) => {
+    const video = document.createElement("video");
+    video.addEventListener(
+      "loadedmetadata",
+      function () {
+        const height = this.videoHeight;
+        const width = this.videoWidth;
+        resolve({ height, width });
+      },
+      false
+    );
+    video.src = url;
+  });
 };
