@@ -108,9 +108,9 @@ transaction(name: String, description: String, avatar: String, socials: {String:
     var collectionCap = acct.getCapability<&{Art.CollectionPublic}>(Art.CollectionPublicPath)
     // if collection is not created yet we make it.
     if !collectionCap.check() {
-        account.unlink(Art.CollectionPublicPath)
-        destroy <- account.load<@AnyResource>(from:Art.CollectionStoragePath)
-        // store an empty NFT Collection in account storage
+        acct.unlink(Art.CollectionPublicPath)
+        destroy <- acct.load<@AnyResource>(from:Art.CollectionStoragePath)
+        // store an empty NFT Collection in acct storage
         acct.save<@NonFungibleToken.Collection>(<- Art.createEmptyCollection(), to: Art.CollectionStoragePath)
         // publish a capability to the Collection in storage
         acct.link<&{Art.CollectionPublic}>(Art.CollectionPublicPath, target: Art.CollectionStoragePath)
