@@ -10,7 +10,7 @@ import { addTopShotCollection, checkForTSCollection } from "../ts/transactions";
 const CollectionOnboard = ({ user }) => {
   const [run, setRun] = useState(0);
   const [showButton, setShowButton] = useState(false);
-  const [showTSButton, setTSShowButton] = useState(false);
+  // const [showTSButton, setTSShowButton] = useState(false);
   useEffect(async () => {
     async function checkCollection() {
       const response = await fcl.send([
@@ -22,18 +22,18 @@ const CollectionOnboard = ({ user }) => {
       if (user && user.addr) setShowButton(!dResponse);
       if (dResponse) console.log("verified");
     }
-    async function checkTSCollection() {
-      const response = await fcl.send([
-        fcl.script(checkForTSCollection),
-        fcl.args([fcl.arg(user.addr, t.Address)]),
-      ]);
-      const tResponse = await fcl.decode(response);
-      console.log(tResponse);
-      if (user && user.addr) setTSShowButton(!tResponse);
-      if (tResponse) console.log("verifiedts");
-    }
+    // async function checkTSCollection() {
+    //   const response = await fcl.send([
+    //     fcl.script(checkForTSCollection),
+    //     fcl.args([fcl.arg(user.addr, t.Address)]),
+    //   ]);
+    //   const tResponse = await fcl.decode(response);
+    //   console.log(tResponse);
+    //   if (user && user.addr) setTSShowButton(!tResponse);
+    //   if (tResponse) console.log("verifiedts");
+    // }
     checkCollection();
-    checkTSCollection();
+    // checkTSCollection();
   }, [user, run]);
 
   const createArtCollection = async (e) => {
@@ -62,31 +62,31 @@ const CollectionOnboard = ({ user }) => {
     } catch (e) {}
   };
 
-  const createTSCollection = async (e) => {
-    e.preventDefault();
-    try {
-      await tx(
-        [
-          fcl.transaction(addTopShotCollection),
-          fcl.args(),
-          fcl.proposer(fcl.currentUser().authorization),
-          fcl.payer(fcl.currentUser().authorization),
-          fcl.authorizations([fcl.currentUser().authorization]),
-          fcl.limit(9999),
-        ],
-        {
-          onStart() {},
-          onSubmission() {},
-          async onSuccess(status) {
-            setRun(Math.random());
-          },
-          async onError(error) {
-            console.log(error);
-          },
-        }
-      );
-    } catch (e) {}
-  };
+  // const createTSCollection = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     await tx(
+  //       [
+  //         fcl.transaction(addTopShotCollection),
+  //         fcl.args(),
+  //         fcl.proposer(fcl.currentUser().authorization),
+  //         fcl.payer(fcl.currentUser().authorization),
+  //         fcl.authorizations([fcl.currentUser().authorization]),
+  //         fcl.limit(9999),
+  //       ],
+  //       {
+  //         onStart() {},
+  //         onSubmission() {},
+  //         async onSuccess(status) {
+  //           setRun(Math.random());
+  //         },
+  //         async onError(error) {
+  //           console.log(error);
+  //         },
+  //       }
+  //     );
+  //   } catch (e) {}
+  // };
 
   return (
     <>
