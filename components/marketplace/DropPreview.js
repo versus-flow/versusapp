@@ -5,7 +5,7 @@ import "react-medium-image-zoom/dist/styles.css";
 import { first, get } from "lodash";
 import moment from "moment";
 
-import { getGraffleUrl } from "../general/helpers";
+import { getGraffleUrl, getVidThumbnail } from "../general/helpers";
 import Loading from "../general/Loading";
 import MoveDropNoti from "./MoveDropNoti";
 
@@ -45,7 +45,7 @@ const DropPreview = ({
   if (video)
     Media = (
       <video
-        src={`https://gateway.pinata.cloud/ipfs/${src}`}
+        src={getVidThumbnail(src)}
         className="h-full object-cover w-full rounded"
         controls
       />

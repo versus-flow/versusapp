@@ -1,4 +1,5 @@
 import ReactPlayer from "react-player";
+import { getVidThumbnail } from "../../general/helpers";
 
 const VideoPlayer = ({
   src,
@@ -10,9 +11,11 @@ const VideoPlayer = ({
   return (
     <div className={`w-full flex justify-center ${className}`}>
       <video
-        src={`https://gateway.pinata.cloud/ipfs/${src}`}
+        src={getVidThumbnail(src)}
+        // src={`https://gateway.pinata.cloud/ipfs/${src}`}
         className={className}
         autoPlay={autoPlay}
+        loop={true}
         controls={controls}
         muted={muted}
       />

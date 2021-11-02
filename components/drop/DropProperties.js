@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { get } from "lodash";
 
-import { getVideoDimensionsOf, isVideoDrop } from "../general/helpers";
+import {
+  getVideoDimensionsOf,
+  getVidThumbnail,
+  isVideoDrop,
+} from "../general/helpers";
 
 const DropProperties = ({ drop, art }) => {
   const [dims, setDims] = useState(null);
   useEffect(async () => {
     if (isVideoDrop(drop)) {
-      const vid = await getVideoDimensionsOf(
-        `https://gateway.pinata.cloud/ipfs/${art}`
-      );
+      const vid = await getVideoDimensionsOf(getVidThumbnail(art));
       setDims(`${vid.width} x ${vid.height}`);
     } else {
       var i = new Image();
