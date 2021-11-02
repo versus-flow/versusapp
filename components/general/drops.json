@@ -422,5 +422,17 @@
     "twitter": "https://twitter.com/ollorens",
     "instagram": "https://www.instagram.com/oscarllorensgallery",
     "aboutArtist": "Ollorens has spent the last 15 years working as an illustrator for both national and international clients (from The Washington Post to Vanity Fair, with campaigns for companies such as Coca-Cola, United Nations or Cirque du Soleil). Parallel to his commercial work he has also had extensive experience as a plastic artist, with individual and collective exhibitions (Madrid, Barcelona, Paris, NY, Mexico City ...)"
+  },
+  {
+    "id": "33",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "Geodiversity of an Exoplanet",
+    "slug": "leoisikdogan",
+    "handle": "leoisikdogan",
+    "artist": "Leo Isikdogan",
+    "smallImage": "/images/drops/leoisikdogan/preview.jpg",
+    "twitter": "https://twitter.com/leoisikdogan",
+    "instagram": "https://www.instagram.com/leoisikdogan",
+    "aboutArtist": "Leo Isikdogan is a researcher, engineer, and artist based in California. He has a master's degree focused on computer vision for art analysis, and a PhD from the Laboratory for Image and Video Engineering at The University of Texas at Austin. Currently, he works as a Deep Learning Algorithm Engineer at Apple. His practice spans a broad range of disciplines, including artificial intelligence, computer vision, computational photography, image processing, augmented reality, and digital art."
   }
 ]
