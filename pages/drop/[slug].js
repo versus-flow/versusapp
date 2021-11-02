@@ -39,7 +39,6 @@ import DropCounter from "../../components/drop/DropCounter";
 import SingleBidHistory from "../../components/drop/special/SingleBidHistory";
 
 export default function Drop({ id, drop, img }) {
-  console.log(drop);
   const [updatedDrop, setUpdatedDrop] = useState(drop);
   const [updatedArt, setUpdatedArt] = useState(null);
   const [timeUntil, setTimeUntil] = useState(null);
@@ -66,6 +65,12 @@ export default function Drop({ id, drop, img }) {
     //   clearInterval(window.fetches);
     // };
   }, [id]);
+  useEffect(async () => {
+    if (includes([60, 40, 20, 10, 4], timeRemaining)) {
+      const drop = await fetchDrop(id);
+      setUpdatedDrop(drop);
+    }
+  }, [timeRemaining]);
   useEffect(() => {
     if (loading) return;
     if (
@@ -76,7 +81,7 @@ export default function Drop({ id, drop, img }) {
     } else {
       setTimeUntil(parseFloat(updatedDrop.startTime) - moment().unix());
       setTimeRemaining(parseFloat(updatedDrop.timeRemaining));
-      const timer = setInterval(() => {
+      const timer = setInterval(async () => {
         setTimeUntil((t) => t - 1);
         setTimeRemaining((t) => t - 1);
       }, 1000);
@@ -140,6 +145,9 @@ export default function Drop({ id, drop, img }) {
     if (isSettle) {
       const d = await fetchDrop(id);
       setUpdatedDrop(d);
+    }
+    const isExtended = includes(get(message, "flowEventId"), "ExtendedBid");
+    if (isExtended) {
     }
   };
   let conn = useRef();
