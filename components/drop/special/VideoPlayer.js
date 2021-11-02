@@ -15,6 +15,7 @@ const VideoPlayer = ({
         // src={`https://gateway.pinata.cloud/ipfs/${src}`}
         className={className}
         autoPlay={autoPlay}
+        loop={true}
         controls={controls}
         muted={muted}
       />
