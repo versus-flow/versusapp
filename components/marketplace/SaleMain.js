@@ -8,7 +8,12 @@ import { tx } from "../drop/transactions";
 import { removeFromSale } from "./transactions";
 
 import BuyItem from "./BuyItem";
-import { getDropFromArtist, isMainnet, isVideoDrop } from "../general/helpers";
+import {
+  getDropFromArtist,
+  getVidThumbnail,
+  isMainnet,
+  isVideoDrop,
+} from "../general/helpers";
 import Link from "next/link";
 import Loading from "../general/Loading";
 
@@ -160,7 +165,7 @@ const SaleMain = ({ piece, address, user, unlisted, art, isVideo }) => {
             {art ? (
               isVideo ? (
                 <video
-                  src={`https://gateway.pinata.cloud/ipfs/${art}`}
+                  src={getVidThumbnail(art)}
                   className="h-full object-cover w-full rounded"
                   controls
                   autoPlay

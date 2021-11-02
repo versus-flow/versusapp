@@ -104,6 +104,10 @@ export const getDropThumbnail = async (
   return imageURL;
 };
 
+export const getVidThumbnail = (src) => {
+  return cl.video_url(`${src}.mp4`);
+};
+
 export const getCacheThumbnail = async (
   cacheKey,
   width = "auto",
