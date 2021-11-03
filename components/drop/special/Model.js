@@ -12,6 +12,8 @@ const Model = ({ src }) => (
       auto-rotate
       autoplay
       ar
+      xr-environment
+      ar-scale="fixed"
       class="w-full h-full"
     ></model-viewer>
   </div>
