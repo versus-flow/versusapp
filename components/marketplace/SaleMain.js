@@ -165,7 +165,7 @@ const SaleMain = ({ piece, address, user, unlisted, art, isVideo }) => {
             {art ? (
               isVideo ? (
                 <video
-                  src={getVidThumbnail(art)}
+                  src={getVidThumbnail(`${art}v`)}
                   className="h-full object-cover w-full rounded"
                   controls
                   autoPlay

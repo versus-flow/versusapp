@@ -45,7 +45,7 @@ const DropPreview = ({
   if (video)
     Media = (
       <video
-        src={getVidThumbnail(src)}
+        src={getVidThumbnail(`${src}v`)}
         className="h-full object-cover w-full rounded"
         controls
       />
