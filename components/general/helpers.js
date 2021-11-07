@@ -105,7 +105,7 @@ export const getDropThumbnail = async (
 };
 
 export const getVidThumbnail = (src) => {
-  return cl.video_url(`${src}.mp4`);
+  return replace(cl.video_url(`${src}.mp4`), "image", "video");
 };
 
 export const getCacheThumbnail = async (
