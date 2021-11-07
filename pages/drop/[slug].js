@@ -274,9 +274,9 @@ async function fetchArt(id) {
 
 export async function getServerSideProps(context) {
   const id = get(context, "params.slug");
-  if (includes(["11", "12", "13", "15", "20", "22"], id))
+  if (includes(["11", "12", "13", "15", "20", "22", "37"], id))
     return { props: { id, drop: {}, art: null } };
-  if (includes([1, 6, 9, 11, 12, 13, 15, 20, 22], id))
+  if (includes([1, 6, 9, 11, 12, 13, 15, 20, 22, 37], id))
     return { props: { id, drop: {}, art: null } };
   const drop = await fetchDrop(id);
   const img = await getDropThumbnail(id, "1400", drop.metadata.type);
