@@ -43,7 +43,7 @@ const Landing = ({ drop }) => {
                   ? `The next auction starts ${start.format(
                       "MMMM"
                     )} ${start.format("Do")} at ${start
-                      .utcOffset(-4)
+                      .utcOffset(-5)
                       .format("hA")} EST`
                   : moment().unix() - parseInt(drop.endTime, 10) < 0
                   ? "Auction now open!"
