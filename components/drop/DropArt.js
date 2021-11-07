@@ -13,7 +13,7 @@ const DropArt = ({ art, drop, full }) => {
     Special = <Audio src={art} />;
   }
   if (art && isVideoDrop(drop)) {
-    Special = <VideoPlayer src={art} autoPlay controls />;
+    Special = <VideoPlayer src={`maindr${drop.dropId}v`} autoPlay controls />;
   }
   return (
     <div

@@ -7,8 +7,9 @@ import Rewarded from "../components/home/Rewarded";
 import BetterForArt from "../components/home/BetterForArt";
 import dropsData from "../components/general/drops.json";
 import testDropsData from "../components/general/testdrops.json";
-import { last } from "lodash";
+import { filter, first, last } from "lodash";
 import { fetchDrop } from "./drop/[slug]";
+import moment from "moment";
 
 const Home = ({ latestDrop }) => {
   return (
@@ -28,7 +29,8 @@ const Home = ({ latestDrop }) => {
 export async function getServerSideProps(context) {
   const dropList =
     process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData;
-  const latest = last(dropList);
+  const set = filter(dropList, (d) => d.endTime && d.endTime > moment().unix());
+  const latest = set.length ? first(set) : last(dropList);
   const drop = await fetchDrop(parseInt(latest.id, 10));
   const latestDrop = { ...drop, info: latest };
   return { props: { latestDrop } };
