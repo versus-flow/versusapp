@@ -21,7 +21,7 @@ export default function Drops() {
         ? filter(
             allDrops,
             (d) =>
-              !includes([1, 6, 9, 11, 12, 13, 15, 20, 22, 37], d.dropId) &&
+              !includes([1, 6, 9, 11, 12, 13, 15, 20, 22, 37, 38], d.dropId) &&
               d.expired
           )
         : drops;
