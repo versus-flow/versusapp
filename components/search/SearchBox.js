@@ -32,7 +32,8 @@ const SearchBox = () => {
         process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet"
           ? filter(
               drops,
-              (d) => !includes([1, 6, 9, 11, 12, 13, 15, 20, 22, 37], d.dropId)
+              (d) =>
+                !includes([1, 6, 9, 11, 12, 13, 15, 20, 22, 37, 38], d.dropId)
             )
           : drops;
       const mappedDrops = map(realdrops, (d) => ({
