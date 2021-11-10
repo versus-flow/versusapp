@@ -11,7 +11,9 @@ const DropProperties = ({ drop, art }) => {
   const [dims, setDims] = useState(null);
   useEffect(async () => {
     if (isVideoDrop(drop)) {
-      const vid = await getVideoDimensionsOf(getVidThumbnail(art));
+      const vid = await getVideoDimensionsOf(
+        getVidThumbnail(`maindr${drop.dropId}v`)
+      );
       setDims(`${vid.width} x ${vid.height}`);
     } else {
       var i = new Image();

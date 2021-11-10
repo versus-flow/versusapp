@@ -11,14 +11,18 @@ const VideoPlayer = ({
   return (
     <div className={`w-full flex justify-center ${className}`}>
       <video
-        src={getVidThumbnail(src)}
-        // src={`https://gateway.pinata.cloud/ipfs/${src}`}
         className={className}
         autoPlay={autoPlay}
         loop={true}
         controls={controls}
         muted={muted}
-      />
+        playsInline
+        tabIndex="0"
+        className="max-h-134"
+        preload="auto"
+      >
+        <source src={getVidThumbnail(src)} type="video/mp4" />
+      </video>
     </div>
   );
 };
