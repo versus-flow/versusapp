@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import { chunk, get, map, pick, times } from "lodash";
 import Link from "next/link";
 
 import DropPreview from "./DropPreview";
 import { isVideoDrop } from "../general/helpers";
+import useEventListener from "@use-it/event-listener";
 
 const Results = ({ pieces }) => {
   const [page, setPage] = useState(1);
   const perPage = 12;
   const numPages = Math.ceil(pieces.length / perPage);
   const pages = chunk(pieces, perPage);
+  useEffect(() => window.scrollTo(0, 0), [page]);
+  useEventListener("filterChange", () => {
+    setPage(1);
+  });
+
   return pieces.length ? (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap mt-4 gap-x-10 gap-y-6">

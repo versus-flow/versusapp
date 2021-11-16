@@ -1,5 +1,6 @@
 import Chevron from "../../../assets/chevron.svg";
 import commaNumber from "comma-number";
+import { sendFilterChange } from "../../general/helpers";
 
 const Sorting = ({ numResults, setSortBy }) => {
   return (
@@ -13,7 +14,10 @@ const Sorting = ({ numResults, setSortBy }) => {
           <Chevron className="w-3 absolute top-1/2 right-6 transform -translate-y-1/2" />
           <select
             className="px-5 py-1 sm:py-2 w-full hide-select cursor-pointer relative bg-transparent"
-            onChange={(e) => setSortBy(e.currentTarget.value)}
+            onChange={(e) => {
+              setSortBy(e.currentTarget.value);
+              sendFilterChange();
+            }}
           >
             <option value="">Sort by</option>
             <option value="pricelth">Price Low to High</option>

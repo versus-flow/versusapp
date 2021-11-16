@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import Chevron from "../../../assets/chevron.svg";
 import Search from "../../../assets/search.svg";
+import { sendFilterChange } from "../../general/helpers";
 
 const ArtistFilter = ({ setArtists, defaultArtists }) => {
   const [open, setOpen] = useState(true);
@@ -26,7 +27,10 @@ const ArtistFilter = ({ setArtists, defaultArtists }) => {
         <div className="relative">
           <input
             type="search"
-            onChange={(e) => setSearch(e.currentTarget.value)}
+            onChange={(e) => {
+              setSearch(e.currentTarget.value);
+              sendFilterChange();
+            }}
             placeholder="Search"
             className="bg-lightGrey w-full placeholder-black-100 text-sm rounded-lg border-none pl-16 pr-4 py-4 outline-none"
           />
@@ -44,6 +48,7 @@ const ArtistFilter = ({ setArtists, defaultArtists }) => {
                 onClick={() => {
                   setActiveArtists(xor(activeArtists, [a]));
                   setArtists(xor(activeArtists, [a]));
+                  sendFilterChange();
                 }}
               >
                 {a}

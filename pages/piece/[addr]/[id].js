@@ -7,7 +7,10 @@ import FullItem from "../../../components/marketplace/FullItem";
 import Main from "../../../components/layouts/Main";
 import { fetchMyArt } from "../../../components/profile/transactions";
 import { fetchProfile } from "../../profile/[name]";
-import { getCacheThumbnail } from "../../../components/general/helpers";
+import {
+  getCacheThumbnail,
+  getImgThumbnail,
+} from "../../../components/general/helpers";
 import SEOBoilerplate from "../../../components/general/SEOBoilerplate";
 
 export default function OneItem({ addr, id, piece, art }) {

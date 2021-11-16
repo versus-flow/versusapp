@@ -29,9 +29,11 @@ export default function FullItem({ id, address, unlisted, user, piece }) {
   useEffect(async () => {
     let img = "";
     if (unlisted) {
-      const imgUrl = isVideo
-        ? ""
-        : await getCacheThumbnail(piece.cacheKey, "auto", piece.art.type);
+      const imgUrl = await getCacheThumbnail(
+        piece.cacheKey,
+        "auto",
+        piece.art.type
+      );
       setArt(imgUrl);
       if (!imgUrl) {
         const oneArtResponse = await fcl.send([

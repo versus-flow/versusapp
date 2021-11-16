@@ -5,6 +5,7 @@ import StatusFilter from "./StatusFilter";
 import PriceFilter from "./PriceFilter";
 import ArtistFilter from "./ArtistFilter";
 import classNames from "classnames";
+import { sendFilterChange } from "../../general/helpers";
 
 const Holder = ({ setPrice, setArtists, defaultArtists }) => {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,12 @@ const Holder = ({ setPrice, setArtists, defaultArtists }) => {
         })}
       >
         {/* <StatusFilter /> */}
-        <PriceFilter setPrice={(v) => setPrice(v)} />
+        <PriceFilter
+          setPrice={(v) => {
+            setPrice(v);
+            sendFilterChange();
+          }}
+        />
         <ArtistFilter setArtists={setArtists} defaultArtists={defaultArtists} />
       </div>
     </>
