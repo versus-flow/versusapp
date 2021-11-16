@@ -1,5 +1,9 @@
 import ReactPlayer from "react-player";
-import { getVidThumbnail } from "../../general/helpers";
+import {
+  getCacheThumbnail,
+  getImgThumbnail,
+  getVidThumbnail,
+} from "../../general/helpers";
 
 const VideoPlayer = ({
   src,
@@ -20,6 +24,7 @@ const VideoPlayer = ({
         tabIndex="0"
         className="max-h-134"
         preload="auto"
+        poster={getImgThumbnail(src.slice(0, -1))}
       >
         <source src={getVidThumbnail(src)} type="video/mp4" />
       </video>

@@ -170,6 +170,7 @@ const SaleMain = ({ piece, address, user, unlisted, art, isVideo }) => {
                   controls
                   autoPlay
                   muted
+                  poster={art}
                 />
               ) : (
                 <Zoom>

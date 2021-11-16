@@ -108,6 +108,19 @@ export const getVidThumbnail = (src) => {
   return replace(cl.video_url(`${src}.mp4`), "image", "video");
 };
 
+export const getImgThumbnail = (src, width = "auto", type = "jpg") => {
+  const imageURL = cl.url(src, {
+    transformation: [
+      {
+        width,
+        crop: "fill",
+      },
+      { fetch_format: "auto" },
+    ],
+  });
+  return imageURL;
+};
+
 export const getCacheThumbnail = async (
   cacheKey,
   width = "auto",
@@ -176,4 +189,10 @@ export const getVideoDimensionsOf = (url) => {
     );
     video.src = url;
   });
+};
+
+export const sendFilterChange = () => {
+  const elem = window;
+  const event = new Event("filterChange");
+  elem.dispatchEvent(event);
 };
