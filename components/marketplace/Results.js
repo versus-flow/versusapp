@@ -36,7 +36,7 @@ const Results = ({ pieces }) => {
         ))}
       </div>
       {numPages > 1 ? (
-        <div className="flex items-center justify-center mt-16">
+        <div className="md:flex gap-2 gap-y-6 grid grid-cols-4 md:items-center items-start justify-center justify-items-start mt-16">
           {times(numPages, (n) => (
             <div
               className={classNames("pagination-button mx-3", {

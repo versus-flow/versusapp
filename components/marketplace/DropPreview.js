@@ -48,6 +48,7 @@ const DropPreview = ({
         src={getVidThumbnail(`${src}v`)}
         className="h-full object-cover w-full rounded"
         controls
+        poster={src}
       />
     );
   else Media = <img className="h-full object-cover w-full rounded" src={src} />;
