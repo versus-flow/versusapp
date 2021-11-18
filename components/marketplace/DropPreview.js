@@ -55,9 +55,8 @@ const DropPreview = ({
   else Media = <img className="h-full object-cover w-full rounded" src={src} />;
   return (
     <div
-      className={classNames("bg-white p-3 rounded relative", {
+      className={classNames(`bg-white p-3 rounded relative ${className}`, {
         "shadow-2xl": shadow,
-        className: true,
       })}
     >
       <div className="h-80 w-full zoom-holder bg-lightGrey flex justify-center items-center">

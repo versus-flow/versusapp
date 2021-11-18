@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { filter, find, map, uniqBy, get, each, includes } from "lodash";
+import { filter, find, map, uniqBy, get, each, sortBy } from "lodash";
 import Link from "next/link";
 import Carousel from "react-grid-carousel";
 
@@ -72,10 +72,11 @@ const DropListings = ({ drop }) => {
         }
       });
       const piecesOrig = await getPiecesByIds(filtered);
-      const pieces = filter(
+      const piecesFilt = filter(
         piecesOrig,
         (p) => p.metadata.name === drop.metadata.name
       );
+      const pieces = sortBy(piecesFilt, (p) => p.blockEventData.price);
       setPieces(pieces);
       setLoading(false);
       each(pieces, async (p) => {
@@ -157,7 +158,7 @@ const DropListings = ({ drop }) => {
                         </a>
                       </Link>
                     }
-                    className="pb-16"
+                    className="mb-16"
                   />
                 </Carousel.Item>
               ))}
