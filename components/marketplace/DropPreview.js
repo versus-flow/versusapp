@@ -24,6 +24,7 @@ const DropPreview = ({
   isUnique,
   dropped,
   video,
+  className = "",
 }) => {
   const [lastSold, setLastSold] = useState(false);
   useEffect(async () => {
@@ -56,6 +57,7 @@ const DropPreview = ({
     <div
       className={classNames("bg-white p-3 rounded relative", {
         "shadow-2xl": shadow,
+        className: true,
       })}
     >
       <div className="h-80 w-full zoom-holder bg-lightGrey flex justify-center items-center">

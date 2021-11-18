@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { filter, find, map, uniqBy, get, each } from "lodash";
+import { filter, find, map, uniqBy, get, each, includes } from "lodash";
 import Link from "next/link";
+import Carousel from "react-grid-carousel";
 
 import Arrow from "../../assets/arrow.svg";
 import ArrowButton from "../general/ArrowButton";
@@ -14,14 +15,13 @@ import moment from "moment";
 import { getPiecesByIds } from "../../pages/marketplace";
 import Loading from "../general/Loading";
 import { oneArt } from "../profile/ProfileWrapper";
+import { ChevronLeft, ChevronRight } from "react-feather";
 
 const DropListings = ({ drop }) => {
   const [pieces, setPieces] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log(drop);
   useEffect(() => {
     const findActivePieces = async () => {
-      const allIds = [];
       let r = uniqBy(
         await (
           await fetch(
@@ -71,7 +71,11 @@ const DropListings = ({ drop }) => {
           return moment(item.eventDate).isAfter(mostRecentDate);
         }
       });
-      const pieces = await getPiecesByIds(filtered);
+      const piecesOrig = await getPiecesByIds(filtered);
+      const pieces = filter(
+        piecesOrig,
+        (p) => p.metadata.name === drop.metadata.name
+      );
       setPieces(pieces);
       setLoading(false);
       each(pieces, async (p) => {
@@ -100,7 +104,7 @@ const DropListings = ({ drop }) => {
         <h2 className="font-bold font-inktrap text-3xl sm:text-5xl">
           Missed the Drop?
         </h2>
-        <h3 className="text-lg sm:text-2xl font-inktrap font-bold">
+        <h3 className="text-lg sm:text-2xl font-inktrap font-bold mt-2">
           Marketplace Listings
         </h3>
         {loading ? (
@@ -108,42 +112,60 @@ const DropListings = ({ drop }) => {
             <Loading />
           </div>
         ) : pieces.length ? (
-          <>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-x-8 gap-y-4 lg:gap-x-16 lg:gap-y-8">
-              {map(pieces.slice(0, 6), (p) => (
-                <DropPreview
-                  key={p.id}
-                  id={get(p, "data.id", get(p, "blockEventData.id"))}
-                  shadow
-                  img={p.img}
-                  title={p.data.art.name}
-                  artist={p.data.art.artist}
-                  edition={`#${p.data.art.edition}/${p.data.art.maxEdition}`}
-                  zoom
-                  src={p.img}
-                  video={isVideoDrop(p)}
-                  price={parseFloat(p.data.price).toFixed(1)}
-                  button={
-                    <Link href={`/listing/${p.blockEventData.id}`}>
-                      <a className="standard-button small-button block mt-2">
-                        View
-                      </a>
-                    </Link>
-                  }
-                />
+          <div className="mt-6">
+            <Carousel
+              cols={3}
+              gap={40}
+              arrowLeft={
+                <ChevronLeft className="absolute top-1/2 -translate-y-1/2 -left-4 cursor-pointer" />
+              }
+              arrowRight={
+                <ChevronRight className="absolute top-1/2 -translate-y-1/2 -right-4 cursor-pointer" />
+              }
+              containerStyle={{ paddingBottom: "10px" }}
+              responsiveLayout={[
+                {
+                  breakpoint: 1024,
+                  cols: 2,
+                  rows: 1,
+                },
+                {
+                  breakpoint: 640,
+                  cols: 1,
+                  rows: 1,
+                },
+              ]}
+            >
+              {map(pieces, (p) => (
+                <Carousel.Item>
+                  <DropPreview
+                    key={p.id}
+                    id={get(p, "data.id", get(p, "blockEventData.id"))}
+                    shadow
+                    img={p.img}
+                    title={p.data.art.name}
+                    artist={p.data.art.artist}
+                    edition={`#${p.data.art.edition}/${p.data.art.maxEdition}`}
+                    zoom
+                    src={p.img}
+                    video={isVideoDrop(p)}
+                    price={parseFloat(p.data.price).toFixed(1)}
+                    button={
+                      <Link href={`/listing/${p.blockEventData.id}`}>
+                        <a className="standard-button small-button block mt-2">
+                          View
+                        </a>
+                      </Link>
+                    }
+                    className="pb-16"
+                  />
+                </Carousel.Item>
               ))}
-            </div>
-            <div className="flex justify-center mt-12">
-              <ArrowButton
-                text="Visit marketplace"
-                href="/marketplace"
-                className="transparent-button lg-button"
-              />
-            </div>
-          </>
+            </Carousel>
+          </div>
         ) : (
           <div className="text-2xl mt-12 pb-12 text-center">
-            Everything is currently sold out!
+            No pieces from this drop are currently listed!
           </div>
         )}
       </div>
