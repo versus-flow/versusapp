@@ -7,7 +7,7 @@ import DropPreview from "../marketplace/DropPreview";
 import ListItem from "../marketplace/ListItem";
 import CollectionOnboard from "./CollectionOnboard";
 import SendItem from "../marketplace/SendItem";
-import { isVideoDrop } from "../general/helpers";
+import { getImgThumbnail, isIFPSImage, isVideoDrop } from "../general/helpers";
 
 const Collection = ({ pieces, other, self, user, name }) => {
   const [listItem, setListItem] = useState(false);
@@ -35,7 +35,11 @@ const Collection = ({ pieces, other, self, user, name }) => {
                   edition={`#${p.metadata.edition}/${p.metadata.maxEdition}`}
                   shadow
                   zoom
-                  src={p.img}
+                  src={
+                    isIFPSImage(p)
+                      ? getImgThumbnail(`maincache${p.cacheKey}`)
+                      : p.img
+                  }
                   price={p.price ? parseFloat(p.price).toFixed(1) : false}
                   showMoveNoti={
                     self &&

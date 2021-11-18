@@ -1,14 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  get,
-  find,
-  includes,
-  clone,
-  uniqueId,
-  update,
-  size,
-  reduce,
-} from "lodash";
+import { get, find, includes, clone, size, reduce } from "lodash";
 import moment from "moment";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
@@ -37,6 +28,7 @@ import UniqueBidBox from "../../components/drop/UniqueBidBox";
 import DropArt from "../../components/drop/DropArt";
 import DropCounter from "../../components/drop/DropCounter";
 import SingleBidHistory from "../../components/drop/special/SingleBidHistory";
+import DropListings from "../../components/marketplace/DropListings";
 
 export default function Drop({ id, drop, img }) {
   const [updatedDrop, setUpdatedDrop] = useState(drop);
@@ -241,6 +233,7 @@ export default function Drop({ id, drop, img }) {
                 </>
               )}
               <DropProperties drop={updatedDrop} art={updatedArt} />
+              {drop.settledAt && <DropListings drop={drop} />}
               <DropFollow dropInfo={dropInfo} />
             </>
           )}

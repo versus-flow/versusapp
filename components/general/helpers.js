@@ -175,6 +175,10 @@ export const isVideoDrop = (drop) => {
   return includes(["ipfs/video"], drop.metadata.type);
 };
 
+export const isIFPSImage = (drop) => {
+  return includes(["ipfs/image"], drop.metadata.type);
+};
+
 export const getVideoDimensionsOf = (url) => {
   return new Promise((resolve) => {
     const video = document.createElement("video");
