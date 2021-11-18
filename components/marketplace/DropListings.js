@@ -18,6 +18,7 @@ import { oneArt } from "../profile/ProfileWrapper";
 const DropListings = ({ drop }) => {
   const [pieces, setPieces] = useState([]);
   const [loading, setLoading] = useState(true);
+  console.log(drop);
   useEffect(() => {
     const findActivePieces = async () => {
       const allIds = [];

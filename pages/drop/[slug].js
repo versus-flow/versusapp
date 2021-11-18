@@ -233,7 +233,7 @@ export default function Drop({ id, drop, img }) {
                 </>
               )}
               <DropProperties drop={updatedDrop} art={updatedArt} />
-              {drop.settledAt && <DropListings drop={drop} />}
+              {/* {drop.settledAt && <DropListings drop={drop} />} */}
               <DropFollow dropInfo={dropInfo} />
             </>
           )}
