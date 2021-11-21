@@ -5,12 +5,12 @@ import TopTri from "../../assets/toptri.svg";
 import moment from "moment";
 import { getWrittenTimer } from "../drop/DropContent";
 import classNames from "classnames";
-import { getDropThumbnail } from "../general/helpers";
+import { getDropThumbnail, getImgThumbnail } from "../general/helpers";
 
 const Landing = ({ drop }) => {
   const [dropImage, setDropImage] = useState(null);
   useEffect(async () => {
-    setDropImage(await getDropThumbnail(drop.dropId));
+    setDropImage(getImgThumbnail(`maindr${drop.dropId}`));
   }, [drop.dropId]);
   const [timeRemaining, settimeRemaining] = useState(
     parseInt(drop.startTime, 10) - moment().unix()

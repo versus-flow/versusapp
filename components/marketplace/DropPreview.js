@@ -24,6 +24,7 @@ const DropPreview = ({
   isUnique,
   dropped,
   video,
+  className = "",
 }) => {
   const [lastSold, setLastSold] = useState(false);
   useEffect(async () => {
@@ -54,7 +55,7 @@ const DropPreview = ({
   else Media = <img className="h-full object-cover w-full rounded" src={src} />;
   return (
     <div
-      className={classNames("bg-white p-3 rounded relative", {
+      className={classNames(`bg-white p-3 rounded relative ${className}`, {
         "shadow-2xl": shadow,
       })}
     >

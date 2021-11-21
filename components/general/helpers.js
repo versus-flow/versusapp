@@ -164,7 +164,10 @@ export const getDropFromArtist = (artist, cacheKey) => {
 };
 
 export const isSpecialDrop = (drop) => {
-  return includes(["flow", "ipfs/audio", "ipfs/video"], drop.metadata.type);
+  return includes(
+    ["flow", "ipfs/audio", "ipfs/video", "ipfs/ar"],
+    drop.metadata.type
+  );
 };
 
 export const isAudioDrop = (drop) => {
@@ -177,6 +180,10 @@ export const isVideoDrop = (drop) => {
 
 export const isIFPSImage = (drop) => {
   return includes(["ipfs/image"], drop.metadata.type);
+};
+
+export const isARDrop = (drop) => {
+  return includes(["ipfs/ar"], drop.metadata.type);
 };
 
 export const getVideoDimensionsOf = (url) => {

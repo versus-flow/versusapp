@@ -4,8 +4,14 @@ import classNames from "classnames";
 
 import Audio from "./special/Audio";
 import Loading from "../general/Loading";
-import { isAudioDrop, isSpecialDrop, isVideoDrop } from "../general/helpers";
+import {
+  isARDrop,
+  isAudioDrop,
+  isSpecialDrop,
+  isVideoDrop,
+} from "../general/helpers";
 import VideoPlayer from "./special/VideoPlayer";
+import ARViewer from "./special/ARViewer";
 
 const DropArt = ({ art, drop, full }) => {
   let Special = "";
@@ -14,6 +20,9 @@ const DropArt = ({ art, drop, full }) => {
   }
   if (art && isVideoDrop(drop)) {
     Special = <VideoPlayer src={`maindr${drop.dropId}v`} autoPlay controls />;
+  }
+  if (art && isARDrop(drop)) {
+    Special = <ARViewer src={JSON.parse(art)} />;
   }
   return (
     <div

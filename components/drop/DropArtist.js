@@ -34,7 +34,7 @@ const DropArtist = ({ drop, dropInfo = {} }) => {
               {drop.metadata.artist}
             </h2>
             <p className="">@{dropInfo.handle}</p>
-            <p className="mt-4">{dropInfo.aboutArtist}</p>
+            <p className="mt-4 whitespace-pre-line">{dropInfo.aboutArtist}</p>
           </div>
         </div>
         <div className="flex justify-between items-center mt-3">
