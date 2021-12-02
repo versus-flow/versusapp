@@ -54,7 +54,6 @@ export default function Drop({ id, drop, img }) {
     //   setUpdatedDrop(drop);
     // }, 30000);
     // return () => {
-    //   clearInterval(window.fetches);
     // };
   }, [id]);
   useEffect(async () => {
