@@ -113,7 +113,7 @@ export const getImgThumbnail = (src, width = "auto", type = "jpg") => {
     transformation: [
       {
         width,
-        crop: "fill",
+        crop: "scale",
       },
       { fetch_format: "auto" },
     ],

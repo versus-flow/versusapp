@@ -32,7 +32,7 @@ const Landing = ({ drop }) => {
         <div className="container flex flex-col-reverse sm:gap-16 grid-cols-2 hero-height items-center relative sm:grid z-10">
           <div className="h-full flex flex-col justify-center sm:items-start sm:py-0 text-center sm:text-left">
             <h3 className="-backdrop-hue-rotate-15 font-inktrap text-xl">
-              {drop.metadata.artist}
+              {drop.metadata.artist} multi-part auction
             </h3>
             <h2 className="2xl:text-8xl font-bold font-inktrap leading-loose lg:text-7xl relative sm:-left-1 sm:text-5xl text-3xl">
               {drop.metadata.name}
@@ -40,9 +40,11 @@ const Landing = ({ drop }) => {
             <div className="mt-4 sm:mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
                 {timer
-                  ? `The auction starts ${start.format("MMMM")} ${start.format(
-                      "Do"
-                    )} at ${start.utcOffset(-5).format("hA")} EST`
+                  ? `The next auction starts ${start.format(
+                      "MMMM"
+                    )} ${start.format("Do")} at ${start
+                      .utcOffset(-5)
+                      .format("hA")} EST`
                   : moment().unix() - parseInt(drop.endTime, 10) < 0
                   ? "Auction now open!"
                   : "Auction finished!"}
