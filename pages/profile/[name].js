@@ -6,6 +6,7 @@ import * as t from "@onflow/types";
 import Main from "../../components/layouts/Main";
 import {
   getFindProfile,
+  getFindProfileInfo,
   profileGet,
 } from "../../components/profile/transactions";
 import ProfileWrapper from "../../components/profile/ProfileWrapper";
@@ -20,6 +21,12 @@ export async function fetchProfile(addr) {
       fcl.args([fcl.arg(addr, t.String)]),
     ]);
     addrlookup = await fcl.decode(findResponse);
+    const findProfileResponse = await fcl.send([
+      fcl.script(getFindProfileInfo),
+      fcl.args([fcl.arg(addr, t.String)]),
+    ]);
+    const findProfile = await fcl.decode(findProfileResponse);
+    return { ...findProfile, type: "find" };
   }
   const response = await fcl.send([
     fcl.script(profileGet),
@@ -50,7 +57,12 @@ export default function Profile({ self, name, profile }) {
     >
       {(user) =>
         (user.addr || name) && (
-          <ProfileWrapper user={user} self={self} name={name} />
+          <ProfileWrapper
+            user={user}
+            self={self}
+            name={name}
+            profile={profile}
+          />
         )
       }
     </Main>
@@ -61,5 +73,5 @@ export async function getServerSideProps(context) {
   const name = get(context, "params.name");
   if (name === "me") return { props: { self: true } };
   const profile = await fetchProfile(name);
-  return { props: { name: profile.address, profile } };
+  return { props: { name: get(profile, "address", name), profile } };
 }
