@@ -34,6 +34,7 @@ fcl
   .put("0xCONTRACT", process.env.NEXT_PUBLIC_CONTRACT || "0x99ca04281098b33d")
   .put("0xPROFILE", process.env.NEXT_PUBLIC_CONTRACT || "0x99ca04281098b33d")
   .put("0xTOPSHOTADDRESS", process.env.NEXT_PUBLIC_TS || "0x877931736ee77cff")
+  .put("0xFIND", process.env.NEXT_PUBLIC_FIND || "0x37a05b1ecacc80f7")
   .put("env", process.env.NEXT_PUBLIC_FLOW_ENV || "testnet");
 
 const Main = ({ children, seo }) => {

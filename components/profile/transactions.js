@@ -177,3 +177,11 @@ export const unfollowUser = `
     }
   }
 `;
+
+export const getFindProfile = `
+  import FIND from 0xFIND
+
+  pub fun main(name: String) : Address? {
+    return FIND.lookupAddress(name) 
+  } 
+`;
