@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
-import { each, includes, map } from "lodash";
+import { each, get, includes, map } from "lodash";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -69,8 +69,10 @@ export async function getMyListings(addr) {
   return await fcl.decode(response);
 }
 
-const ProfileWrapper = ({ self, user, name }) => {
-  const [currentProfile, setCurrentProfile] = useState({});
+const ProfileWrapper = ({ self, user, name, profile }) => {
+  const [currentProfile, setCurrentProfile] = useState(
+    get(profile, "type") === "find" ? profile : {}
+  );
   const [pieces, setPieces] = useState([]);
   const [marketPieces, setMarketPieces] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -89,8 +91,10 @@ const ProfileWrapper = ({ self, user, name }) => {
     if ((self && user && user.addr) || name) {
       setMarketPieces([]);
       const addr = self ? user.addr : name;
-      const profile = await fetchProfile(addr);
-      setCurrentProfile(profile || {});
+      if (get(profile, "type") != "find") {
+        const profile = await fetchProfile(addr);
+        setCurrentProfile(profile || {});
+      }
       const myListings = await getMyListings(addr);
       setMarketPieces(map(myListings, (m) => ({ ...m, metadata: m.art })));
       each(myListings, async (e) => {

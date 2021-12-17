@@ -185,3 +185,11 @@ export const getFindProfile = `
     return FIND.lookupAddress(name) 
   } 
 `;
+
+export const getFindProfileInfo = `
+  import FIND, Profile from 0xFIND
+
+  pub fun main(name: String): Profile.UserProfile? {
+      return FIND.lookup(name)?.asProfile()
+  }
+`;
