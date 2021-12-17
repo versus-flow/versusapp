@@ -1,17 +1,29 @@
 import React, { useEffect } from "react";
-import { get } from "lodash";
+import { get, includes } from "lodash";
 import * as fcl from "@onflow/fcl";
 import * as t from "@onflow/types";
 
 import Main from "../../components/layouts/Main";
-import { profileGet } from "../../components/profile/transactions";
+import {
+  getFindProfile,
+  profileGet,
+} from "../../components/profile/transactions";
 import ProfileWrapper from "../../components/profile/ProfileWrapper";
 import SEOBoilerplate from "../../components/general/SEOBoilerplate";
 
 export async function fetchProfile(addr) {
+  let addrlookup = addr;
+  if (includes(addr, "0x") && addr.length === 18) {
+  } else {
+    const findResponse = await fcl.send([
+      fcl.script(getFindProfile),
+      fcl.args([fcl.arg(addr, t.String)]),
+    ]);
+    addrlookup = await fcl.decode(findResponse);
+  }
   const response = await fcl.send([
     fcl.script(profileGet),
-    fcl.args([fcl.arg(addr, t.Address)]),
+    fcl.args([fcl.arg(addrlookup, t.Address)]),
   ]);
   return await fcl.decode(response);
 }
@@ -49,5 +61,5 @@ export async function getServerSideProps(context) {
   const name = get(context, "params.name");
   if (name === "me") return { props: { self: true } };
   const profile = await fetchProfile(name);
-  return { props: { name, profile } };
+  return { props: { name: profile.address, profile } };
 }
