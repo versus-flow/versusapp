@@ -5,7 +5,12 @@ import "react-medium-image-zoom/dist/styles.css";
 import { first, get } from "lodash";
 import moment from "moment";
 
-import { getGraffleUrl, getVidThumbnail } from "../general/helpers";
+import {
+  getGraffleUrl,
+  getImgThumbnail,
+  getVidThumbnail,
+  isValidHttpUrl,
+} from "../general/helpers";
 import Loading from "../general/Loading";
 import MoveDropNoti from "./MoveDropNoti";
 
@@ -49,7 +54,7 @@ const DropPreview = ({
         src={getVidThumbnail(`${src}v`)}
         className="h-full object-cover w-full rounded"
         controls
-        poster={src}
+        poster={isValidHttpUrl(src) ? src : getImgThumbnail(src, "600")}
       />
     );
   else Media = <img className="h-full object-cover w-full rounded" src={src} />;

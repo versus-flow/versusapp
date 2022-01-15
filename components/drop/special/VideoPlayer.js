@@ -15,14 +15,13 @@ const VideoPlayer = ({
   return (
     <div className={`w-full flex justify-center ${className}`}>
       <video
-        className={className}
+        className={`${className} max-h-134`}
         autoPlay={autoPlay}
         loop={true}
         controls={controls}
         muted={muted}
         playsInline
         tabIndex="0"
-        className="max-h-134"
         preload="auto"
         poster={getImgThumbnail(src.slice(0, -1))}
       >

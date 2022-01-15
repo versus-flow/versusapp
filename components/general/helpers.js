@@ -207,3 +207,15 @@ export const sendFilterChange = () => {
   const event = new Event("filterChange");
   elem.dispatchEvent(event);
 };
+
+export const isValidHttpUrl = (string) => {
+  let url;
+
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+
+  return url.protocol === "http:" || url.protocol === "https:";
+};
