@@ -99,6 +99,7 @@ export const getDropThumbnail = async (
       { fetch_format: "auto" },
     ],
   });
+  if (type === "gif") return imageURL;
   const isFile = await checkForFile(imageURL);
   if (!isFile) return false;
   return imageURL;

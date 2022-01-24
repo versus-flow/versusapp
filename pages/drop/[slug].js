@@ -271,6 +271,14 @@ export async function getServerSideProps(context) {
   if (includes([1, 6, 9, 11, 12, 13, 15, 20, 22, 37, 38], id))
     return { props: { id, drop: {}, art: null } };
   const drop = await fetchDrop(id);
-  const img = await getDropThumbnail(id, "1400", drop.metadata.type);
+  const dropInfo = find(
+    process.env.NEXT_PUBLIC_FLOW_ENV === "mainnet" ? dropsData : testDropsData,
+    (d) => d.id == id
+  );
+  const img = await getDropThumbnail(
+    id,
+    "1400",
+    dropInfo.gif ? "gif" : drop.metadata.type
+  );
   return { props: { id, drop, img } };
 }
