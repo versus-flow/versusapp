@@ -34,9 +34,9 @@ const Landing = ({ drop }) => {
             <h3 className="-backdrop-hue-rotate-15 font-inktrap text-xl">
               {drop.metadata.artist} multi-part auction
             </h3>
-            <h3 className="-backdrop-hue-rotate-15 font-inktrap text-xl">
+            {/* <h3 className="-backdrop-hue-rotate-15 font-inktrap text-xl">
               {drop.metadata.artist}
-            </h3>
+            </h3> */}
             <h2 className="2xl:text-8xl font-bold font-inktrap leading-loose lg:text-7xl relative sm:-left-1 sm:text-5xl text-3xl">
               {drop.metadata.name}
             </h2>
