@@ -593,5 +593,17 @@
     "twitter": "https://twitter.com/tormius",
     "instagram": "https://www.instagram.com/tormius",
     "aboutArtist": "Vector artist playing with geometry, composition and color to catch the eye. My work is based on these three principles, fed by avant-garde movements such as constructivism and cubism, adding my personal touch with futuristic, mythological or fantastic references. In my work I explore concepts under my visual perspective, exploring my mind and soul to express myself in an abstract way."
+  },
+  {
+    "id": "54",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "Rise and Shine",
+    "slug": "swopes",
+    "handle": "swopes",
+    "artist": "Elise Swopes",
+    "smallImage": "/images/drops/swopes/preview.jpeg",
+    "twitter": "https://twitter.com/swopes",
+    "instagram": "https://www.instagram.com/swopes",
+    "aboutArtist": "As one of the original Instagram artists, Elise Swopes learned to connect with a worldwide audience of millions by melding art with a message. Since then, the Brooklyn-based iPhone creator has worked on countless ideas showcasing her surreal cityscapes and streetwise style."
   }
 ]
