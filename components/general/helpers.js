@@ -109,6 +109,10 @@ export const getVidThumbnail = (src) => {
   return replace(cl.video_url(`${src}.mp4`), "image", "video");
 };
 
+export const getVidThumbnailNorm = (src) => {
+  return replace(cl.video_url(`${src}`), "image", "video");
+};
+
 export const getImgThumbnail = (src, width = "auto", type = "jpg") => {
   const imageURL = cl.url(src, {
     transformation: [

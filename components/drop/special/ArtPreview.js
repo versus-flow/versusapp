@@ -1,4 +1,8 @@
-import { isAudioDrop, isVideoDrop } from "../../general/helpers";
+import {
+  getVidThumbnailNorm,
+  isAudioDrop,
+  isVideoDrop,
+} from "../../general/helpers";
 import Audio from "./Audio";
 import VideoPlayer from "./VideoPlayer";
 
@@ -14,7 +18,7 @@ const ArtPreview = ({ drop, art }) => {
     Preview = (
       <div className="h-36 mt-3">
         <VideoPlayer
-          src={art}
+          src={getVidThumbnailNorm(`maindr${drop.dropId}v`)}
           autoPlay
           className="max-h-full max-w-full sm:max-w-xs"
           muted
