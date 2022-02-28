@@ -43,7 +43,7 @@ const Landing = ({ drop }) => {
             <div className="mt-4 sm:mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
                 {timer
-                  ? `The auction first starts ${start.format(
+                  ? `The first auction starts ${start.format(
                       "MMMM"
                     )} ${start.format("Do")} at ${start
                       .utcOffset(-5)
@@ -116,7 +116,7 @@ const Landing = ({ drop }) => {
           </div>
           <div className="mt-6 mb-6 sm:mb-0 sm:h-full sm:mt-0 w-full max-h-112">
             <img
-              src={dropImage}
+              src={`${dropImage}.jpg`}
               className="h-full max-h-112 sm:h-full sm:object-contain w-full"
             />
           </div>
