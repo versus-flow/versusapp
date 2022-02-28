@@ -1,12 +1,26 @@
-{
-  "id": "51",
-  "marketplaceAccount": "0xd796ff17107bbff6",
-  "title": "Blazing Revenge",
-  "slug": "tormius",
-  "handle": "tormius",
-  "artist": "Tormius",
-  "smallImage": "/images/drops/tormius/preview.jpeg",
-  "twitter": "https://twitter.com/tormius",
-  "instagram": "https://www.instagram.com/tormius",
-  "aboutArtist": "Vector artist playing with geometry, composition and color to catch the eye. My work is based on these three principles, fed by avant-garde movements such as constructivism and cubism, adding my personal touch with futuristic, mythological or fantastic references. In my work I explore concepts under my visual perspective, exploring my mind and soul to express myself in an abstract way."
-}
+[
+  {
+    "id": "63",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "LG's Holo Icon Pack Auction",
+    "slug": "anxovizcaino",
+    "handle": "anxovizcaino",
+    "artist": "Anxo Vizcaíno",
+    "smallImage": "/images/drops/anxovizcaino/preview.jpg",
+    "twitter": "https://twitter.com/anxovizcaino",
+    "instagram": "https://www.instagram.com/anxovizcaino",
+    "aboutArtist": "Anxo Vizcaíno is a digital artist based in Lugo, Spain. Born in 1989, he quickly became a person of restless mind consumed by unanswered questions about reality, consciousness and mortality. Much of his recent work is personal art in which he explores these subjects. Intuition and spontaneous combination of concepts bring unexpected scenes about the universe, human experiences and our place in the vast cosmos. His visions are full of geometry and atmospheric backdrops, blending different techniques such as photo manipulation, animation and 3D."
+  },
+  {
+    "id": "64",
+    "marketplaceAccount": "0xd796ff17107bbff6",
+    "title": "LG's Holo Icon Pack Auction",
+    "slug": "anxovizcaino",
+    "handle": "anxovizcaino",
+    "artist": "Anxo Vizcaíno",
+    "smallImage": "/images/drops/anxovizcaino/preview.jpg",
+    "twitter": "https://twitter.com/anxovizcaino",
+    "instagram": "https://www.instagram.com/anxovizcaino",
+    "aboutArtist": "Anxo Vizcaíno is a digital artist based in Lugo, Spain. Born in 1989, he quickly became a person of restless mind consumed by unanswered questions about reality, consciousness and mortality. Much of his recent work is personal art in which he explores these subjects. Intuition and spontaneous combination of concepts bring unexpected scenes about the universe, human experiences and our place in the vast cosmos. His visions are full of geometry and atmospheric backdrops, blending different techniques such as photo manipulation, animation and 3D."
+  }
+]
