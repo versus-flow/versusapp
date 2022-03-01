@@ -43,7 +43,7 @@ const Landing = ({ drop }) => {
             <div className="mt-4 sm:mt-8">
               <h4 className="font-inktrap font-semibold tracking-wide">
                 {timer
-                  ? `The first auction starts ${start.format(
+                  ? `The second auction starts ${start.format(
                       "MMMM"
                     )} ${start.format("Do")} at ${start
                       .utcOffset(-5)
