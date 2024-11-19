@@ -10,7 +10,7 @@ import Auction, Versus from 0xCONTRACT
 /*
   Script used to get the first active drop in a versus 
  */
-pub fun main(dropID: UInt64) : Versus.DropStatus {
+access(all) main(dropID: UInt64) : Versus.DropStatus {
 		return Versus.getDrop(dropID)!
 }
 `;
@@ -18,7 +18,7 @@ pub fun main(dropID: UInt64) : Versus.DropStatus {
 export const fetchVersusArt = `
 //testnet
 import Versus from 0xCONTRACT
-pub fun main(dropId: UInt64) : String {
+access(all) fun main(dropId: UInt64) : String {
   return Versus.getArtForDrop(dropId)!
 }
 `;
@@ -28,14 +28,14 @@ export const fetchMyArt = `
   This script will check an address and print out its FT, NFT and Versus resources
  */
 import Art from 0xCONTRACT
-pub fun main(address:Address) : [Art.ArtData] {
+access(all) fun main(address:Address) : [Art.ArtData] {
     return Art.getArt(address: address)
 }
 `;
 
 export const fetchOneArt = `
 import Versus, Art from 0xCONTRACT
-pub fun main(address:Address, artId:UInt64) : String? {
+access(all) fun main(address:Address, artId:UInt64) : String? {
   return Art.getContentForArt(address: address, artId: artId)
 }`;
 
@@ -44,12 +44,12 @@ import FungibleToken from 0xFungibleToken
 /*
   This script will check an address and print out its FT, NFT and Versus resources
  */
-pub fun main(address:Address) : UFix64 {
+access(all) fun main(address:Address) : UFix64 {
     // get the accounts' public address objects
     let account = getAccount(address)
     let balance = 0.0
     
-    if let vault= account.getCapability(/public/flowTokenBalance).borrow<&{FungibleToken.Balance}>() {
+    if let vault= account.capabilities.borrow<&{FungibleToken.Balance}>(/public/flowTokenBalance) {
        return vault.balance
     }
     return balance
@@ -61,29 +61,28 @@ import NonFungibleToken from 0xNonFungibleToken
 import Art from 0xCONTRACT
 //This transaction will setup a drop in a versus auction
 transaction() {
-    prepare(account: AuthAccount) {
+    prepare(account: auth(StorageCapabilities, SaveValue,PublishCapability, BorrowValue) &Account) {
         account.save<@NonFungibleToken.Collection>(<- Art.createEmptyCollection(), to: Art.CollectionStoragePath)
-        account.link<&{Art.CollectionPublic}>(Art.CollectionPublicPath, target: Art.CollectionStoragePath)
+        let cap = account.capabilities.storage.issue<&{Art.CollectionPublic}>(Art.CollectionStoragePath)
+        account.capabilities.publish(cap.CollectionPublicPath, target:Art.CollectionStoragePath)
     }
 }
 `;
 
 export const checkForArtConnection = `
 import Art from 0xCONTRACT
-pub fun main(address: Address): Bool {
+access(all) fun main(address: Address): Bool {
   let account = getAccount(address)
-  var collectionCap = account.getCapability<&{Art.CollectionPublic}>(Art.CollectionPublicPath)
-  return collectionCap.check()
+  var collectionCap = account.capabilities.get<&{Art.CollectionPublic}>(Art.CollectionPublicPath)
+  return collectionCap !=nil
 }
 `;
 
 export const profileGet = `
 import Profile from 0xPROFILE
 
-pub fun main(address:Address) : Profile.UserProfile? {
-  return getAccount(address)
-        .getCapability<&{Profile.Public}>(Profile.publicPath)
-        .borrow()?.asProfile()
+access(all) fun main(address:Address) : Profile.UserProfile? {
+  return getAccount(address).capabilities.borrow<&{Profile.Public}>(Profile.publicPath)?.asProfile()
 }
 `;
 
@@ -94,26 +93,24 @@ import Profile, Art, Marketplace from 0xCONTRACT
 import NonFungibleToken from 0xNonFungibleToken
 
 transaction(name: String, description: String, avatar: String, socials: {String: String}) {
-  prepare(acct: AuthAccount) {
+    prepare(acct: auth(StorageCapabilities, SaveValue,PublishCapability, BorrowValue) &Account) {
 
     let profile <-Profile.createUser(name:name, description: description, allowStoringFollowers:true, tags:["versus"])
 
-    let flowReceiver= acct.getCapability<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
-    let flowBalance= acct.getCapability<&{FungibleToken.Balance}>(/public/flowTokenBalance)
-    let flow=acct.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!
+    let flowReceiver= acct.capabilities.get<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
+    let flowBalance= acct.capabilities.get<&{FungibleToken.Balance}>(/public/flowTokenBalance)
+    let flow=acct.storage.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!
 
     let flowWallet= Profile.Wallet(name:"Flow", receiver: flowReceiver, balance: flowBalance, accept:flow.getType(), tags: ["flow"])
     profile.addWallet(flowWallet)
 
-    var collectionCap = acct.getCapability<&{Art.CollectionPublic}>(Art.CollectionPublicPath)
+    var collectionCap = acct.capabilities.get<&{Art.CollectionPublic}>(Art.CollectionPublicPath)
     // if collection is not created yet we make it.
-    if !collectionCap.check() {
-        acct.unlink(Art.CollectionPublicPath)
-        destroy <- acct.load<@AnyResource>(from:Art.CollectionStoragePath)
+    if collectionCap == nil {
         // store an empty NFT Collection in acct storage
         acct.save<@NonFungibleToken.Collection>(<- Art.createEmptyCollection(), to: Art.CollectionStoragePath)
-        // publish a capability to the Collection in storage
-        acct.link<&{Art.CollectionPublic}>(Art.CollectionPublicPath, target: Art.CollectionStoragePath)
+        let cap = account.capabilities.storage.issue<&{Art.CollectionPublic}>(Art.CollectionStoragePath)
+        account.capabilities.publish(cap, target:Art.CollectionStoragePath)
     }
     
     profile.addCollection(Profile.ResourceCollection( 
@@ -130,7 +127,8 @@ transaction(name: String, description: String, avatar: String, socials: {String:
     }
 
     acct.save(<-profile, to: Profile.storagePath)
-    acct.link<&Profile.User{Profile.Public}>(Profile.publicPath, target: Profile.storagePath)
+    let pcap = account.capabilities.storage.issue<&{Profile>Public}>(Profile.storagePath)
+    account.capabilities.publish(pcap, target:Profile.storagepath)
   }
 }
 `;
@@ -139,9 +137,9 @@ export const profileChange = `
   import Profile from 0xPROFILE
 
   transaction(name: String, description: String, avatar: String, socials: {String: String}) {
-    prepare(account: AuthAccount) {
-      let profile = account
-        .borrow<&Profile.User{Profile.Owner}>(from: Profile.storagePath)!
+    prepare(account: auth(StorageCapabilities, SaveValue,PublishCapability, BorrowValue) &Account) {
+
+      let profile = account.storage.borrow<&Profile.User{Profile.Owner}>(from: Profile.storagePath)!
       profile.setName(name)
       profile.setDescription(description)
       profile.setAvatar(avatar)
@@ -158,9 +156,8 @@ export const followUser = `
   import Profile from 0xPROFILE
 
   transaction(address: Address) {
-    prepare(account: AuthAccount) {
-      let profile = account
-        .borrow<&Profile.User{Profile.Owner}>(from: Profile.storagePath)!
+    prepare(account: auth(StorageCapabilities, SaveValue,PublishCapability, BorrowValue) &Account) {
+      let profile = account.storage.borrow<&Profile.User{Profile.Owner}>(from: Profile.storagePath)!
       profile.follow(address, tags:["versus"])
     }
   }
@@ -170,9 +167,8 @@ export const unfollowUser = `
   import Profile from 0xPROFILE
 
   transaction(address: Address) {
-    prepare(account: AuthAccount) {
-      let profile = account
-        .borrow<&Profile.User{Profile.Owner}>(from: Profile.storagePath)!
+    prepare(account: auth(StorageCapabilities, SaveValue,PublishCapability, BorrowValue) &Account) {
+      let profile = account.borrow<&Profile.User{Profile.Owner}>(from: Profile.storagePath)!
       profile.unfollow(address)
     }
   }
@@ -181,7 +177,7 @@ export const unfollowUser = `
 export const getFindProfile = `
   import FIND from 0xFIND
 
-  pub fun main(name: String) : Address? {
+  access(all) fun main(name: String) : Address? {
     return FIND.lookupAddress(name) 
   } 
 `;
@@ -189,7 +185,7 @@ export const getFindProfile = `
 export const getFindProfileInfo = `
   import FIND, Profile from 0xFIND
 
-  pub fun main(name: String): Profile.UserProfile? {
+  access(all) fun main(name: String): Profile.UserProfile? {
       return FIND.lookup(name)?.asProfile()
   }
 `;
