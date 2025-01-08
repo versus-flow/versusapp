@@ -10,7 +10,7 @@ import Auction, Versus from 0xCONTRACT
 /*
   Script used to get the first active drop in a versus 
  */
-access(all) main(dropID: UInt64) : Versus.DropStatus {
+access(all) fun main(dropID: UInt64) : Versus.DropStatus {
 		return Versus.getDrop(dropID)!
 }
 `;
