@@ -12,7 +12,7 @@ import * as fcl from "@onflow/fcl";
 export const getAllDrops = `
 import Versus from 0xCONTRACT
 
-pub fun main() : [Versus.DropStatus] {
+access(all) fun main() : [Versus.DropStatus] {
   return Versus.getDrops()
 }
 `;
@@ -31,26 +31,25 @@ transaction(marketplace: Address, dropId: UInt64, auctionId: UInt64, bidAmount: 
     let collectionCap: Capability<&{Art.CollectionPublic}> 
     let versusCap: Capability<&{Versus.PublicDrop}>
     let temporaryVault: @FungibleToken.Vault
-    prepare(account: AuthAccount) {
-        // get the references to the buyer's Vault and NFT Collection receiver
-        var collectionCap = account.getCapability<&{Art.CollectionPublic}>(Art.CollectionPublicPath)
-        // if collection is not created yet we make it.
-        if !collectionCap.check() {
-            account.unlink(Art.CollectionPublicPath)
-					  destroy <- account.load<@AnyResource>(from:Art.CollectionStoragePath)
-            // store an empty NFT Collection in account storage
-            account.save<@NonFungibleToken.Collection>(<- Art.createEmptyCollection(), to: Art.CollectionStoragePath)
-            // publish a capability to the Collection in storage
-            account.link<&{Art.CollectionPublic}>(Art.CollectionPublicPath, target: Art.CollectionStoragePath)
-        }
-        self.collectionCap=collectionCap
+    prepare(account: auth(StorageCapabilities, SaveValue,PublishCapability, BorrowValue) &Account) {
+
+      var collectionCap = acct.capabilities.get<&{Art.CollectionPublic}>(Art.CollectionPublicPath)
+      // if collection is not created yet we make it.
+      if collectionCap == nil {
+          // store an empty NFT Collection in acct storage
+          acct.save<@NonFungibleToken.Collection>(<- Art.createEmptyCollection(), to: Art.CollectionStoragePath)
+          let cap = account.capabilities.storage.issue<&{Art.CollectionPublic}>(Art.CollectionStoragePath)
+          account.capabilities.publish(cap, target:Art.CollectionStoragePath)
+          collectionCap = acct.capabilities.get<&{Art.CollectionPublic}>(Art.CollectionPublicPath)
+      }
+      self.collectionCap=collectionCap!
         
-        self.vaultCap = account.getCapability<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)
+        self.vaultCap = account.capabilities.get<&{FungibleToken.Receiver}>(/public/flowTokenReceiver)!
                    
-        let vaultRef = account.borrow<&FungibleToken.Vault>(from: /storage/flowTokenVault)
-            ?? panic("Could not borrow owner's Vault reference")
+        let vaultRef = account.storage.borrow<&FungibleToken.Vault>(from: /storage/flowTokenVault) ?? panic("Could not borrow owner's Vault reference")
+
         let seller = getAccount(marketplace)
-        self.versusCap = seller.getCapability<&{Versus.PublicDrop}>(Versus.CollectionPublicPath)
+        self.versusCap = seller.capabilities.gets<&{Versus.PublicDrop}>(Versus.CollectionPublicPath)!
         let currentBid=self.versusCap.borrow()!.currentBidForUser(dropId: dropId, auctionId: auctionId, address: account.address)
         //if your capability is the leader you only have to send in the difference
         // withdraw tokens from the buyer's Vault
@@ -61,7 +60,7 @@ transaction(marketplace: Address, dropId: UInt64, auctionId: UInt64, bidAmount: 
     }
 }`;
 
-const noop = async () => {};
+const noop = async () => { };
 
 export const tx = async (mods = [], opts = {}) => {
   const onStart = opts.onStart || noop;
